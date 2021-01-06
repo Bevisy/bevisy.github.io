@@ -1,0 +1,132 @@
+baseurl = "https://bevisy.github.io"
+languageCode = "en-us"
+theme = "hugo-theme-stack"
+paginate = 5.0
+title = "Bevisy's Blogs"
+disqusShortname = "bevisy"
+DefaultContentLanguage = "en"
+
+[permalinks]
+post = "/p/:slug/"
+page = "/:slug/"
+
+[params]
+mainSections = [
+    "post"
+]
+featuredImageField = "image"
+rssFullContent = true
+
+[params.footer]
+since = 2020.0
+
+[params.dateFormat]
+published = "Jan 02, 2006"
+lastUpdated = "Jan 02, 2006 15:04 MST"
+
+[params.sidebar]
+emoji = "🍥:dog:"
+subtitle = "春风得意马蹄疾，一日看尽长安花"
+
+[params.sidebar.avatar]
+local = true
+src = "img/avatar.png"
+
+[params.article]
+math = false
+
+[params.article.license]
+enabled = true
+default = "Licensed under CC BY-NC-SA 4.0"
+
+[params.comments]
+enabled = true
+provider = "disqus"
+
+[params.comments.utterances]
+issueTerm = "pathname"
+theme = "preferred-color-scheme"
+
+[params.widgets]
+enabled = [
+    "search",
+    "archives",
+    "tag-cloud"
+]
+
+[params.widgets.archives]
+limit = 5.0
+
+[params.widgets.tagCloud]
+limit = 10.0
+
+[params.opengraph]
+
+[params.opengraph.twitter]
+card = "summary_large_image"
+
+[params.defaultImage]
+
+[params.defaultImage.opengraph]
+enabled = false
+local = false
+
+[params.colorScheme]
+toggle = true
+default = "auto"
+
+[params.imageProcessing]
+
+[params.imageProcessing.cover]
+enabled = true
+
+[params.imageProcessing.content]
+enabled = true
+
+[menu]
+
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = -100.0
+pre = "home"
+
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "about"
+weight = -90.0
+pre = "user"
+
+[[menu.main]]
+identifier = "archives"
+name = "Archives"
+url = "archives"
+weight = -70.0
+pre = "archives"
+
+[[menu.main]]
+identifier = "search"
+name = "Search"
+url = "search"
+weight = -60.0
+pre = "search"
+
+[related]
+includeNewer = true
+threshold = 60.0
+toLower = false
+
+[[related.indices]]
+name = "tags"
+weight = 100.0
+
+[[related.indices]]
+name = "categories"
+weight = 200.0
+
+[markup]
+
+[markup.highlight]
+noClasses = false
