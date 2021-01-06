@@ -1,7 +1,7 @@
 ---
 title: "Burn the Operating System Installation Disk on Mac"
 date: 2021-01-06T19:22:16+08:00
-draft: false
+image: "macbook-wallpaper.jpg"
 tags: 
     - macbook
     - iso
