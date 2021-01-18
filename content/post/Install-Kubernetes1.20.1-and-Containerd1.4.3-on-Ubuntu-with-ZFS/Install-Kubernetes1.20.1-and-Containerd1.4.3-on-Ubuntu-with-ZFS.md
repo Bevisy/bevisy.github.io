@@ -189,6 +189,15 @@ k8s.gcr.io/kube-proxy:v1.20.1
 k8s.gcr.io/kube-scheduler:v1.20.1
 k8s.gcr.io/pause:3.2
 ```
+#### containerd 镜像加速
+配置参考：
+```shell script
+[plugins."io.containerd.grpc.v1.cri".registry]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+          #endpoint = ["https://registry-1.docker.io"]
+          endpoint = ["https://as065r9f.mirror.aliyuncs.com"]
+```
 
 #### 启动集群
 
