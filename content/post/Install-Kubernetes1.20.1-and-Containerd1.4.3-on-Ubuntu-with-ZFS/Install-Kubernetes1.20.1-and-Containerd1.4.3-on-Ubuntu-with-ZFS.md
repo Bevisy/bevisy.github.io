@@ -193,13 +193,14 @@ k8s.gcr.io/pause:3.2
 #### 启动集群
 
 ```sh
-$ sudo kubeadm init --pod-network-cidr=10.10.0.0/16 --service-cidr=10.20.0.0/16 --kubernetes-version=v1.20.1 --apiserver-advertise-address 192.168.126.246
+$ sudo kubeadm init --pod-network-cidr=10.10.0.0/16 --service-cidr=10.20.0.0/16 --kubernetes-version=v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
 ```
 
 - --kubernetes-version: 指定 kubernetes 版本；
 - --apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；
 - --pod-network-cidr：指定 Pod 的网络范围；
 - --service-cidr：指定 Service 的网络范围；
+- --cri-socket：指定cri(社区趋势：cri 采用 containerd)
 
 #### 验证安装结果
 
@@ -239,3 +240,7 @@ containerd 一直会刷新 error 日志
 `Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time="2021-01-11T17:49:51.380076683+08:00" level=error msg="Failed to get usage for snapshot \"sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\"" error="zfs does not implement Usage() yet"`
 
 [参考issue](https://github.com/containerd/zfs/issues/17)
+### 规避办法
+暂时通过修改代码规避  
+[bevisy/zfs](https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c) 
+[bevisy/containerd](https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6)  
