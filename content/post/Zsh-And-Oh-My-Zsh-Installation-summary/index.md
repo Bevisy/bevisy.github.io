@@ -28,10 +28,12 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 
 ```sh
 # 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins)
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # 配置 .zshrc，添加插件列表
-plugins=(zsh-autosuggestions)
+plugins=(zsh-autosuggestions
+        zsh-syntax-highlighting)
 
 # 启动新终端，查看效果示例
 zsh
