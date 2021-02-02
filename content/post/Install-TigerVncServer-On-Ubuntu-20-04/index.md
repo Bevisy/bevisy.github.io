@@ -38,3 +38,15 @@ $ vncserver :1 --geomotry 1366x768 # --geometry 参数随意
 # 使用 vnc viewer 连接，端口号为 5091
 ```
 
+# 使用 lxde 桌面
+```shell script
+# 安装
+$ sudo apt install xorg lxde-core lxterminal
+# 配置 vncserver 启动桌面
+$ cat > $HOME/.vnc/xstartup << EOF
+  #!/bin/sh
+  lxterminal &
+  /usr/bin/lxsession -s LXDE &
+  EOF
+```
+
