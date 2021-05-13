@@ -33,7 +33,7 @@ local = true
 src = "img/avatar.png"
 
 [params.article]
-math = false
+math = true
 
 [params.article.license]
 enabled = true
