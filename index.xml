@@ -1,0 +1,1257 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Bevisy&#39;s Blogs</title>
+        <link>https://bevisy.github.io/</link>
+        <description>Recent content on Bevisy&#39;s Blogs</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Tue, 25 May 2021 13:55:24 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Close Swap on Ubuntu20.04</title>
+        <link>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</link>
+        <pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</guid>
+        <description>&lt;h1 id=&#34;临时关闭&#34;&gt;临时关闭&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo dphys-swapfile swapoff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;永久关闭&#34;&gt;永久关闭&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo systemctl disable dphys-swapfile.service --now
+&lt;span class=&#34;c1&#34;&gt;# 注释fstab&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#/dev/mapper/vgubuntu-swap_1 none            swap    sw              0       0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Uncanny Skills</title>
+        <link>https://bevisy.github.io/p/uncanny-skills/</link>
+        <pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/uncanny-skills/</guid>
+        <description>&lt;h1 id=&#34;linux-利用loop设备模拟块设备&#34;&gt;linux 利用loop设备模拟块设备&lt;/h1&gt;
+&lt;h2 id=&#34;创建虚拟设备&#34;&gt;创建虚拟设备&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;losetup --help
+ -a 显示所有已经使用的回环设备状态
+ -d 卸除回环设备
+ -f 寻找第一个未使用的回环设备
+ -e &amp;lt;加密选项&amp;gt; 启动加密编码
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 查找第一个未使用的回环设备&lt;/span&gt;
+losetup -f
+&lt;span class=&#34;c1&#34;&gt;# 创建文件&lt;/span&gt;
+dd &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/zero &lt;span class=&#34;nv&#34;&gt;of&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;./disk.img &lt;span class=&#34;nv&#34;&gt;bs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;4M &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 将disk.img 虚拟成一个回环设备&lt;/span&gt;
+losetup -f disk.img
+&lt;span class=&#34;c1&#34;&gt;# 查询此设备&lt;/span&gt;
+losetup -a &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep disk.img
+/dev/loop25: &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;64768&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;:3296700 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;/home/zbb/temp/disk/disk.img&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 格式化设备&lt;/span&gt;
+mkfs.ext4 /dev/loop25
+&lt;span class=&#34;c1&#34;&gt;# 挂载块设备&lt;/span&gt;
+mount /dev/loop25 &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# test 为自定义目录&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 卸载设备&lt;/span&gt;
+umount &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+losetup -d /dev/loop25
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title>
+        <link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link>
+        <pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid>
+        <description>&lt;h1 id=&#34;基于zfs的ubuntu2004安装kubernetes120&#34;&gt;基于ZFS的Ubuntu20.04安装kubernetes1.20&lt;/h1&gt;
+&lt;h2 id=&#34;containerd-安装&#34;&gt;containerd 安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;安装&#34;&gt;安装&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 安装必要组件&lt;/span&gt;
+$ sudo apt-get update
+$ sudo apt-get install &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    apt-transport-https &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    ca-certificates &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    curl &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    gnupg-agent &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    software-properties-common
+&lt;span class=&#34;c1&#34;&gt;# 安装gpg key&lt;/span&gt;
+ curl -fsSL https://download.docker.com/linux/ubuntu/gpg &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo apt-key add -
+&lt;span class=&#34;c1&#34;&gt;# 验证gpg key&lt;/span&gt;
+$ sudo apt-key fingerprint 0EBFCD88
+&lt;span class=&#34;c1&#34;&gt;# 添加 repo&lt;/span&gt;
+$ sudo add-apt-repository &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;   &lt;span class=&#34;s2&#34;&gt;&amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;   &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;lsb_release -cs&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt; \
+&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;   stable&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 安装containerd&lt;/span&gt;
+$ sudo apt-get update
+$ sudo apt-get install containerd.io
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.docker.com/engine/install/ubuntu/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装参考&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;配置修改适配-zfs&#34;&gt;配置修改适配 zfs&lt;/h3&gt;
+&lt;p&gt;查看 zfs 插件&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo ctr plugins ls  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep zfs                               
+io.containerd.snapshotter.v1    zfs                      linux/amd64    ok
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;准备config.toml&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.bk
+$ sudo chmod &lt;span class=&#34;m&#34;&gt;646&lt;/span&gt; /etc/containerd/config.toml
+$ sudo containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改&lt;code&gt;snapshotter&lt;/code&gt;为&lt;code&gt;zfs&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;#snapshotter = &amp;#34;overlayfs&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;snapshotter&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;zfs&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重启&lt;code&gt;containerd&lt;/code&gt;，&lt;code&gt;containerd&lt;/code&gt;不支持配置热加载&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo systemctl restart containerd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;挂载-zfs-到containerd指定目录&#34;&gt;挂载 zfs 到containerd指定目录&lt;/h3&gt;
+&lt;h4 id=&#34;查询-pool&#34;&gt;查询 pool&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+rpool   460G  8.64G   451G        -         -     0%     1%  1.00x    ONLINE  -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;挂载目录&#34;&gt;挂载目录&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo zfs create -o &lt;span class=&#34;nv&#34;&gt;mountpoint&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/var/lib/containerd/io.containerd.snapshotter.v1.zfs rpool/containerd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;查看挂载的目录&#34;&gt;查看挂载的目录&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo zfs list
+NAME                                               USED  AVAIL     REFER  MOUNTPOINT
+...
+rpool/containerd                                    96K   437G       96K  /var/lib/containerd/io.containerd.snapshotter.v1.zfs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;验证&#34;&gt;验证&lt;/h3&gt;
+&lt;h4 id=&#34;拉取镜像&#34;&gt;拉取镜像&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo ctr i pull --snapshotter&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;启动容器&#34;&gt;启动容器&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo ctr run --rm --net-host -d --snapshotter&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17 &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;查看nginx启动结果&#34;&gt;查看nginx启动结果&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo ctr t ls
+TASK    PID        STATUS    
+&lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;1494537&lt;/span&gt;    RUNNING
+$ netstat -alptn &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;m&#34;&gt;80&lt;/span&gt;
+tcp        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;      &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+$ curl http://127.0.0.1:80 &lt;span class=&#34;c1&#34;&gt;# 正常可访问&lt;/span&gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+...
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;待解决的问题&#34;&gt;待解决的问题&lt;/h3&gt;
+&lt;h4 id=&#34;问题-1&#34;&gt;问题 1&lt;/h4&gt;
+&lt;p&gt;非root账户，sudo权限不指定参数&lt;code&gt;snapshotter&lt;/code&gt;创建container，提示&lt;code&gt;ctr: failed to mount /tmp/containerd-mount589724034: invalid argument&lt;/code&gt;，无法创建容器。&lt;/p&gt;
+&lt;p&gt;切换成root用户，依旧提示，但是容器可以正常创建&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;$ ctr run --rm --net-host -d docker.io/library/nginx:1.17 &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;
+ctr: failed to mount /tmp/containerd-mount589724034: invalid argument
+&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;$ ctr t ls
+TASK    PID        STATUS    
+&lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;1494537&lt;/span&gt;    RUNNING
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;kubernetes-安装&#34;&gt;kubernetes 安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;Client Version: version.Info&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Major:&lt;span class=&#34;s2&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class=&#34;s2&#34;&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class=&#34;s2&#34;&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class=&#34;s2&#34;&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class=&#34;s2&#34;&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class=&#34;s2&#34;&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+Server Version: version.Info&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Major:&lt;span class=&#34;s2&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class=&#34;s2&#34;&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class=&#34;s2&#34;&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class=&#34;s2&#34;&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class=&#34;s2&#34;&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class=&#34;s2&#34;&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;安装-1&#34;&gt;安装&lt;/h2&gt;
+&lt;p&gt;当前安装工具有很多，此处选择使用&lt;code&gt;kubeadm&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;准备kubernetes-源使用阿里镜像源并安装必要组件&#34;&gt;准备kubernetes 源(使用阿里镜像源)，并安装必要组件&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo apt-get update
+sudo apt-get install apt-transport-https
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo apt-key add - 
+sudo cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt;/etc/apt/sources.list.d/kubernetes.list
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
+
+sudo apt-get update
+sudo apt-get install kubelet kubeadm kubectl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后 kubelet 服务会处于不断重启状态，暂时不需要关注，kubelet等待连接kube-apiserver，预期现象。&lt;/p&gt;
+&lt;h2 id=&#34;启动kubernetes集群&#34;&gt;启动kubernetes集群&lt;/h2&gt;
+&lt;h4 id=&#34;准备容器镜像&#34;&gt;准备容器镜像&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ kubeadm config images list &lt;span class=&#34;c1&#34;&gt;# 查看需要准备的镜像&lt;/span&gt;
+k8s.gcr.io/coredns:1.7.0
+k8s.gcr.io/etcd:3.4.13-0
+k8s.gcr.io/kube-apiserver:v1.20.1
+k8s.gcr.io/kube-controller-manager:v1.20.1
+k8s.gcr.io/kube-proxy:v1.20.1
+k8s.gcr.io/kube-scheduler:v1.20.1
+k8s.gcr.io/pause:3.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;containerd-镜像加速&#34;&gt;containerd 镜像加速&lt;/h4&gt;
+&lt;p&gt;配置参考：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors.&lt;span class=&#34;s2&#34;&gt;&amp;#34;docker.io&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+          &lt;span class=&#34;c1&#34;&gt;#endpoint = [&amp;#34;https://registry-1.docker.io&amp;#34;]&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;endpoint&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;https://as065r9f.mirror.aliyuncs.com&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;启动集群&#34;&gt;启动集群&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ sudo kubeadm init --pod-network-cidr&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;10.10.0.0/16 --service-cidr&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;10.20.0.0/16 --kubernetes-version&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&amp;ndash;kubernetes-version: 指定 kubernetes 版本；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;pod-network-cidr：指定 Pod 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;service-cidr：指定 Service 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;cri-socket：指定cri(社区趋势：cri 采用 containerd)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;验证安装结果&#34;&gt;验证安装结果&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 根据提示拷贝kubeconfig文件&lt;/span&gt;
+$ kubectl version
+Client Version: version.Info&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Major:&lt;span class=&#34;s2&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class=&#34;s2&#34;&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class=&#34;s2&#34;&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class=&#34;s2&#34;&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class=&#34;s2&#34;&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class=&#34;s2&#34;&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+Server Version: version.Info&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Major:&lt;span class=&#34;s2&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class=&#34;s2&#34;&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class=&#34;s2&#34;&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class=&#34;s2&#34;&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class=&#34;s2&#34;&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class=&#34;s2&#34;&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class=&#34;s2&#34;&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class=&#34;s2&#34;&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;flannel-安装&#34;&gt;Flannel 安装&lt;/h2&gt;
+&lt;p&gt;kubernetes v1.17+ 版本&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;需要修改配置：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;net-conf.json: &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;s2&#34;&gt;&amp;#34;Network&amp;#34;&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;#34;10.10.0.0/16&amp;#34;&lt;/span&gt;, &lt;span class=&#34;c1&#34;&gt;# kubeadm init 创建时使用的pod-network-cidr&lt;/span&gt;
+      &lt;span class=&#34;s2&#34;&gt;&amp;#34;Backend&amp;#34;&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;s2&#34;&gt;&amp;#34;Type&amp;#34;&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;#34;vxlan&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/coreos/flannel#flannel&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考连接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;待解决问题&#34;&gt;待解决问题&lt;/h2&gt;
+&lt;p&gt;containerd 一直会刷新 error 日志&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time=&amp;quot;2021-01-11T17:49:51.380076683+08:00&amp;quot; level=error msg=&amp;quot;Failed to get usage for snapshot \&amp;quot;sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\&amp;quot;&amp;quot; error=&amp;quot;zfs does not implement Usage() yet&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/containerd/zfs/issues/17&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考issue&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;规避办法&#34;&gt;规避办法&lt;/h3&gt;
+&lt;p&gt;暂时通过修改代码规避&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;bevisy/zfs&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;bevisy/containerd&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Burn the Operating System Installation Disk on Mac</title>
+        <link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link>
+        <pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid>
+        <description>&lt;img src="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg" alt="Featured image of post Burn the Operating System Installation Disk on Mac" /&gt;&lt;h1 id=&#34;在macbook上烧录iso镜像制作操作系统盘&#34;&gt;在Macbook上烧录iso镜像，制作操作系统盘&lt;/h1&gt;
+&lt;h2 id=&#34;查看烧录u盘&#34;&gt;查看烧录U盘&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;diskutil list &lt;span class=&#34;c1&#34;&gt;# 例如：/dev/disk3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;取消挂载u盘&#34;&gt;取消挂载U盘&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;diskutil unmountDisk /dev/disk3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;烧录&#34;&gt;烧录&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 以 ubuntu-20.04.iso 为例&lt;/span&gt;
+sudo dd &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;~/Downloads/ubuntu-20.04.iso &lt;span class=&#34;nv&#34;&gt;of&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/disk3 &lt;span class=&#34;nv&#34;&gt;bs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1m &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sync &lt;span class=&#34;c1&#34;&gt;# sync 作用: 使缓存落盘&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;弹出u盘&#34;&gt;弹出U盘&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;diskutil eject /dev/disk3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Install TigerVncServer On Ubuntu 20.04</title>
+        <link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link>
+        <pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid>
+        <description>&lt;h1 id=&#34;ubuntu-2004-安装-tigervncserver&#34;&gt;Ubuntu 20.04 安装 Tigervncserver&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 安装&lt;/span&gt;
+$ sudo apt update
+$ sudo apt install xfce4 xfce4-goodies tigervnc-standalone-server &lt;span class=&#34;c1&#34;&gt;# 推荐使用 xfce4 桌面&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 启动&lt;/span&gt;
+$ vncpasswd &lt;span class=&#34;c1&#34;&gt;# 配置 vnc 客户端连接密码&lt;/span&gt;
+$ vncserver
+$ vncserver -kill :1 &lt;span class=&#34;c1&#34;&gt;# 关闭创建的 vnc server&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 修改配置，解决黑屏和灰屏问题&lt;/span&gt;
+$ touch &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.vnc/xstartup
+$ chmod u+x &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.vnc/xstartup
+$ cat &amp;gt; &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.vnc/xstartup &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;unset SESSION_MANAGER
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;unset DBUS_SESSION_BUS_ADDRESS
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[ -r $HOME/.Xresources ] &amp;amp;&amp;amp; xrdb $HOME/.Xresources
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;xsetroot -solid grey
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;xterm -geometry 80x24+10+10 -ls -title &amp;#34;$VNCDESKTOP Desktop&amp;#34; &amp;amp;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;startxfce4 &amp;amp;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 再次启动&lt;/span&gt;
+$ vncserver :1 --geomotry 1366x768 &lt;span class=&#34;c1&#34;&gt;# --geometry 参数随意&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 使用 vnc viewer 连接，端口号为 5091&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;使用-lxde-桌面&#34;&gt;使用 lxde 桌面&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 安装&lt;/span&gt;
+$ sudo apt install xorg lxde-core lxterminal
+&lt;span class=&#34;c1&#34;&gt;# 配置 vncserver 启动桌面&lt;/span&gt;
+$ cat &amp;gt; &lt;span class=&#34;nv&#34;&gt;$HOME&lt;/span&gt;/.vnc/xstartup &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;  #!/bin/sh
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;  lxterminal &amp;amp;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;  /usr/bin/lxsession -s LXDE &amp;amp;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;  EOF&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Install Wechat Client On Ubuntu 20.04</title>
+        <link>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</link>
+        <pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</guid>
+        <description>&lt;h1 id=&#34;ubuntu-2004-安装微信客户端&#34;&gt;Ubuntu 20.04 安装微信客户端&lt;/h1&gt;
+&lt;h2 id=&#34;clone-repo&#34;&gt;clone repo&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/bevisy/deepin-wine-ubuntu&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;deepin-wine-ubuntu &lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;执行脚本&#34;&gt;执行脚本&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;sudo chmod a+x install_2.8.22.sh &amp;amp;&amp;amp; ./install_2.8.22.sh&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;下载微信deb包并安装&#34;&gt;下载微信deb包，并安装&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://packages.deepin.com/deepin/pool/non-free/d/deepin.com.wechat/deepin.com.wechat_2.6.8.65deepin0_i386.deb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;安装微信&#34;&gt;安装微信：&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;sudo dpkg –i deepin.com.wechat_2.6.8.65deepin0_i386.deb&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;安装字体参考issuehttpsgithubcomwszqkzqkdeepin-wine-ubuntuissues253&#34;&gt;安装字体：(参考issue：https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/253)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;sudo apt install fonts-wqy-microhei fonts-wqy-zenhei&lt;/code&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Ubuntu 20.04 显示器分辨率模式调整</title>
+        <link>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</link>
+        <pubDate>Mon, 27 Jul 2020 10:24:29 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</guid>
+        <description>&lt;h1 id=&#34;ubuntu-2004-显示器分辨率模式调整&#34;&gt;Ubuntu 20.04 显示器分辨率模式调整&lt;/h1&gt;
+&lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
+&lt;p&gt;Ubuntu 20.04 提示无法识别显示器，默认以分辨率1024x768(4:3)展示&lt;/p&gt;
+&lt;h2 id=&#34;问题解决&#34;&gt;问题解决&lt;/h2&gt;
+&lt;p&gt;添加新的分辨率模式&lt;/p&gt;
+&lt;h3 id=&#34;查询输出接口&#34;&gt;查询输出接口&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ xrandr
+Screen 0: minimum &lt;span class=&#34;m&#34;&gt;320&lt;/span&gt; x 200, current &lt;span class=&#34;m&#34;&gt;2624&lt;/span&gt; x 900, maximum &lt;span class=&#34;m&#34;&gt;16384&lt;/span&gt; x &lt;span class=&#34;m&#34;&gt;16384&lt;/span&gt;
+eDP-1 connected primary 1600x900+0+0 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;normal left inverted right x axis y axis&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 309mm x 174mm
+   1600x900      60.01*+  59.99    59.94    59.95    59.82  
+   1440x900      59.89  
+...
+   360x202       59.51    59.13  
+   320x180       59.84    59.32  
+DP-1 disconnected &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;normal left inverted right x axis y axis&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+HDMI-1 disconnected &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;normal left inverted right x axis y axis&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+DP-2 connected 1024x768+1600+0 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;normal left inverted right x axis y axis&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 0mm x 0mm &lt;span class=&#34;c1&#34;&gt;# 注意此行&lt;/span&gt;
+   1024x768      60.00* 
+   800x600       60.32    56.25  
+   848x480       60.00  
+   640x480       59.94  
+HDMI-2 disconnected &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;normal left inverted right x axis y axis&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;外界显示器输出接口为 DP-2&lt;/p&gt;
+&lt;h3 id=&#34;生成分辨率模式并添加&#34;&gt;生成分辨率模式并添加&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ cvt &lt;span class=&#34;m&#34;&gt;1920&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1080&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz&lt;/span&gt;
+Modeline &lt;span class=&#34;s2&#34;&gt;&amp;#34;1920x1080_60.00&amp;#34;&lt;/span&gt;  173.00  &lt;span class=&#34;m&#34;&gt;1920&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2248&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2576&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;1080&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1083&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1088&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1120&lt;/span&gt; -hsync +vsync
+
+&lt;span class=&#34;c1&#34;&gt;# 新建分辨率模式(可以不执行)&lt;/span&gt;
+$ sudo xrandr --newmode &lt;span class=&#34;s2&#34;&gt;&amp;#34;1920x1080_60.00&amp;#34;&lt;/span&gt;  173.00  &lt;span class=&#34;m&#34;&gt;1920&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2248&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2576&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;1080&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1083&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1088&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1120&lt;/span&gt; -hsync +vsync
+&lt;span class=&#34;c1&#34;&gt;# 添加分辨率模式&lt;/span&gt;
+$ sudo xrandr --addmode DP-2 &lt;span class=&#34;s2&#34;&gt;&amp;#34;1920x1080_60.00&amp;#34;&lt;/span&gt;
+$ sudo xrandr --output DP-2 &lt;span class=&#34;s2&#34;&gt;&amp;#34;1920x1080_60.00&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;这里主要是通过修改输出信号来适配外接显示器，实际上外接显示器的型号未识别。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Kata-containers Compile And Installed</title>
+        <link>https://bevisy.github.io/p/kata-containers-compile-and-installed/</link>
+        <pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/kata-containers-compile-and-installed/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;kata-containers-编译安装&#34;&gt;kata-containers 编译安装&lt;/h1&gt;
+&lt;h2 id=&#34;kata-runtime-编译安装&#34;&gt;kata-runtime 编译安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/runtime
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/runtime
+&lt;span class=&#34;c1&#34;&gt;# compile and install&lt;/span&gt;
+$ make
+$ make install
+
+&lt;span class=&#34;c1&#34;&gt;# Install Dir&lt;/span&gt;
+/usr/libexec/kata-containers/kata-netmon
+/usr/local/bin/kata-runtime
+/usr/local/bin/containerd-shim-kata-v2
+/usr/share/defaults/kata-containers/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;kata-shim-编译安装&#34;&gt;kata-shim 编译安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/shim
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOTAH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/shim
+&lt;span class=&#34;c1&#34;&gt;# compile and install &lt;/span&gt;
+$ makn
+$ make install
+
+&lt;span class=&#34;c1&#34;&gt;# Install Dir&lt;/span&gt;
+/usr/libexec/kata-containers/kata-shim
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;kata-proxy-编译安装&#34;&gt;kata-proxy 编译安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/proxy
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOTAH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/proxy
+&lt;span class=&#34;c1&#34;&gt;# compile and install &lt;/span&gt;
+$ make
+$ make install
+
+&lt;span class=&#34;c1&#34;&gt;# Install Dir&lt;/span&gt;
+/usr/libexec/kata-containers/kata-proxy
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译-kata-所需的-kernel&#34;&gt;编译 kata 所需的 kernel&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/packaging
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOTAH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/packaging/kernel
+$ git checkout stable-1.12
+
+&lt;span class=&#34;c1&#34;&gt;# On Ubuntu20.04 should install some essential packages&lt;/span&gt;
+$ sudo apt install -y &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	gcc &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	make &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libncurses5-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	openssl &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libssl-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	build-essential &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	pkg-config &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libc6-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	bison &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	flex &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libelf-dev
+&lt;span class=&#34;c1&#34;&gt;# Also you should install yq from github: https://github.com/mikefarah/yq&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 注意：如果缺少依赖，会导致内核编译所需要的 .config 文件，无法主动生成，可以将 configs/ 和 configs/fragments 目录下对应文件拼接成完整文件。&lt;/span&gt;
+$ ./build-kernel.sh -v 5.4.60 -f -d setup &lt;span class=&#34;c1&#34;&gt;# stable-1.12 支持的最新LTS内核&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# compile kernel&lt;/span&gt;
+$ ./build-kernel.sh -v 5.4.60 -f -d build
+
+&lt;span class=&#34;c1&#34;&gt;# Output File:&lt;/span&gt;
+&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/packaging/kernel/kata-linux-5.4.60-89/vmlinux
+
+&lt;span class=&#34;c1&#34;&gt;# Install Dir:&lt;/span&gt;
+/usr/share/kata-containers/vmlinux
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译-agent--可选&#34;&gt;编译 agent  (可选)&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ go get -d -u github.com/kata-containers/agent
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/agent &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; make
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译-rootfs-文件系统&#34;&gt;编译 rootfs 文件系统&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# stable-1.10 方法&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/osbuilder
+
+&lt;span class=&#34;c1&#34;&gt;# generate rootfs&lt;/span&gt;
+$ &lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+$ sudo rm -rf &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder/rootfs-builder
+&lt;span class=&#34;c1&#34;&gt;# ${distro} 需要替换成具体的系统，推荐 centos&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 此处增加额外的包，是为了后续便于进入虚拟机调试&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#$ script -fec &amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils&amp;#34; ./rootfs.sh ${distro}&amp;#39;&lt;/span&gt;
+$ script -fec &lt;span class=&#34;s1&#34;&gt;&amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils vim net-tools procps curl iproute&amp;#34; http_proxy=http://{proxy}:{ip} https_proxy=http://{proxy}:{ip} ./rootfs.sh ${distro}&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 由于网络原因，可以构建时候添加 http_proxy 代理;&lt;/span&gt;
+$ script -fec &lt;span class=&#34;s1&#34;&gt;&amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils&amp;#34; http_proxt=http://{IP}:{PORT} ./rootfs.sh ${distro}&amp;#39;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 开启vm debug（host进入vm）&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;## 方案一(官方文档目前的方案，支持kata-containers 1.10.7;kata-agent 1.10.7)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;## 1.确保rootfs已安装 bash coreutils&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;## 2./etc/kata-containers/configuration.toml 配置文件修改&lt;/span&gt;
+$ sudo sed -i -e &lt;span class=&#34;s1&#34;&gt;&amp;#39;s/^kernel_params = &amp;#34;\(.*\)&amp;#34;/kernel_params = &amp;#34;\1 agent.debug_console&amp;#34;/g&amp;#39;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;kata_configuration_file&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;## 3.确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true）&lt;/span&gt;
+$ sudo awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{if (/^\[proxy\.kata\]/) {got=1}; if (got == 1 &amp;amp;&amp;amp; /^.*enable_debug/) {print &amp;#34;#enable_debug = true&amp;#34;; got=0; next; } else {print}}&amp;#39;&lt;/span&gt; /etc/kata-containers/configuration.toml &amp;gt; /tmp/configuration.toml
+&lt;span class=&#34;c1&#34;&gt;## 4.使用 socat 访问，回车可进入bash，虚拟机刚启动会刷新大量日志，等待日志刷新完毕即可&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 方案二（之前使用的方案，也是官方方案，通过添加额外的kata-debug.service，相比方案一qemu无需传递内核参数agent.debug_console，同样确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true））&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Create a debug systemd service&lt;/span&gt;
+$ cat &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;EOT | sudo tee ${ROOTFS_DIR}/lib/systemd/system/kata-debug.service
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[Unit]
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;Description=Kata Containers debug console
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[Service]
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;StandardInput=tty
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;StandardOutput=tty
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;# Must be disabled to allow the job to access the real console
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;PrivateDevices=no
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;Type=simple
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;ExecStart=/bin/bash
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;Restart=always
+&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;EOT&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Add a dependency to start the debug console:&lt;/span&gt;
+$ sudo sed -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;$a Requires=kata-debug.service&amp;#39;&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/lib/systemd/system/kata-containers.target
+
+&lt;span class=&#34;c1&#34;&gt;# Output File:&lt;/span&gt;
+&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+
+&lt;span class=&#34;c1&#34;&gt;# 注意事项&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 1.安全容器开启debug console后，host使用socat访问vm，访问console.sock一次只允许一个连接，如果已存在进入虚拟机的连接，则其它连接均被阻塞&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# stable-1.12&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Download source code&lt;/span&gt;
+$ go get -d -u github.com/kata-containers/osbuilder
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder
+&lt;span class=&#34;c1&#34;&gt;# 构建rootfs&lt;/span&gt;
+mkdir -p &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PWD&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/myrootfs
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;USE_DOCKER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;EXTRA_PKGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;vim bash coreutils vim net-tools procps curl iproute&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;AGENT_VERSION&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;1.12.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;AGENT_SOURCE_BIN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/src/github.com/kata-containers/agent&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# kata-agent 二进制文件目录&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;http_proxy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://&lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;https_proxy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://&lt;span class=&#34;o&#34;&gt;{}&lt;/span&gt;
+./rootfs-builder/rootfs.sh -r &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PWD&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/myrootfs centos &lt;span class=&#34;c1&#34;&gt;# 可根据需求修改 distro&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;## 如果出现镜像构建在下载github文件卡住，可将对应{distro}目录下的Dockerfile.in模板，直接添加上ENV proxy&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 构建img&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# build image based rootfs created above&lt;/span&gt;
+sudo &lt;span class=&#34;nv&#34;&gt;USE_DOCKER&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt; ./image-builder/image_builder.sh  &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PWD&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;/myrootfs&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译-rootfsimg&#34;&gt;编译 rootfs.img&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# stable-1.10 方法&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# make sure rootfs is not MODIFIED!!! if you want to add new Agent&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# install agent (optional)&lt;/span&gt;
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0550&lt;/span&gt; -t &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/bin ../../agent/kata-agent
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0440&lt;/span&gt; ../../agent/kata-agent.service &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/usr/lib/systemd/system/
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0440&lt;/span&gt; ../../agent/kata-containers.target &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/usr/lib/systemd/system/
+
+&lt;span class=&#34;c1&#34;&gt;# Compile&lt;/span&gt;
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder/image-builder
+$ script -fec &lt;span class=&#34;s1&#34;&gt;&amp;#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# install&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;commit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;git log --format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;%h -1 HEAD&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%Y-%m-%d-%T.%N%z&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;kata-containers-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;commit&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0640&lt;/span&gt; -D kata-containers.img &lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/share/kata-containers/&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+$ &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /usr/share/kata-containers &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo ln -sf &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$image&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; kata-containers.img&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Output File:&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder/image-builder/kata-containers.img
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译-initrdimg&#34;&gt;编译 initrd.img&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# make sure rootfs is not MODIFIED!!! if you want to add new Agent&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# install agent(optional)&lt;/span&gt;
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0550&lt;/span&gt; -T ../../agent/kata-agent &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/sbin/init
+
+&lt;span class=&#34;c1&#34;&gt;# Compile&lt;/span&gt;
+$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder/initrd-builder
+$ script -fec &lt;span class=&#34;s1&#34;&gt;&amp;#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# install&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;commit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;git log --format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;%h -1 HEAD&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%Y-%m-%d-%T.%N%z&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+$ &lt;span class=&#34;nv&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;kata-containers-initrd-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;commit&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+$ sudo install -o root -g root -m &lt;span class=&#34;m&#34;&gt;0640&lt;/span&gt; -D kata-containers-initrd.img &lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/share/kata-containers/&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+$ &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /usr/share/kata-containers &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo ln -sf &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$image&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; kata-containers-initrd.img&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Output File:&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/osbuilder/initrd-builder/kata-containers-initrd.img
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;编译-qemu-on-aarch64&#34;&gt;编译 qemu on aarch64&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 下载代码&lt;/span&gt;
+$ go get -d github.com/kata-containers/tests
+&lt;span class=&#34;c1&#34;&gt;# 准备依赖&lt;/span&gt;
+$ sudo apt install -y libcap-ng-dev libglib2.0-dev libpixman-1-dev librbd-dev libattr1-dev libcap-dev
+&lt;span class=&#34;c1&#34;&gt;# 编译构建&lt;/span&gt;
+$ script -fec &lt;span class=&#34;s1&#34;&gt;&amp;#39;sudo -E ${GOPATH}/src/github.com/kata-containers/tests/.ci/install_qemu.sh&amp;#39;&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 注意：如果安装失败，清直接删除文件夹，然后重新跑升级脚本&lt;/span&gt;
+$ sudo rm -rf &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/kata-containers/packaging &lt;span class=&#34;c1&#34;&gt;# 可不操作&lt;/span&gt;
+$ sudo rm -rf &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GOPATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/src/github.com/qemu
+&lt;span class=&#34;c1&#34;&gt;# 如果需要编译指定代码分支的qemu版本，需要切换tests分支，以及packaging分支为同一分支&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 由于脚本.ci/install_qemu.sh go get 获取packaging代码后未切换分支，所以需要构建失败后，手动切换分支&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 目前已知最新的版本的qemu patch是针对qemu 5.1的，并不能直接使用master代码，会导致patch合入失败&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;docker-对接-kata-runtime&#34;&gt;Docker 对接 kata-runtime&lt;/h1&gt;
+&lt;p&gt;修改 Docker 配置文件&lt;code&gt;/etc/docker/daemon.json&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;: true,
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;default-runtime&amp;#34;&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;#34;runc&amp;#34;&lt;/span&gt;, &lt;span class=&#34;c1&#34;&gt;# 可替换成 kata-runtime&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;runtimes&amp;#34;&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;s2&#34;&gt;&amp;#34;kata&amp;#34;&lt;/span&gt;: &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;s2&#34;&gt;&amp;#34;path&amp;#34;&lt;/span&gt;: &lt;span class=&#34;s2&#34;&gt;&amp;#34;/usr/local/bin/kata-runtime&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 不支持直接配置成 containerd-shim-kata-v2&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重启 docker 服务（必须）&lt;/p&gt;
+&lt;p&gt;验证修改生效&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo docker run --rm --name test busybox:latest uname -a&lt;/code&gt; 与宿主机内核对比，验证是否生效&lt;/p&gt;
+&lt;h2 id=&#34;调试-kata-runtime&#34;&gt;调试 kata-runtime&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# docker 开启 debug: /etc/docker/daemon.json 添加参数 (需重启服务)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;: &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 查看日志&lt;/span&gt;
+$ journalctl -ft kata-runtime
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;containerd-对接-containerd-shim-kata-v2&#34;&gt;Containerd 对接 containerd-shim-kata-v2&lt;/h1&gt;
+&lt;p&gt;修改 containerd 的配置&lt;code&gt;/etc/containerd/config.toml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;containerd config default&lt;/code&gt; 生成当前版本默认配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;nv&#34;&gt;version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/var/lib/containerd&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;state&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/run/containerd&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;plugin_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;disabled_plugins&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;required_plugins&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;oom_score&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;grpc&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/run/containerd/containerd.sock&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;tcp_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;tcp_tls_cert&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;tcp_tls_key&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;uid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;gid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;max_recv_message_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;16777216&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;max_send_message_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;16777216&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ttrpc&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;uid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;gid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;debug&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;uid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;gid&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;debug&amp;#34;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 开启debug&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;metrics&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;grpc_histogram&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;cgroup&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;timeouts&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.timeout.shim.cleanup&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;5s&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.timeout.shim.load&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;5s&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.timeout.shim.shutdown&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;3s&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.timeout.task.state&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;2s&amp;#34;&lt;/span&gt;
+
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.gc.v1.scheduler&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;pause_threshold&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; 0.02
+    &lt;span class=&#34;nv&#34;&gt;deletion_threshold&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;mutation_threshold&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;100&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;schedule_delay&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;0s&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;startup_delay&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;100ms&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;disable_tcp_service&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;stream_server_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;stream_server_port&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;0&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;stream_idle_timeout&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;4h0m0s&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;enable_selinux&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;sandbox_image&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;k8s.gcr.io/pause:3.1&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;stats_collect_period&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;systemd_cgroup&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;enable_tls_streaming&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;max_container_log_line_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;16384&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;disable_cgroup&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;disable_apparmor&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;restrict_oom_score_adj&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;max_concurrent_downloads&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;disable_proc_mount&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;snapshotter&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;overlayfs&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;default_runtime_name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;runc&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;no_pivot&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.default_runtime&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_engine&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;privileged_without_host_devices&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.untrusted_workload_runtime&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_engine&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;runtime_root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+        &lt;span class=&#34;nv&#34;&gt;privileged_without_host_devices&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.runtimes&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.runtimes.runc&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.runc.v1&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_engine&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;privileged_without_host_devices&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.runtimes.kata&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# 新增&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_engine&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;runtime_root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;privileged_without_host_devices&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.cni&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;bin_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/cni/bin&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;conf_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/etc/cni/net.d&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;max_conf_num&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;conf_template&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors.&lt;span class=&#34;s2&#34;&gt;&amp;#34;docker.io&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+          &lt;span class=&#34;nv&#34;&gt;endpoint&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;https://registry-1.docker.io&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.x509_key_pair_streaming&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;tls_cert_file&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+      &lt;span class=&#34;nv&#34;&gt;tls_key_file&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.internal.v1.opt&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/containerd&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.internal.v1.restart&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;interval&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;10s&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.metadata.v1.bolt&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;content_sharing_policy&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;shared&amp;#34;&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.monitor.v1.cgroups&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;no_prometheus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.runtime.v1.linux&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;shim&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;containerd-shim&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;runtime&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;runc&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;runtime_root&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;no_shim&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;shim_debug&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.runtime.v2.task&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;platforms&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.service.v1.diff-service&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;walking&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;plugins.&lt;span class=&#34;s2&#34;&gt;&amp;#34;io.containerd.snapshotter.v1.devmapper&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;root_path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;pool_name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;base_image_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意： 确保&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt; 文件在 $PATH  目录下&lt;/p&gt;
+&lt;p&gt;验证：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 创建容器&lt;/span&gt;
+sudo ctr -n testns run --runtime io.containerd.kata.v2  -d --rm docker.io/library/busybox:latest busybox
+&lt;span class=&#34;c1&#34;&gt;# 查看容器 id&lt;/span&gt;
+sudo ctr -n testns t ls
+&lt;span class=&#34;c1&#34;&gt;# 进入容器&lt;/span&gt;
+sudo ctr -n testns t &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; -t --exec-id &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;ID&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; busybox sh
+&lt;span class=&#34;c1&#34;&gt;# 查看内核版本&lt;/span&gt;
+$ uname -a &lt;span class=&#34;c1&#34;&gt;# 对比宿主机内核&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;调试-containerd-shim-runtime-v2&#34;&gt;调试 containerd-shim-runtime-v2&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# containerd 配置开启 debug(需重启服务)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug (需重新创建安全容器)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 查看日志&lt;/span&gt;
+$ journalctl -ft kata
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;附录&#34;&gt;附录&lt;/h1&gt;
+&lt;h2 id=&#34;kata-containers-20-安装&#34;&gt;kata-containers 2.0 安装&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载release包&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kata-containers/kata-containers/releases&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Release 地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下载 &lt;a class=&#34;link&#34; href=&#34;https://github.com/kata-containers/kata-containers/releases/tag/2.0.0-alpha3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kata Containers 2.0.0-alpha3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;解压后，拷贝至文件夹 &lt;code&gt;/opt&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;准备配置文件和&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 准备配置文件&lt;/span&gt;
+$ cp /opt/kata/share/defaults/kata-containers/configuration-qemu.toml /etc/kata-containers/configuration.toml
+&lt;span class=&#34;c1&#34;&gt;# 准备 containerd-shim-kata-v2&lt;/span&gt;
+$ cp /opt/kata/bin/containerd-shim-kata-v2 /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;配置文件修改如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;hypervisor.qemu&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/kata/bin/qemu-system-x86_64&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;kernel&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/kata/share/kata-containers/vmlinuz.container&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/kata/share/kata-containers/kata-containers.img&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;machine_type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;pc&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;kernel_params&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;firmware&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;machine_accelerators&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;cpu_features&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;pmu=off&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;default_vcpus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;default_maxvcpus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;default_bridges&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;default_memory&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;disable_block_device_use&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;shared_fs&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;virtio-9p&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;virtio_fs_daemon&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/kata/bin/virtiofsd&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;virtio_fs_cache_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;virtio_fs_extra_args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;virtio_fs_cache&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;auto&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;block_device_driver&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;virtio-scsi&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_iothreads&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_vhost_user_store&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;vhost_user_store_path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/var/run/kata-containers/vhost-user&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_debug&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;factory&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;agent.kata&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_debug&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;kernel_modules&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=[]&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;netmon&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/opt/kata/libexec/kata-containers/kata-netmon&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_debug&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;runtime&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;enable_debug&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;internetworking_model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;tcfilter&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;disable_guest_seccomp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;sandbox_cgroup_only&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;experimental&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=[]&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;EnablePprof&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;对接docker和containerd需要注意&#34;&gt;对接docker和containerd需要注意&lt;/h2&gt;
+&lt;p&gt;注意：此版本无法与 docker配合使用，与containerd 使用正常。&lt;/p&gt;
+&lt;h1 id=&#34;问题探讨&#34;&gt;问题探讨&lt;/h1&gt;
+&lt;h2 id=&#34;1如果关闭用来开启debug-console的kata-debugservice会发生什么&#34;&gt;1.如果关闭用来开启debug console的kata-debug.service会发生什么？&lt;/h2&gt;
+&lt;p&gt;进入vm，关闭kata-debug.service，等待kata-debug.service最终停止后，重新使用socat无法再进入bash终端&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;bash-4.2# systemctl stop kata-debug
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.392708&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Failed to determine peer security context: Protocol not available
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.394714&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Accepted new private connection.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.395681&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.397145&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.397455&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.397759&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got message &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;method_call &lt;span class=&#34;nv&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;destination&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;org.freedesktop.systemd1 &lt;span class=&#34;nv&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/org/freedesktop/systemd1 &lt;span class=&#34;nv&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;org.freedesktop.systemd1.Manager &lt;span class=&#34;nv&#34;&gt;member&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;StopUnit &lt;span class=&#34;nv&#34;&gt;cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;reply_cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.398545&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Trying to enqueue job kata-debug.service/stop/replace
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.398983&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Installed new job kata-containers.target/stop as &lt;span class=&#34;m&#34;&gt;51&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.399290&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Installed new job kata-debug.service/stop as &lt;span class=&#34;m&#34;&gt;50&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  249.399604&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Enqueued job kata-debug.service/stop as &lt;span class=&#34;m&#34;&gt;50&lt;/span&gt;
+Terminated
+bash-4.2# systemctl status kata-debug
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.097267&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Failed to determine peer security context: Protocol not available
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.098268&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Accepted new private connection.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.098453&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.098762&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.098928&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got unexpected auxiliary data with &lt;span class=&#34;nv&#34;&gt;level&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; and &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.099088&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got message &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;method_call &lt;span class=&#34;nv&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;destination&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;org.freedesktop.systemd1 &lt;span class=&#34;nv&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/org/freedesktop/systemd1/unit/kata_2ddebug_2eservice &lt;span class=&#34;nv&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;org.freedesktop.DBus.Properties &lt;span class=&#34;nv&#34;&gt;member&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;GetAll &lt;span class=&#34;nv&#34;&gt;cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;reply_cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.099783&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Sent message &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;method_return &lt;span class=&#34;nv&#34;&gt;sender&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;destination&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;object&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;interface&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;member&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a &lt;span class=&#34;nv&#34;&gt;cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;reply_cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;n/a
+● kata-debug.service - Kata Containers debug console
+   Loaded: loaded &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;/usr/lib/systemd/system/kata-debug.service&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; static&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; vendor preset: disabled&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+   Active: deactivating &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;stop-sigterm&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; since Wed 2020-10-14 08:11:57 UTC&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 8s ago
+ Main PID: &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;bash&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+   CGroup: /system.slice/kata-debug.service
+           ├─ &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; /bin/bash
+           └─231 systemctl status kata-debug
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  258.101662&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Got disconnect on private connection.
+bash-4.2# system&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.593226&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: kata-debug.service stop-sigterm timed out. Killing.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.593989&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Watching &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; through watch_pids1.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.594710&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: kata-debug.service changed stop-sigterm -&amp;gt; stop-sigkill
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.595681&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Received SIGCHLD from PID &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;bash&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.596281&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Child &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;bash&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; died &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;code&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;killed, &lt;span class=&#34;nv&#34;&gt;status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;9/KILL&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.596722&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Child &lt;span class=&#34;m&#34;&gt;57&lt;/span&gt; belongs to kata-debug.service
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.597060&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Unwatching 57.
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.597276&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: kata-debug.service: main process exited, &lt;span class=&#34;nv&#34;&gt;code&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;killed, &lt;span class=&#34;nv&#34;&gt;status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;9/KILL
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.597722&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: kata-debug.service changed stop-sigkill -&amp;gt; failed
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  339.598098&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; systemd&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;1&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: Job kata-debug.service/stop finished, &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 此处kata-debug.service完全退出，无法再进入终端&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 尝试重新进入终端，会发现回车后无法打开bash终端&lt;/span&gt;
+root@zbb-pc:/run/vc/vm/d658a67be082b2952c360e7539b5bfa7ac744ae8b84d844d57547d36915e184f# socat &lt;span class=&#34;s2&#34;&gt;&amp;#34;stdin,raw,echo=0,escape=0x11&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;unix-connect:./console.sock&amp;#34;&lt;/span&gt; 
+
+&lt;span class=&#34;c1&#34;&gt;# 重启容器后，可重新进入终端&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 此处发现重启容器过程，其实是新建一个同名的容器，因为会发现vm原有目录文件均被删除，生成同名文件夹。如果查看前后vm目录，应该文件inode已产生变化。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Compile qemu on Ubuntu 20.04</title>
+        <link>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</link>
+        <pubDate>Fri, 24 Jul 2020 22:21:51 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</guid>
+        <description>&lt;h1 id=&#34;compile-qemu-on-ubuntu-2004&#34;&gt;Compile qemu on Ubuntu 20.04&lt;/h1&gt;
+&lt;h2 id=&#34;下载源码&#34;&gt;下载源码&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;git clone https://git.qemu.org/git/qemu.git
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; qemu
+git submodule init
+git submodule update --recursive
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译安装&#34;&gt;编译安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;./configure
+make
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;问题&#34;&gt;问题&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# ERROR: glib-2.48 gthread-2.0 is required to compile QEMU&lt;/span&gt;
+$ sudo apt install -y libglib2.0-dev
+
+&lt;span class=&#34;c1&#34;&gt;# ERROR: pixman &amp;gt;= 0.21.8 not present.&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#        Please install the pixman devel package.&lt;/span&gt;
+$ sudo apt install -y libpixman-1-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>The Skills of VIM</title>
+        <link>https://bevisy.github.io/p/the-skills-of-vim/</link>
+        <pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/the-skills-of-vim/</guid>
+        <description>&lt;h1 id=&#34;vim-使用技巧&#34;&gt;VIM 使用技巧&lt;/h1&gt;
+&lt;h2 id=&#34;查找&#34;&gt;查找&lt;/h2&gt;
+&lt;h3 id=&#34;大小写敏感控制&#34;&gt;大小写敏感控制&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# VIM 默认大小写敏感查找；&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 大小写不敏感查找&lt;/span&gt;
+：/foo&lt;span class=&#34;se&#34;&gt;\c&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# 大小写敏感查找&lt;/span&gt;
+：/foo&lt;span class=&#34;se&#34;&gt;\C&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;查找光标当前单词&#34;&gt;查找光标当前单词&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;vim-查找和替换&#34;&gt;Vim 查找和替换&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;:&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;作用范围&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;s/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;目标&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;替换&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;/&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;替换标志&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 当前行替换&lt;/span&gt;
+：s/vivian/sky/ 替换当前行第一个 vivian 为 sky 
+：s/vivian/sky/g 替换当前行所有 vivian 为 sky 
+
+&lt;span class=&#34;c1&#34;&gt;# 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行 &lt;/span&gt;
+：n,&lt;span class=&#34;nv&#34;&gt;$s&lt;/span&gt;/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky 
+：n,&lt;span class=&#34;nv&#34;&gt;$s&lt;/span&gt;/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky 
+：2,12s/hello/world/ 2-12行,第一次出现替换
+：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换
+
+&lt;span class=&#34;c1&#34;&gt;# 全行替换&lt;/span&gt;
+：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky 
+：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky 
+ 
+&lt;span class=&#34;c1&#34;&gt;# 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符 &lt;/span&gt;
+：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/ 
+：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/ 
+
+&lt;span class=&#34;c1&#34;&gt;# 替换确认，添加参数c，提示是否替换&lt;/span&gt;
+:%s/hello/world/gc 针对每一个匹配项，提示是否替换
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Compile Linux Kernel on Ubuntu 20.04</title>
+        <link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link>
+        <pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid>
+        <description>&lt;h1 id=&#34;linux-内核编译ubuntu-环境&#34;&gt;Linux 内核编译(Ubuntu 环境)&lt;/h1&gt;
+&lt;h2 id=&#34;下载内核代码&#34;&gt;下载内核代码&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;https://www.kernel.org/&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;安装依赖&#34;&gt;安装依赖&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo apt update
+sudo apt install -y &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	gcc &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	make &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libncurses5-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	openssl &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libssl-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	build-essential &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	pkg-config &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libc6-dev &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	bison &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	flex &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;	libelf-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;准备config和自定义配置&#34;&gt;准备.config和自定义配置&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Download&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;/linux-5.4.32/
+sudo cp /boot/config-&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;uname -r&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; .config
+sudo make menuconfig
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;编译内核&#34;&gt;编译内核&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 编译内核&lt;/span&gt;
+sudo make
+sudo make modules_install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;安装内核&#34;&gt;安装内核&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo mv  &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;Download&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;/linux-5.4.32  /usr/src/
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /usr/src/linux-5.4.32/
+sudo make install
+sudo mkinitramfs -o /boot/initrd.img-5.4.32
+sudo update-initramfs -c -k 5.4.32
+sudo update-grub2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;验证&#34;&gt;验证&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo reboot
+uname -a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>Zsh-And-Oh My Zsh-Installation summary</title>
+        <link>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</link>
+        <pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</guid>
+        <description>&lt;h1 id=&#34;zsh-安装总结&#34;&gt;zsh 安装总结&lt;/h1&gt;
+&lt;h2 id=&#34;安装zsh&#34;&gt;安装zsh&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Ubuntu 18.04&lt;/span&gt;
+sudo apt update
+sudo apt install zsh -y
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;安装-oh-my-zsh&#34;&gt;安装 Oh My Zsh&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# https://ohmyz.sh/#install&lt;/span&gt;
+sh -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;插件安装&#34;&gt;插件安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins)&lt;/span&gt;
+git clone https://github.com/zsh-users/zsh-autosuggestions.git &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ZSH_CUSTOM&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;:-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;~/.oh-my-zsh/custom&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;ZSH_CUSTOM&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;:-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;~/.oh-my-zsh/custom&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/plugins/zsh-syntax-highlighting
+
+&lt;span class=&#34;c1&#34;&gt;# 配置 .zshrc，添加插件列表&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;plugins&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=(&lt;/span&gt;zsh-autosuggestions
+        zsh-syntax-highlighting&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# 启动新终端，查看效果示例&lt;/span&gt;
+zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>通过nginx为netdata提供https访问</title>
+        <link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</link>
+        <pubDate>Tue, 21 Jan 2020 15:56:21 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</guid>
+        <description>&lt;h1 id=&#34;nginx-代理-netdata-并添加鉴权&#34;&gt;nginx 代理 netdata 并添加鉴权&lt;/h1&gt;
+&lt;h2 id=&#34;netdata-安装&#34;&gt;netdata 安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+docker run -d --name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;netdata &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -p 30002:19999 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -v /etc/passwd:/host/etc/passwd:ro &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -v /etc/group:/host/etc/group:ro &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -v /proc:/host/proc:ro &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -v /sys:/host/sys:ro &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -v /var/run/docker.sock:/var/run/docker.sock:ro &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -e &lt;span class=&#34;nv&#34;&gt;DO_NOT_TRACK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --cap-add SYS_PTRACE &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --security-opt &lt;span class=&#34;nv&#34;&gt;apparmor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;unconfined &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  netdata/netdata
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;nginx-安装&#34;&gt;nginx 安装&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+docker run -d &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --name nginx &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/html:/usr/share/nginx/html &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/conf.d:/etc/nginx/conf.d &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/ssl:/etc/nginx/ssl &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -v &lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;pwd&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/passwords:/etc/nginx/passwords &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -p 8080:80 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -p 8443:443 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    -e &lt;span class=&#34;nv&#34;&gt;TZ&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Asia/Chongqing&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    nginx
+&lt;span class=&#34;c1&#34;&gt;# 需要准备的文件&lt;/span&gt;
+.
+├── conf.d
+│   └── default.conf
+├── html
+│   ├── 50x.html
+│   └── index.html
+├── nginx-start.sh
+├── passwords
+└── ssl
+    ├── nginx.crt
+    └── nginx.key
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;nginx-配置&#34;&gt;nginx 配置&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;upstream netdata &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    server 192.168.124.2:19999&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    keepalive 64&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+server &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    listen       80&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    server_name  localhost&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;#charset koi8-r;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#access_log  /var/log/nginx/host.access.log  main;&lt;/span&gt;
+
+    location / &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        root   /usr/share/nginx/html&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        index  index.html index.htm&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    &lt;span class=&#34;nv&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; /netdata &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;301&lt;/span&gt; /netdata/&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    location ~ /netdata/&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;?&amp;lt;ndpath&amp;gt;.*&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        proxy_redirect off&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header Host &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+        proxy_set_header X-Forwarded-Host &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header X-Forwarded-Server &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header X-Forwarded-For &lt;span class=&#34;nv&#34;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_http_version 1.1&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_pass_request_headers on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header Connection &lt;span class=&#34;s2&#34;&gt;&amp;#34;keep-alive&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_store off&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_pass http://netdata/&lt;span class=&#34;nv&#34;&gt;$ndpath$is_args$args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+        gzip on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        gzip_proxied any&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        gzip_types *&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;#error_page  404              /404.html;&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;# redirect server error pages to the static page /50x.html&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#&lt;/span&gt;
+    error_page   &lt;span class=&#34;m&#34;&gt;500&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;502&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;503&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;504&lt;/span&gt;  /50x.html&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;nv&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; /50x.html &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        root   /usr/share/nginx/html&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;# proxy the PHP scripts to Apache listening on 127.0.0.1:80&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#location ~ \.php$ {&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    proxy_pass   http://127.0.0.1;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#}&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#location ~ \.php$ {&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    root           html;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    fastcgi_pass   127.0.0.1:9000;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    fastcgi_index  index.php;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    include        fastcgi_params;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#}&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;# deny access to .htaccess files, if Apache&amp;#39;s document root&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;# concurs with nginx&amp;#39;s one&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#location ~ /\.ht {&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#    deny  all;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+
+server &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    listen &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt; ssl&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    ssl_certificate /etc/nginx/ssl/nginx.crt&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    keepalive_timeout   60&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    server_name localhost&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    server_tokens off&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+    fastcgi_param   HTTPS               on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    fastcgi_param   HTTP_SCHEME         https&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+    access_log      /var/log/nginx/access.log&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    error_log       /var/log/nginx/error.log&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+    location / &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+      root /usr/share/nginx/html/&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+      index index.html index.htm&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    &lt;span class=&#34;nv&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; /netdata &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;301&lt;/span&gt; /netdata/&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+    location ~ /netdata/&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;?&amp;lt;ndpath&amp;gt;.*&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+        proxy_redirect off&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header Host &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+        proxy_set_header X-Forwarded-Host &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header X-Forwarded-Server &lt;span class=&#34;nv&#34;&gt;$host&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header X-Forwarded-For &lt;span class=&#34;nv&#34;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_http_version 1.1&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_pass_request_headers on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_set_header Connection &lt;span class=&#34;s2&#34;&gt;&amp;#34;keep-alive&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_store off&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        proxy_pass http://netdata/&lt;span class=&#34;nv&#34;&gt;$ndpath$is_args$args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+        gzip on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        gzip_proxied any&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        gzip_types *&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;访问nginx http://nginxurl:80/netdata/ 或者 https://nginxurl:443/netdata/，验证生效。&lt;/p&gt;
+&lt;h2 id=&#34;生成-ssl-证书和密钥&#34;&gt;生成 ssl 证书和密钥&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 有效时间 7 天&lt;/span&gt;
+openssl req -x509 -nodes -days &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt; -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj &lt;span class=&#34;s2&#34;&gt;&amp;#34;/C=CN/ST=SiChuan/L=Chengdu/O=Example Inc./OU=Web Security/CN=localhost&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;生成的证书未经权威机构认证，但是不影响使用，只是浏览器会提示非安全的证书。&lt;/p&gt;
+&lt;h2 id=&#34;nginx-配置https-服务&#34;&gt;nginx 配置https 服务&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;server {
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    keepalive_timeout   60;
+    server_name localhost;
+    server_tokens off;
+
+    fastcgi_param   HTTPS               on;
+    fastcgi_param   HTTP_SCHEME         https;
+
+    access_log      /var/log/nginx/access.log;
+    error_log       /var/log/nginx/error.log;
+
+    location / {
+      root /usr/share/nginx/html/;
+      index index.html index.htm;
+    }
+
+    location = /netdata {
+        return 301 /netdata/;
+    }
+
+    location ~ /netdata/(?&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;ndpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;.*) {
+        proxy_redirect off;
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_pass_request_headers on;
+        proxy_set_header Connection &amp;#34;keep-alive&amp;#34;;
+        proxy_store off;
+        proxy_pass http://netdata/$ndpath$is_args$args;
+
+        gzip on;
+        gzip_proxied any;
+        gzip_types *;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;nginx-添加鉴权&#34;&gt;nginx 添加鉴权&lt;/h2&gt;
+&lt;p&gt;nginx 目前开启的是全局 ssl ，即通过 443 端口进入的请求均为 https，但是upstream 上的服务依旧是 http。&lt;/p&gt;
+&lt;h3 id=&#34;创建认证文件开启-nginx-基础认证&#34;&gt;创建认证文件，开启 nginx 基础认证&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 提示输入密码和确认密码&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;printf&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;username:&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;openssl passwd -apr1&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt; &amp;gt; /etc/nginx/passwords
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;在-server-directive-中开启认证&#34;&gt;在 server directive 中开启认证&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;server &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    listen &lt;span class=&#34;m&#34;&gt;443&lt;/span&gt; ssl&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;# ...&lt;/span&gt;
+    auth_basic &lt;span class=&#34;s2&#34;&gt;&amp;#34;Protected&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    auth_basic_user_file passwords&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;# ...&lt;/span&gt;
+    access_log      /var/log/nginx/access.log&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    error_log       /var/log/nginx/error.log&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;http-自动跳转https-安全配置&#34;&gt;HTTP 自动跳转HTTPS 安全配置&lt;/h3&gt;
+&lt;p&gt;参考 &lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/document/product/400/35244&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nginx 服务器证书安装&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;server &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    listen 443&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#填写绑定证书的域名&lt;/span&gt;
+    server_name www.domain.com&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+    ssl on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#网站主页路径。此路径仅供参考，具体请您按照实际目录操作。&lt;/span&gt;
+    root /var/www/www.domain.com&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+    index index.html index.htm&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;   
+    &lt;span class=&#34;c1&#34;&gt;#证书文件名称&lt;/span&gt;
+    ssl_certificate  1_www.domain.com_bundle.crt&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+    &lt;span class=&#34;c1&#34;&gt;#私钥文件名称&lt;/span&gt;
+    ssl_certificate_key 2_www.domain.com.key&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+    ssl_session_timeout 5m&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    ssl_prefer_server_ciphers on&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    location / &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+       index index.html index.htm&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+server &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+    listen 80&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;#填写绑定证书的域名&lt;/span&gt;
+    server_name www.domain.com&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+    &lt;span class=&#34;c1&#34;&gt;#把http的域名请求转成https&lt;/span&gt;
+    rewrite ^&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;.*&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;$ https://&lt;span class=&#34;nv&#34;&gt;$host$1&lt;/span&gt; permanent&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; 
+&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;使用权威机构签名证书&#34;&gt;使用权威机构签名证书&lt;/h2&gt;
+&lt;h3 id=&#34;查看证书内容&#34;&gt;查看证书内容&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;openssl x509 -in nginx.crt -noout -text
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;查看key内容&#34;&gt;查看key内容&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;openssl rsa -in nginx.key -noout -text
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;申请腾讯云免费ssl证书&#34;&gt;申请腾讯云免费SSL证书&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/developer/article/1522482&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;腾讯云免费ssl证书申请&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.netdata.cloud/docs/running-behind-nginx/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Running Netdata behind Nginx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.netdata.cloud/web/server/#enabling-tls-support&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Enabling TLS support&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cloud.tencent.com/document/product/400/35244&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Nginx 服务器证书安装&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>通过Travis CI 部署静态页面到 github page</title>
+        <link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</link>
+        <pubDate>Tue, 21 Jan 2020 00:25:33 +0800</pubDate>
+        
+        <guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</guid>
+        <description>&lt;h1 id=&#34;travis-ci-部署-hexo-生成文件到-master-分支&#34;&gt;Travis CI 部署 Hexo 生成文件到 master 分支&lt;/h1&gt;
+&lt;p&gt;文档主要实现Hexo利用 Travis CI 完成 github page 部署。&lt;/p&gt;
+&lt;p&gt;由于 username.github.io 仓库不允许切换 github page 分支，必须将 master 分支作为静态资源分支，所以新建 develop 分支作为开发分支。&lt;/p&gt;
+&lt;p&gt;详细的步骤参考&lt;a class=&#34;link&#34; href=&#34;https://hexo.io/zh-cn/docs/github-pages&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;将 Hexo 部署到 GitHub Pages&lt;/a&gt;，此处主要贴出区别的 Travis CI 配置文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo: &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+language: node_js
+node_js:
+  - 13.6.0
+cache: npm
+branches:
+  only:
+    - develop
+script:
+  - hexo generate
+deploy:
+  provider: pages
+  skip-cleanup: &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+  github-token: &lt;span class=&#34;nv&#34;&gt;$GH_TOKEN&lt;/span&gt;
+  keep-history: &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+  target_branch: master
+  local-dir: public
+  on:
+    branch: develop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上述配置信息解释参考 &lt;a class=&#34;link&#34; href=&#34;https://docs.travis-ci.com/user/deployment/pages/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub Pages Deployment&lt;/a&gt;。&lt;/p&gt;
+&lt;h1 id=&#34;参考文档&#34;&gt;参考文档&lt;/h1&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.travis-ci.com/user/deployment/pages/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub Pages Deployment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://hexo.io/zh-cn/docs/github-pages&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;将 Hexo 部署到 GitHub Pages&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

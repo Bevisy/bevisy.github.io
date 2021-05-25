@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Bevisy&#39;s Blogs</title>
+    <link>https://bevisy.github.io/tags/linux/</link>
+    <description>Recent content in linux on Bevisy&#39;s Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Jan 2021 19:22:16 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Burn the Operating System Installation Disk on Mac</title>
+      <link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link>
+      <pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid>
+      <description>在Macbook上烧录iso镜像，制作操作系统盘 查看烧录U盘 diskutil list # 例如：/dev/disk3 取消挂载U盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 弹出U盘 diskutil eject /dev/disk3 </description>
+    </item>
+    
+  </channel>
+</rss>

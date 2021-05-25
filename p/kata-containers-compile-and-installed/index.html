@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='[TOC]
+kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install  $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.'><title>Kata-containers Compile And Installed</title>
+
+<link rel='canonical' href='https://bevisy.github.io/p/kata-containers-compile-and-installed/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Kata-containers Compile And Installed'>
+<meta property='og:description' content='[TOC]
+kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install  $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.'>
+<meta property='og:url' content='https://bevisy.github.io/p/kata-containers-compile-and-installed/'>
+<meta property='og:site_name' content='Bevisy&#39;s Blogs'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Kata' /><meta property='article:published_time' content='2020-07-25T23:06:12&#43;08:00'/><meta property='article:modified_time' content='2020-07-25T23:06:12&#43;08:00'/>
+<meta name="twitter:title" content="Kata-containers Compile And Installed">
+<meta name="twitter:description" content="[TOC]
+kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install  $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu99afeec7e0b3a5990f7b4e0bf90a6fd2_2984_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://bevisy.github.io">Bevisy&#39;s Blogs</a></h1>
+        <h2 class="site-description">春风得意马蹄疾，一日看尽长安花</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://bevisy.github.io" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/katacontainers/" style="background-color: #F16247; color: #fff;">
+                KataContainers
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/kata-containers-compile-and-installed/">Kata-containers Compile And Installed</a>
+    </h2>
+
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jul 25, 2020</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>[TOC]</p>
+<h1 id="kata-containers-编译安装">kata-containers 编译安装</h1>
+<h2 id="kata-runtime-编译安装">kata-runtime 编译安装</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># download source code</span>
+$ go get -d -u github.com/kata-containers/runtime
+$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/kata-containers/runtime
+<span class="c1"># compile and install</span>
+$ make
+$ make install
+
+<span class="c1"># Install Dir</span>
+/usr/libexec/kata-containers/kata-netmon
+/usr/local/bin/kata-runtime
+/usr/local/bin/containerd-shim-kata-v2
+/usr/share/defaults/kata-containers/*
+</code></pre></div><h2 id="kata-shim-编译安装">kata-shim 编译安装</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># download source code</span>
+$ go get -d -u github.com/kata-containers/shim
+$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">GOTAH</span><span class="si">}</span>/src/github.com/kata-containers/shim
+<span class="c1"># compile and install </span>
+$ makn
+$ make install
+
+<span class="c1"># Install Dir</span>
+/usr/libexec/kata-containers/kata-shim
+</code></pre></div><h2 id="kata-proxy-编译安装">kata-proxy 编译安装</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># download source code</span>
+$ go get -d -u github.com/kata-containers/proxy
+$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">GOTAH</span><span class="si">}</span>/src/github.com/kata-containers/proxy
+<span class="c1"># compile and install </span>
+$ make
+$ make install
+
+<span class="c1"># Install Dir</span>
+/usr/libexec/kata-containers/kata-proxy
+</code></pre></div><h2 id="编译-kata-所需的-kernel">编译 kata 所需的 kernel</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># download source code</span>
+$ go get -d -u github.com/kata-containers/packaging
+$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">GOTAH</span><span class="si">}</span>/src/github.com/kata-containers/packaging/kernel
+$ git checkout stable-1.12
+
+<span class="c1"># On Ubuntu20.04 should install some essential packages</span>
+$ sudo apt install -y <span class="se">\
+</span><span class="se"></span>	gcc <span class="se">\
+</span><span class="se"></span>	make <span class="se">\
+</span><span class="se"></span>	libncurses5-dev <span class="se">\
+</span><span class="se"></span>	openssl <span class="se">\
+</span><span class="se"></span>	libssl-dev <span class="se">\
+</span><span class="se"></span>	build-essential <span class="se">\
+</span><span class="se"></span>	pkg-config <span class="se">\
+</span><span class="se"></span>	libc6-dev <span class="se">\
+</span><span class="se"></span>	bison <span class="se">\
+</span><span class="se"></span>	flex <span class="se">\
+</span><span class="se"></span>	libelf-dev
+<span class="c1"># Also you should install yq from github: https://github.com/mikefarah/yq</span>
+<span class="c1"># 注意：如果缺少依赖，会导致内核编译所需要的 .config 文件，无法主动生成，可以将 configs/ 和 configs/fragments 目录下对应文件拼接成完整文件。</span>
+$ ./build-kernel.sh -v 5.4.60 -f -d setup <span class="c1"># stable-1.12 支持的最新LTS内核</span>
+<span class="c1"># compile kernel</span>
+$ ./build-kernel.sh -v 5.4.60 -f -d build
+
+<span class="c1"># Output File:</span>
+<span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/kata-containers/packaging/kernel/kata-linux-5.4.60-89/vmlinux
+
+<span class="c1"># Install Dir:</span>
+/usr/share/kata-containers/vmlinux
+</code></pre></div><h2 id="编译-agent--可选">编译 agent  (可选)</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go get -d -u github.com/kata-containers/agent
+$ <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/kata-containers/agent <span class="o">&amp;&amp;</span> make
+</code></pre></div><h2 id="编译-rootfs-文件系统">编译 rootfs 文件系统</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># stable-1.10 方法</span>
+<span class="c1"># Download source code</span>
+$ go get -d -u github.com/kata-containers/osbuilder
+
+<span class="c1"># generate rootfs</span>
+$ <span class="nb">export</span> <span class="nv">ROOTFS_DIR</span><span class="o">=</span><span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+$ sudo rm -rf <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>
+$ <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder/rootfs-builder
+<span class="c1"># ${distro} 需要替换成具体的系统，推荐 centos</span>
+<span class="c1"># 此处增加额外的包，是为了后续便于进入虚拟机调试</span>
+<span class="c1">#$ script -fec &#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&#34;bash coreutils&#34; ./rootfs.sh ${distro}&#39;</span>
+$ script -fec <span class="s1">&#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&#34;bash coreutils vim net-tools procps curl iproute&#34; http_proxy=http://{proxy}:{ip} https_proxy=http://{proxy}:{ip} ./rootfs.sh ${distro}&#39;</span>
+<span class="c1"># 由于网络原因，可以构建时候添加 http_proxy 代理;</span>
+$ script -fec <span class="s1">&#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&#34;bash coreutils&#34; http_proxt=http://{IP}:{PORT} ./rootfs.sh ${distro}&#39;</span>
+
+<span class="c1"># 开启vm debug（host进入vm）</span>
+<span class="c1">## 方案一(官方文档目前的方案，支持kata-containers 1.10.7;kata-agent 1.10.7)</span>
+<span class="c1">## 1.确保rootfs已安装 bash coreutils</span>
+<span class="c1">## 2./etc/kata-containers/configuration.toml 配置文件修改</span>
+$ sudo sed -i -e <span class="s1">&#39;s/^kernel_params = &#34;\(.*\)&#34;/kernel_params = &#34;\1 agent.debug_console&#34;/g&#39;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">kata_configuration_file</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="c1">## 3.确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true）</span>
+$ sudo awk <span class="s1">&#39;{if (/^\[proxy\.kata\]/) {got=1}; if (got == 1 &amp;&amp; /^.*enable_debug/) {print &#34;#enable_debug = true&#34;; got=0; next; } else {print}}&#39;</span> /etc/kata-containers/configuration.toml &gt; /tmp/configuration.toml
+<span class="c1">## 4.使用 socat 访问，回车可进入bash，虚拟机刚启动会刷新大量日志，等待日志刷新完毕即可</span>
+
+<span class="c1"># 方案二（之前使用的方案，也是官方方案，通过添加额外的kata-debug.service，相比方案一qemu无需传递内核参数agent.debug_console，同样确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true））</span>
+<span class="c1"># Create a debug systemd service</span>
+$ cat <span class="s">&lt;&lt;EOT | sudo tee ${ROOTFS_DIR}/lib/systemd/system/kata-debug.service
+</span><span class="s">[Unit]
+</span><span class="s">Description=Kata Containers debug console
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span><span class="s">StandardInput=tty
+</span><span class="s">StandardOutput=tty
+</span><span class="s"># Must be disabled to allow the job to access the real console
+</span><span class="s">PrivateDevices=no
+</span><span class="s">Type=simple
+</span><span class="s">ExecStart=/bin/bash
+</span><span class="s">Restart=always
+</span><span class="s">EOT</span>
+
+<span class="c1"># Add a dependency to start the debug console:</span>
+$ sudo sed -i <span class="s1">&#39;$a Requires=kata-debug.service&#39;</span> <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>/lib/systemd/system/kata-containers.target
+
+<span class="c1"># Output File:</span>
+<span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+
+<span class="c1"># 注意事项</span>
+<span class="c1"># 1.安全容器开启debug console后，host使用socat访问vm，访问console.sock一次只允许一个连接，如果已存在进入虚拟机的连接，则其它连接均被阻塞</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># stable-1.12</span>
+<span class="c1"># Download source code</span>
+$ go get -d -u github.com/kata-containers/osbuilder
+$ <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder
+<span class="c1"># 构建rootfs</span>
+mkdir -p <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/myrootfs
+<span class="nb">export</span> <span class="nv">USE_DOCKER</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span> <span class="nv">EXTRA_PKGS</span><span class="o">=</span><span class="s2">&#34;vim bash coreutils vim net-tools procps curl iproute&#34;</span>
+<span class="nb">export</span> <span class="nv">AGENT_VERSION</span><span class="o">=</span><span class="s2">&#34;1.12.0&#34;</span>
+<span class="nb">export</span> <span class="nv">AGENT_SOURCE_BIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$GOPATH</span><span class="s2">/src/github.com/kata-containers/agent&#34;</span> <span class="c1"># kata-agent 二进制文件目录</span>
+<span class="nb">export</span> <span class="nv">http_proxy</span><span class="o">=</span>http://<span class="o">{}</span>
+<span class="nb">export</span> <span class="nv">https_proxy</span><span class="o">=</span>http://<span class="o">{}</span>
+./rootfs-builder/rootfs.sh -r <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/myrootfs centos <span class="c1"># 可根据需求修改 distro</span>
+<span class="c1">## 如果出现镜像构建在下载github文件卡住，可将对应{distro}目录下的Dockerfile.in模板，直接添加上ENV proxy</span>
+<span class="c1"># 构建img</span>
+<span class="c1"># build image based rootfs created above</span>
+sudo <span class="nv">USE_DOCKER</span><span class="o">=</span><span class="nb">true</span> ./image-builder/image_builder.sh  <span class="s2">&#34;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/myrootfs&#34;</span>
+</code></pre></div><h2 id="编译-rootfsimg">编译 rootfs.img</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># stable-1.10 方法</span>
+<span class="c1"># make sure rootfs is not MODIFIED!!! if you want to add new Agent</span>
+<span class="c1"># install agent (optional)</span>
+$ sudo install -o root -g root -m <span class="m">0550</span> -t <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>/bin ../../agent/kata-agent
+$ sudo install -o root -g root -m <span class="m">0440</span> ../../agent/kata-agent.service <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>/usr/lib/systemd/system/
+$ sudo install -o root -g root -m <span class="m">0440</span> ../../agent/kata-containers.target <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>/usr/lib/systemd/system/
+
+<span class="c1"># Compile</span>
+$ <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder/image-builder
+$ script -fec <span class="s1">&#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&#39;</span>
+
+<span class="c1"># install</span>
+$ <span class="nv">commit</span><span class="o">=</span><span class="k">$(</span>git log --format<span class="o">=</span>%h -1 HEAD<span class="k">)</span>
+$ <span class="nv">date</span><span class="o">=</span><span class="k">$(</span>date +%Y-%m-%d-%T.%N%z<span class="k">)</span>
+$ <span class="nv">image</span><span class="o">=</span><span class="s2">&#34;kata-containers-</span><span class="si">${</span><span class="nv">date</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">commit</span><span class="si">}</span><span class="s2">&#34;</span>
+$ sudo install -o root -g root -m <span class="m">0640</span> -D kata-containers.img <span class="s2">&#34;/usr/share/kata-containers/</span><span class="si">${</span><span class="nv">image</span><span class="si">}</span><span class="s2">&#34;</span>
+$ <span class="o">(</span><span class="nb">cd</span> /usr/share/kata-containers <span class="o">&amp;&amp;</span> sudo ln -sf <span class="s2">&#34;</span><span class="nv">$image</span><span class="s2">&#34;</span> kata-containers.img<span class="o">)</span>
+
+<span class="c1"># Output File:</span>
+<span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder/image-builder/kata-containers.img
+</code></pre></div><h2 id="编译-initrdimg">编译 initrd.img</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># make sure rootfs is not MODIFIED!!! if you want to add new Agent</span>
+<span class="c1"># install agent(optional)</span>
+$ sudo install -o root -g root -m <span class="m">0550</span> -T ../../agent/kata-agent <span class="si">${</span><span class="nv">ROOTFS_DIR</span><span class="si">}</span>/sbin/init
+
+<span class="c1"># Compile</span>
+$ <span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder/initrd-builder
+$ script -fec <span class="s1">&#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&#39;</span>
+
+<span class="c1"># install</span>
+$ <span class="nv">commit</span><span class="o">=</span><span class="k">$(</span>git log --format<span class="o">=</span>%h -1 HEAD<span class="k">)</span>
+$ <span class="nv">date</span><span class="o">=</span><span class="k">$(</span>date +%Y-%m-%d-%T.%N%z<span class="k">)</span>
+$ <span class="nv">image</span><span class="o">=</span><span class="s2">&#34;kata-containers-initrd-</span><span class="si">${</span><span class="nv">date</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">commit</span><span class="si">}</span><span class="s2">&#34;</span>
+$ sudo install -o root -g root -m <span class="m">0640</span> -D kata-containers-initrd.img <span class="s2">&#34;/usr/share/kata-containers/</span><span class="si">${</span><span class="nv">image</span><span class="si">}</span><span class="s2">&#34;</span>
+$ <span class="o">(</span><span class="nb">cd</span> /usr/share/kata-containers <span class="o">&amp;&amp;</span> sudo ln -sf <span class="s2">&#34;</span><span class="nv">$image</span><span class="s2">&#34;</span> kata-containers-initrd.img<span class="o">)</span>
+
+<span class="c1"># Output File:</span>
+<span class="nv">$GOPATH</span>/src/github.com/kata-containers/osbuilder/initrd-builder/kata-containers-initrd.img
+
+</code></pre></div><h1 id="编译-qemu-on-aarch64">编译 qemu on aarch64</h1>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 下载代码</span>
+$ go get -d github.com/kata-containers/tests
+<span class="c1"># 准备依赖</span>
+$ sudo apt install -y libcap-ng-dev libglib2.0-dev libpixman-1-dev librbd-dev libattr1-dev libcap-dev
+<span class="c1"># 编译构建</span>
+$ script -fec <span class="s1">&#39;sudo -E ${GOPATH}/src/github.com/kata-containers/tests/.ci/install_qemu.sh&#39;</span>
+
+<span class="c1"># 注意：如果安装失败，清直接删除文件夹，然后重新跑升级脚本</span>
+$ sudo rm -rf <span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/kata-containers/packaging <span class="c1"># 可不操作</span>
+$ sudo rm -rf <span class="si">${</span><span class="nv">GOPATH</span><span class="si">}</span>/src/github.com/qemu
+<span class="c1"># 如果需要编译指定代码分支的qemu版本，需要切换tests分支，以及packaging分支为同一分支</span>
+<span class="c1"># 由于脚本.ci/install_qemu.sh go get 获取packaging代码后未切换分支，所以需要构建失败后，手动切换分支</span>
+<span class="c1"># 目前已知最新的版本的qemu patch是针对qemu 5.1的，并不能直接使用master代码，会导致patch合入失败</span>
+</code></pre></div><h1 id="docker-对接-kata-runtime">Docker 对接 kata-runtime</h1>
+<p>修改 Docker 配置文件<code>/etc/docker/daemon.json</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">{</span>
+  <span class="s2">&#34;debug&#34;</span>: true,
+  <span class="s2">&#34;default-runtime&#34;</span>: <span class="s2">&#34;runc&#34;</span>, <span class="c1"># 可替换成 kata-runtime</span>
+  <span class="s2">&#34;runtimes&#34;</span>: <span class="o">{</span>
+    <span class="s2">&#34;kata&#34;</span>: <span class="o">{</span>
+      <span class="s2">&#34;path&#34;</span>: <span class="s2">&#34;/usr/local/bin/kata-runtime&#34;</span> <span class="c1"># 不支持直接配置成 containerd-shim-kata-v2</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>重启 docker 服务（必须）</p>
+<p>验证修改生效</p>
+<p><code>sudo docker run --rm --name test busybox:latest uname -a</code> 与宿主机内核对比，验证是否生效</p>
+<h2 id="调试-kata-runtime">调试 kata-runtime</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># docker 开启 debug: /etc/docker/daemon.json 添加参数 (需重启服务)</span>
+<span class="o">{</span> <span class="s2">&#34;debug&#34;</span>: <span class="nb">true</span> <span class="o">}</span>
+<span class="c1"># kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug</span>
+
+<span class="c1"># 查看日志</span>
+$ journalctl -ft kata-runtime
+</code></pre></div><h1 id="containerd-对接-containerd-shim-kata-v2">Containerd 对接 containerd-shim-kata-v2</h1>
+<p>修改 containerd 的配置<code>/etc/containerd/config.toml</code></p>
+<p><code>containerd config default</code> 生成当前版本默认配置</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">version</span> <span class="o">=</span> <span class="m">2</span>
+<span class="nv">root</span> <span class="o">=</span> <span class="s2">&#34;/var/lib/containerd&#34;</span>
+<span class="nv">state</span> <span class="o">=</span> <span class="s2">&#34;/run/containerd&#34;</span>
+<span class="nv">plugin_dir</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+<span class="nv">disabled_plugins</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="nv">required_plugins</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="nv">oom_score</span> <span class="o">=</span> <span class="m">0</span>
+
+<span class="o">[</span>grpc<span class="o">]</span>
+  <span class="nv">address</span> <span class="o">=</span> <span class="s2">&#34;/run/containerd/containerd.sock&#34;</span>
+  <span class="nv">tcp_address</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">tcp_tls_cert</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">tcp_tls_key</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">uid</span> <span class="o">=</span> <span class="m">0</span>
+  <span class="nv">gid</span> <span class="o">=</span> <span class="m">0</span>
+  <span class="nv">max_recv_message_size</span> <span class="o">=</span> <span class="m">16777216</span>
+  <span class="nv">max_send_message_size</span> <span class="o">=</span> <span class="m">16777216</span>
+
+<span class="o">[</span>ttrpc<span class="o">]</span>
+  <span class="nv">address</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">uid</span> <span class="o">=</span> <span class="m">0</span>
+  <span class="nv">gid</span> <span class="o">=</span> <span class="m">0</span>
+
+<span class="o">[</span>debug<span class="o">]</span>
+  <span class="nv">address</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">uid</span> <span class="o">=</span> <span class="m">0</span>
+  <span class="nv">gid</span> <span class="o">=</span> <span class="m">0</span>
+  <span class="nv">level</span> <span class="o">=</span> <span class="s2">&#34;debug&#34;</span> <span class="c1"># 开启debug</span>
+
+<span class="o">[</span>metrics<span class="o">]</span>
+  <span class="nv">address</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="nv">grpc_histogram</span> <span class="o">=</span> <span class="nb">false</span>
+
+<span class="o">[</span>cgroup<span class="o">]</span>
+  <span class="nv">path</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+
+<span class="o">[</span>timeouts<span class="o">]</span>
+  <span class="s2">&#34;io.containerd.timeout.shim.cleanup&#34;</span> <span class="o">=</span> <span class="s2">&#34;5s&#34;</span>
+  <span class="s2">&#34;io.containerd.timeout.shim.load&#34;</span> <span class="o">=</span> <span class="s2">&#34;5s&#34;</span>
+  <span class="s2">&#34;io.containerd.timeout.shim.shutdown&#34;</span> <span class="o">=</span> <span class="s2">&#34;3s&#34;</span>
+  <span class="s2">&#34;io.containerd.timeout.task.state&#34;</span> <span class="o">=</span> <span class="s2">&#34;2s&#34;</span>
+
+<span class="o">[</span>plugins<span class="o">]</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.gc.v1.scheduler&#34;</span><span class="o">]</span>
+    <span class="nv">pause_threshold</span> <span class="o">=</span> 0.02
+    <span class="nv">deletion_threshold</span> <span class="o">=</span> <span class="m">0</span>
+    <span class="nv">mutation_threshold</span> <span class="o">=</span> <span class="m">100</span>
+    <span class="nv">schedule_delay</span> <span class="o">=</span> <span class="s2">&#34;0s&#34;</span>
+    <span class="nv">startup_delay</span> <span class="o">=</span> <span class="s2">&#34;100ms&#34;</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span><span class="o">]</span>
+    <span class="nv">disable_tcp_service</span> <span class="o">=</span> <span class="nb">true</span>
+    <span class="nv">stream_server_address</span> <span class="o">=</span> <span class="s2">&#34;127.0.0.1&#34;</span>
+    <span class="nv">stream_server_port</span> <span class="o">=</span> <span class="s2">&#34;0&#34;</span>
+    <span class="nv">stream_idle_timeout</span> <span class="o">=</span> <span class="s2">&#34;4h0m0s&#34;</span>
+    <span class="nv">enable_selinux</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">sandbox_image</span> <span class="o">=</span> <span class="s2">&#34;k8s.gcr.io/pause:3.1&#34;</span>
+    <span class="nv">stats_collect_period</span> <span class="o">=</span> <span class="m">10</span>
+    <span class="nv">systemd_cgroup</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">enable_tls_streaming</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">max_container_log_line_size</span> <span class="o">=</span> <span class="m">16384</span>
+    <span class="nv">disable_cgroup</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">disable_apparmor</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">restrict_oom_score_adj</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">max_concurrent_downloads</span> <span class="o">=</span> <span class="m">3</span>
+    <span class="nv">disable_proc_mount</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd<span class="o">]</span>
+      <span class="nv">snapshotter</span> <span class="o">=</span> <span class="s2">&#34;overlayfs&#34;</span>
+      <span class="nv">default_runtime_name</span> <span class="o">=</span> <span class="s2">&#34;runc&#34;</span>
+      <span class="nv">no_pivot</span> <span class="o">=</span> <span class="nb">false</span>
+      <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.default_runtime<span class="o">]</span>
+        <span class="nv">runtime_type</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">runtime_engine</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">runtime_root</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">privileged_without_host_devices</span> <span class="o">=</span> <span class="nb">false</span>
+      <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.untrusted_workload_runtime<span class="o">]</span>
+        <span class="nv">runtime_type</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">runtime_engine</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">runtime_root</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+        <span class="nv">privileged_without_host_devices</span> <span class="o">=</span> <span class="nb">false</span>
+      <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.runtimes<span class="o">]</span>
+        <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.runtimes.runc<span class="o">]</span>
+          <span class="nv">runtime_type</span> <span class="o">=</span> <span class="s2">&#34;io.containerd.runc.v1&#34;</span>
+          <span class="nv">runtime_engine</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+          <span class="nv">runtime_root</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+          <span class="nv">privileged_without_host_devices</span> <span class="o">=</span> <span class="nb">false</span>
+        <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.runtimes.kata<span class="o">]</span> <span class="c1"># 新增</span>
+          <span class="nv">runtime_type</span> <span class="o">=</span> <span class="s2">&#34;io.containerd.kata.v2&#34;</span>
+          <span class="nv">runtime_engine</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+          <span class="nv">runtime_root</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+          <span class="nv">privileged_without_host_devices</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.cni<span class="o">]</span>
+      <span class="nv">bin_dir</span> <span class="o">=</span> <span class="s2">&#34;/opt/cni/bin&#34;</span>
+      <span class="nv">conf_dir</span> <span class="o">=</span> <span class="s2">&#34;/etc/cni/net.d&#34;</span>
+      <span class="nv">max_conf_num</span> <span class="o">=</span> <span class="m">1</span>
+      <span class="nv">conf_template</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.registry<span class="o">]</span>
+      <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.registry.mirrors<span class="o">]</span>
+        <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.registry.mirrors.<span class="s2">&#34;docker.io&#34;</span><span class="o">]</span>
+          <span class="nv">endpoint</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;https://registry-1.docker.io&#34;</span><span class="o">]</span>
+    <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.grpc.v1.cri&#34;</span>.x509_key_pair_streaming<span class="o">]</span>
+      <span class="nv">tls_cert_file</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+      <span class="nv">tls_key_file</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.internal.v1.opt&#34;</span><span class="o">]</span>
+    <span class="nv">path</span> <span class="o">=</span> <span class="s2">&#34;/opt/containerd&#34;</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.internal.v1.restart&#34;</span><span class="o">]</span>
+    <span class="nv">interval</span> <span class="o">=</span> <span class="s2">&#34;10s&#34;</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.metadata.v1.bolt&#34;</span><span class="o">]</span>
+    <span class="nv">content_sharing_policy</span> <span class="o">=</span> <span class="s2">&#34;shared&#34;</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.monitor.v1.cgroups&#34;</span><span class="o">]</span>
+    <span class="nv">no_prometheus</span> <span class="o">=</span> <span class="nb">false</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.runtime.v1.linux&#34;</span><span class="o">]</span>
+    <span class="nv">shim</span> <span class="o">=</span> <span class="s2">&#34;containerd-shim&#34;</span>
+    <span class="nv">runtime</span> <span class="o">=</span> <span class="s2">&#34;runc&#34;</span>
+    <span class="nv">runtime_root</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="nv">no_shim</span> <span class="o">=</span> <span class="nb">false</span>
+    <span class="nv">shim_debug</span> <span class="o">=</span> <span class="nb">false</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.runtime.v2.task&#34;</span><span class="o">]</span>
+    <span class="nv">platforms</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;linux/amd64&#34;</span><span class="o">]</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.service.v1.diff-service&#34;</span><span class="o">]</span>
+    <span class="nv">default</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;walking&#34;</span><span class="o">]</span>
+  <span class="o">[</span>plugins.<span class="s2">&#34;io.containerd.snapshotter.v1.devmapper&#34;</span><span class="o">]</span>
+    <span class="nv">root_path</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="nv">pool_name</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="nv">base_image_size</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</code></pre></div><p>注意： 确保<code>containerd-shim-kata-v2</code> 文件在 $PATH  目录下</p>
+<p>验证：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 创建容器</span>
+sudo ctr -n testns run --runtime io.containerd.kata.v2  -d --rm docker.io/library/busybox:latest busybox
+<span class="c1"># 查看容器 id</span>
+sudo ctr -n testns t ls
+<span class="c1"># 进入容器</span>
+sudo ctr -n testns t <span class="nb">exec</span> -t --exec-id <span class="o">{</span>ID<span class="o">}</span> busybox sh
+<span class="c1"># 查看内核版本</span>
+$ uname -a <span class="c1"># 对比宿主机内核</span>
+</code></pre></div><h2 id="调试-containerd-shim-runtime-v2">调试 containerd-shim-runtime-v2</h2>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># containerd 配置开启 debug(需重启服务)</span>
+<span class="c1"># kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug (需重新创建安全容器)</span>
+
+<span class="c1"># 查看日志</span>
+$ journalctl -ft kata
+</code></pre></div><h1 id="附录">附录</h1>
+<h2 id="kata-containers-20-安装">kata-containers 2.0 安装</h2>
+<ol>
+<li>
+<p>下载release包</p>
+<p><a class="link" href="https://github.com/kata-containers/kata-containers/releases"  target="_blank" rel="noopener"
+    >Release 地址</a></p>
+<p>下载 <a class="link" href="https://github.com/kata-containers/kata-containers/releases/tag/2.0.0-alpha3"  target="_blank" rel="noopener"
+    >Kata Containers 2.0.0-alpha3</a></p>
+<p>解压后，拷贝至文件夹 <code>/opt</code></p>
+</li>
+<li>
+<p>准备配置文件和<code>containerd-shim-kata-v2</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 准备配置文件</span>
+$ cp /opt/kata/share/defaults/kata-containers/configuration-qemu.toml /etc/kata-containers/configuration.toml
+<span class="c1"># 准备 containerd-shim-kata-v2</span>
+$ cp /opt/kata/bin/containerd-shim-kata-v2 /usr/local/bin/
+</code></pre></div><p>配置文件修改如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span>hypervisor.qemu<span class="o">]</span>
+<span class="nv">path</span> <span class="o">=</span> <span class="s2">&#34;/opt/kata/bin/qemu-system-x86_64&#34;</span>
+<span class="nv">kernel</span> <span class="o">=</span> <span class="s2">&#34;/opt/kata/share/kata-containers/vmlinuz.container&#34;</span>
+<span class="nv">image</span> <span class="o">=</span> <span class="s2">&#34;/opt/kata/share/kata-containers/kata-containers.img&#34;</span>
+<span class="nv">machine_type</span> <span class="o">=</span> <span class="s2">&#34;pc&#34;</span>
+<span class="nv">kernel_params</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+<span class="nv">firmware</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+<span class="nv">machine_accelerators</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+<span class="nv">cpu_features</span><span class="o">=</span><span class="s2">&#34;pmu=off&#34;</span>
+<span class="nv">default_vcpus</span> <span class="o">=</span> <span class="m">1</span>
+<span class="nv">default_maxvcpus</span> <span class="o">=</span> <span class="m">2</span>
+<span class="nv">default_bridges</span> <span class="o">=</span> <span class="m">1</span>
+<span class="nv">default_memory</span> <span class="o">=</span> <span class="m">2048</span>
+<span class="nv">disable_block_device_use</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nv">shared_fs</span> <span class="o">=</span> <span class="s2">&#34;virtio-9p&#34;</span>
+<span class="nv">virtio_fs_daemon</span> <span class="o">=</span> <span class="s2">&#34;/opt/kata/bin/virtiofsd&#34;</span>
+<span class="nv">virtio_fs_cache_size</span> <span class="o">=</span> <span class="m">1024</span>
+<span class="nv">virtio_fs_extra_args</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="nv">virtio_fs_cache</span> <span class="o">=</span> <span class="s2">&#34;auto&#34;</span>
+<span class="nv">block_device_driver</span> <span class="o">=</span> <span class="s2">&#34;virtio-scsi&#34;</span>
+<span class="nv">enable_iothreads</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nv">enable_vhost_user_store</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nv">vhost_user_store_path</span> <span class="o">=</span> <span class="s2">&#34;/var/run/kata-containers/vhost-user&#34;</span>
+<span class="nv">enable_debug</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="o">[</span>factory<span class="o">]</span>
+<span class="o">[</span>agent.kata<span class="o">]</span>
+<span class="nv">enable_debug</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nv">kernel_modules</span><span class="o">=[]</span>
+<span class="o">[</span>netmon<span class="o">]</span>
+<span class="nv">path</span> <span class="o">=</span> <span class="s2">&#34;/opt/kata/libexec/kata-containers/kata-netmon&#34;</span>
+<span class="nv">enable_debug</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="o">[</span>runtime<span class="o">]</span>
+<span class="nv">enable_debug</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nv">internetworking_model</span><span class="o">=</span><span class="s2">&#34;tcfilter&#34;</span>
+<span class="nv">disable_guest_seccomp</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">sandbox_cgroup_only</span><span class="o">=</span><span class="nb">false</span>
+<span class="nv">experimental</span><span class="o">=[]</span>
+<span class="nv">EnablePprof</span> <span class="o">=</span> <span class="nb">true</span>
+</code></pre></div></li>
+</ol>
+<h2 id="对接docker和containerd需要注意">对接docker和containerd需要注意</h2>
+<p>注意：此版本无法与 docker配合使用，与containerd 使用正常。</p>
+<h1 id="问题探讨">问题探讨</h1>
+<h2 id="1如果关闭用来开启debug-console的kata-debugservice会发生什么">1.如果关闭用来开启debug console的kata-debug.service会发生什么？</h2>
+<p>进入vm，关闭kata-debug.service，等待kata-debug.service最终停止后，重新使用socat无法再进入bash终端</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">bash-4.2# systemctl stop kata-debug
+<span class="o">[</span>  249.392708<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Failed to determine peer security context: Protocol not available
+<span class="o">[</span>  249.394714<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Accepted new private connection.
+<span class="o">[</span>  249.395681<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  249.397145<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  249.397455<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  249.397759<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got message <span class="nv">type</span><span class="o">=</span>method_call <span class="nv">sender</span><span class="o">=</span>n/a <span class="nv">destination</span><span class="o">=</span>org.freedesktop.systemd1 <span class="nv">object</span><span class="o">=</span>/org/freedesktop/systemd1 <span class="nv">interface</span><span class="o">=</span>org.freedesktop.systemd1.Manager <span class="nv">member</span><span class="o">=</span>StopUnit <span class="nv">cookie</span><span class="o">=</span><span class="m">1</span> <span class="nv">reply_cookie</span><span class="o">=</span><span class="m">0</span> <span class="nv">error</span><span class="o">=</span>n/a
+<span class="o">[</span>  249.398545<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Trying to enqueue job kata-debug.service/stop/replace
+<span class="o">[</span>  249.398983<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Installed new job kata-containers.target/stop as <span class="m">51</span>
+<span class="o">[</span>  249.399290<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Installed new job kata-debug.service/stop as <span class="m">50</span>
+<span class="o">[</span>  249.399604<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Enqueued job kata-debug.service/stop as <span class="m">50</span>
+Terminated
+bash-4.2# systemctl status kata-debug
+<span class="o">[</span>  258.097267<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Failed to determine peer security context: Protocol not available
+<span class="o">[</span>  258.098268<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Accepted new private connection.
+<span class="o">[</span>  258.098453<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  258.098762<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  258.098928<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got unexpected auxiliary data with <span class="nv">level</span><span class="o">=</span><span class="m">1</span> and <span class="nv">type</span><span class="o">=</span><span class="m">2</span>
+<span class="o">[</span>  258.099088<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got message <span class="nv">type</span><span class="o">=</span>method_call <span class="nv">sender</span><span class="o">=</span>n/a <span class="nv">destination</span><span class="o">=</span>org.freedesktop.systemd1 <span class="nv">object</span><span class="o">=</span>/org/freedesktop/systemd1/unit/kata_2ddebug_2eservice <span class="nv">interface</span><span class="o">=</span>org.freedesktop.DBus.Properties <span class="nv">member</span><span class="o">=</span>GetAll <span class="nv">cookie</span><span class="o">=</span><span class="m">1</span> <span class="nv">reply_cookie</span><span class="o">=</span><span class="m">0</span> <span class="nv">error</span><span class="o">=</span>n/a
+<span class="o">[</span>  258.099783<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Sent message <span class="nv">type</span><span class="o">=</span>method_return <span class="nv">sender</span><span class="o">=</span>n/a <span class="nv">destination</span><span class="o">=</span>n/a <span class="nv">object</span><span class="o">=</span>n/a <span class="nv">interface</span><span class="o">=</span>n/a <span class="nv">member</span><span class="o">=</span>n/a <span class="nv">cookie</span><span class="o">=</span><span class="m">1</span> <span class="nv">reply_cookie</span><span class="o">=</span><span class="m">1</span> <span class="nv">error</span><span class="o">=</span>n/a
+● kata-debug.service - Kata Containers debug console
+   Loaded: loaded <span class="o">(</span>/usr/lib/systemd/system/kata-debug.service<span class="p">;</span> static<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
+   Active: deactivating <span class="o">(</span>stop-sigterm<span class="o">)</span> since Wed 2020-10-14 08:11:57 UTC<span class="p">;</span> 8s ago
+ Main PID: <span class="m">57</span> <span class="o">(</span>bash<span class="o">)</span>
+   CGroup: /system.slice/kata-debug.service
+           ├─ <span class="m">57</span> /bin/bash
+           └─231 systemctl status kata-debug
+<span class="o">[</span>  258.101662<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Got disconnect on private connection.
+bash-4.2# system<span class="o">[</span>  339.593226<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: kata-debug.service stop-sigterm timed out. Killing.
+<span class="o">[</span>  339.593989<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Watching <span class="m">57</span> through watch_pids1.
+<span class="o">[</span>  339.594710<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: kata-debug.service changed stop-sigterm -&gt; stop-sigkill
+<span class="o">[</span>  339.595681<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Received SIGCHLD from PID <span class="m">57</span> <span class="o">(</span>bash<span class="o">)</span>.
+<span class="o">[</span>  339.596281<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Child <span class="m">57</span> <span class="o">(</span>bash<span class="o">)</span> died <span class="o">(</span><span class="nv">code</span><span class="o">=</span>killed, <span class="nv">status</span><span class="o">=</span>9/KILL<span class="o">)</span>
+<span class="o">[</span>  339.596722<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Child <span class="m">57</span> belongs to kata-debug.service
+<span class="o">[</span>  339.597060<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Unwatching 57.
+<span class="o">[</span>  339.597276<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: kata-debug.service: main process exited, <span class="nv">code</span><span class="o">=</span>killed, <span class="nv">status</span><span class="o">=</span>9/KILL
+<span class="o">[</span>  339.597722<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: kata-debug.service changed stop-sigkill -&gt; failed
+<span class="o">[</span>  339.598098<span class="o">]</span> systemd<span class="o">[</span>1<span class="o">]</span>: Job kata-debug.service/stop finished, <span class="nv">result</span><span class="o">=</span><span class="k">done</span>
+<span class="c1"># 此处kata-debug.service完全退出，无法再进入终端</span>
+
+<span class="c1"># 尝试重新进入终端，会发现回车后无法打开bash终端</span>
+root@zbb-pc:/run/vc/vm/d658a67be082b2952c360e7539b5bfa7ac744ae8b84d844d57547d36915e184f# socat <span class="s2">&#34;stdin,raw,echo=0,escape=0x11&#34;</span> <span class="s2">&#34;unix-connect:./console.sock&#34;</span> 
+
+<span class="c1"># 重启容器后，可重新进入终端</span>
+<span class="c1"># 此处发现重启容器过程，其实是新建一个同名的容器，因为会发现vm原有目录文件均被删除，生成同名文件夹。如果查看前后vm目录，应该文件inode已产生变化。</span>
+</code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kata/">Kata</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "bevisy" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Bevisy&#39;s Blogs
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

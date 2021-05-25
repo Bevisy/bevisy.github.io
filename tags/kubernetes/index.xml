@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kubernetes on Bevisy&#39;s Blogs</title>
+    <link>https://bevisy.github.io/tags/kubernetes/</link>
+    <description>Recent content in kubernetes on Bevisy&#39;s Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Jan 2021 13:56:02 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title>
+      <link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link>
+      <pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid>
+      <description>基于ZFS的Ubuntu20.04安装kubernetes1.20 containerd 安装 containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b 安装 # 安装必要组件 $ sudo apt-get update $ sudo apt-get install \  apt-transport-https \  ca-certificates \  curl \  gnupg-agent \  software-properties-common # 安装gpg key curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - # 验证gpg key $ sudo apt-key fingerprint 0EBFCD88 # 添加 repo $ sudo add-apt-repository \  &amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs)\ stable&amp;#34; # 安装containerd $ sudo apt-get update $ sudo apt-get install containerd.</description>
+    </item>
+    
+  </channel>
+</rss>

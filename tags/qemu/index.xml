@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Qemu on Bevisy&#39;s Blogs</title>
+    <link>https://bevisy.github.io/tags/qemu/</link>
+    <description>Recent content in Qemu on Bevisy&#39;s Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Jul 2020 22:21:51 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/qemu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Compile qemu on Ubuntu 20.04</title>
+      <link>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</link>
+      <pubDate>Fri, 24 Jul 2020 22:21:51 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</guid>
+      <description>Compile qemu on Ubuntu 20.04 下载源码 git clone https://git.qemu.org/git/qemu.git cd qemu git submodule init git submodule update --recursive 编译安装 ./configure make 问题 # ERROR: glib-2.48 gthread-2.0 is required to compile QEMU $ sudo apt install -y libglib2.0-dev # ERROR: pixman &amp;gt;= 0.21.8 not present. # Please install the pixman devel package. $ sudo apt install -y libpixman-1-dev </description>
+    </item>
+    
+  </channel>
+</rss>

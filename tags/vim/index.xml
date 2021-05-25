@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim on Bevisy&#39;s Blogs</title>
+    <link>https://bevisy.github.io/tags/vim/</link>
+    <description>Recent content in Vim on Bevisy&#39;s Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Jul 2020 15:02:12 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Skills of VIM</title>
+      <link>https://bevisy.github.io/p/the-skills-of-vim/</link>
+      <pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/p/the-skills-of-vim/</guid>
+      <description>VIM 使用技巧 查找 大小写敏感控制 # VIM 默认大小写敏感查找； # 大小写不敏感查找 ：/foo\c # 大小写敏感查找 ：/foo\C 查找光标当前单词 # normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词 Vim 查找和替换 :{作用范围}s/{目标}/{替换}/{替换标志} # 当前行替换 ：s/vivian/sky/ 替换当前行第一个 vivian 为 sky ：s/vivian/sky/g 替换当前行所有 vivian 为 sky # 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行  ：n,$s/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky ：n,$s/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky ：2,12s/hello/world/ 2-12行,第一次出现替换 ：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换 # 全行替换 ：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky ：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky # 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符  ：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/ ：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/ # 替换确认，添加参数c，提示是否替换 :%s/hello/world/gc 针对每一个匹配项，提示是否替换 </description>
+    </item>
+    
+  </channel>
+</rss>

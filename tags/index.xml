@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Bevisy&#39;s Blogs</title>
+    <link>https://bevisy.github.io/tags/</link>
+    <description>Recent content in Tags on Bevisy&#39;s Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 May 2021 13:55:24 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>skill</title>
+      <link>https://bevisy.github.io/tags/skill/</link>
+      <pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/skill/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>containerd</title>
+      <link>https://bevisy.github.io/tags/containerd/</link>
+      <pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/containerd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubeadm</title>
+      <link>https://bevisy.github.io/tags/kubeadm/</link>
+      <pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/kubeadm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://bevisy.github.io/tags/kubernetes/</link>
+      <pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iso</title>
+      <link>https://bevisy.github.io/tags/iso/</link>
+      <pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/iso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://bevisy.github.io/tags/linux/</link>
+      <pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>macbook</title>
+      <link>https://bevisy.github.io/tags/macbook/</link>
+      <pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/macbook/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vnc</title>
+      <link>https://bevisy.github.io/tags/vnc/</link>
+      <pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/vnc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wechat</title>
+      <link>https://bevisy.github.io/tags/wechat/</link>
+      <pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/wechat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kata</title>
+      <link>https://bevisy.github.io/tags/kata/</link>
+      <pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/kata/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Qemu</title>
+      <link>https://bevisy.github.io/tags/qemu/</link>
+      <pubDate>Fri, 24 Jul 2020 22:21:51 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/qemu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>https://bevisy.github.io/tags/vim/</link>
+      <pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kernel</title>
+      <link>https://bevisy.github.io/tags/kernel/</link>
+      <pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/kernel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Zsh</title>
+      <link>https://bevisy.github.io/tags/zsh/</link>
+      <pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/zsh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Netdata</title>
+      <link>https://bevisy.github.io/tags/netdata/</link>
+      <pubDate>Tue, 21 Jan 2020 15:56:21 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/netdata/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://bevisy.github.io/tags/nginx/</link>
+      <pubDate>Tue, 21 Jan 2020 15:56:21 +0800</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CI/CD</title>
+      <link>https://bevisy.github.io/tags/ci/cd/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://bevisy.github.io/tags/ci/cd/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
