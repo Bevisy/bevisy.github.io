@@ -17,11 +17,11 @@
     </item>
     
     <item>
-      <title>Uncanny Skills</title>
-      <link>https://bevisy.github.io/p/uncanny-skills/</link>
+      <title>linux 利用loop设备模拟块设备</title>
+      <link>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</link>
       <pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate>
       
-      <guid>https://bevisy.github.io/p/uncanny-skills/</guid>
+      <guid>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</guid>
       <description>linux 利用loop设备模拟块设备 创建虚拟设备 losetup --help -a 显示所有已经使用的回环设备状态 -d 卸除回环设备 -f 寻找第一个未使用的回环设备 -e &amp;lt;加密选项&amp;gt; 启动加密编码 # 查找第一个未使用的回环设备 losetup -f # 创建文件 dd if=/dev/zero of=./disk.img bs=4M count=1024 # 将disk.img 虚拟成一个回环设备 losetup -f disk.img # 查询此设备 losetup -a | grep disk.img /dev/loop25: [64768]:3296700 (/home/zbb/temp/disk/disk.img) # 格式化设备 mkfs.ext4 /dev/loop25 # 挂载块设备 mount /dev/loop25 test # test 为自定义目录 # 卸载设备 umount test losetup -d /dev/loop25 </description>
     </item>
     
