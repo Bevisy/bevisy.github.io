@@ -1,5 +1,5 @@
 ---
-title: "Uncanny Skills"
+title: "linux 利用loop设备模拟块设备"
 date: 2021-04-02T16:37:51+08:00
 draft: false
 tags:
