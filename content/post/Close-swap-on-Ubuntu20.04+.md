@@ -8,11 +8,11 @@ categories:
     - Ubuntu
     - Linux
 ---
-# 临时关闭
+## 临时关闭
 ```sh
 sudo dphys-swapfile swapoff
 ```
-# 永久关闭
+## 永久关闭
 ```sh
 sudo systemctl disable dphys-swapfile.service --now
 # 注释fstab

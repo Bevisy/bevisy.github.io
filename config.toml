@@ -34,6 +34,7 @@ src = "img/avatar.png"
 
 [params.article]
 math = true
+toc = true
 
 [params.article.license]
 enabled = true
