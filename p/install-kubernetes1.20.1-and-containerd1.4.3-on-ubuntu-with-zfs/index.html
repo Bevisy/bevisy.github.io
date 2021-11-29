@@ -1,0 +1,350 @@
+<!doctype html><html lang=en-us>
+<head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="基于ZFS的Ubuntu20.04安装kubernetes1.20"><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title>
+<link rel=canonical href=https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/>
+<link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS">
+<meta property="og:description" content="基于ZFS的Ubuntu20.04安装kubernetes1.20">
+<meta property="og:url" content="https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/">
+<meta property="og:site_name" content="Bevisy's Blogs">
+<meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="containerd"><meta property="article:tag" content="kubernetes"><meta property="article:tag" content="kubeadm"><meta property="article:published_time" content="2021-01-11T13:56:02+08:00"><meta property="article:modified_time" content="2021-01-11T13:56:02+08:00">
+<meta name=twitter:title content="Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS">
+<meta name=twitter:description content="基于ZFS的Ubuntu20.04安装kubernetes1.20">
+</head>
+<body class="article-page has-toc">
+<script>(function(){const a='StackColorScheme';localStorage.getItem(a)||localStorage.setItem(a,"auto")})()</script><script>(function(){const b='StackColorScheme',a=localStorage.getItem(b),c=window.matchMedia('(prefers-color-scheme: dark)').matches===!0;a=='dark'||a==='auto'&&c?document.documentElement.dataset.scheme='dark':document.documentElement.dataset.scheme='light'})()</script>
+<div class="container main-container flex
+extended">
+<div id=article-toolbar>
+<a href=/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg>
+<span>Back</span>
+</a>
+</div>
+<main class="main full-width">
+<article class=main-article>
+<header class=article-header>
+<div class=article-details>
+<header class=article-category>
+<a href=/categories/ubuntu/ style=background-color:#e95420;color:#fff>
+Ubuntu
+</a>
+<a href=/categories/linux/ style=background-color:#fdd134;color:#fff>
+Linux
+</a>
+</header>
+<h2 class=article-title>
+<a href=/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</a>
+</h2>
+<h3 class=article-subtitle>
+基于ZFS的Ubuntu20.04安装kubernetes1.20
+</h3>
+<footer class=article-time>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jan 11, 2021</time>
+</div>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>
+3 minute read
+</time>
+</div>
+</footer>
+</div>
+</header>
+<section class=article-content>
+<h1 id=基于zfs的ubuntu2004安装kubernetes120>基于ZFS的Ubuntu20.04安装kubernetes1.20</h1>
+<h2 id=containerd-安装>containerd 安装</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b
+</code></pre></div><h3 id=安装>安装</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 安装必要组件</span>
+$ sudo apt-get update
+$ sudo apt-get install <span class=se>\
+</span><span class=se></span>    apt-transport-https <span class=se>\
+</span><span class=se></span>    ca-certificates <span class=se>\
+</span><span class=se></span>    curl <span class=se>\
+</span><span class=se></span>    gnupg-agent <span class=se>\
+</span><span class=se></span>    software-properties-common
+<span class=c1># 安装gpg key</span>
+ curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo apt-key add -
+<span class=c1># 验证gpg key</span>
+$ sudo apt-key fingerprint 0EBFCD88
+<span class=c1># 添加 repo</span>
+$ sudo add-apt-repository <span class=se>\
+</span><span class=se></span>   <span class=s2>&#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+</span><span class=s2>   </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> \
+</span><span class=s2>   stable&#34;</span>
+<span class=c1># 安装containerd</span>
+$ sudo apt-get update
+$ sudo apt-get install containerd.io
+</code></pre></div><p><a class=link href=https://docs.docker.com/engine/install/ubuntu/ target=_blank rel=noopener>安装参考</a></p>
+<h3 id=配置修改适配-zfs>配置修改适配 zfs</h3>
+<p>查看 zfs 插件</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo ctr plugins ls  <span class=p>|</span> grep zfs                               
+io.containerd.snapshotter.v1    zfs                      linux/amd64    ok
+</code></pre></div><p>准备config.toml</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.bk
+$ sudo chmod <span class=m>646</span> /etc/containerd/config.toml
+$ sudo containerd config default &gt; /etc/containerd/config.toml
+</code></pre></div><p>修改<code>snapshotter</code>为<code>zfs</code></p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=o>[</span>plugins.<span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd<span class=o>]</span>
+      <span class=c1>#snapshotter = &#34;overlayfs&#34;</span>
+      <span class=nv>snapshotter</span> <span class=o>=</span> <span class=s2>&#34;zfs&#34;</span>
+</code></pre></div><p>重启<code>containerd</code>，<code>containerd</code>不支持配置热加载</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo systemctl restart containerd
+</code></pre></div><h3 id=挂载-zfs-到containerd指定目录>挂载 zfs 到containerd指定目录</h3>
+<h4 id=查询-pool>查询 pool</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+rpool   460G  8.64G   451G        -         -     0%     1%  1.00x    ONLINE  -
+</code></pre></div><h4 id=挂载目录>挂载目录</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo zfs create -o <span class=nv>mountpoint</span><span class=o>=</span>/var/lib/containerd/io.containerd.snapshotter.v1.zfs rpool/containerd
+</code></pre></div><h4 id=查看挂载的目录>查看挂载的目录</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo zfs list
+NAME                                               USED  AVAIL     REFER  MOUNTPOINT
+...
+rpool/containerd                                    96K   437G       96K  /var/lib/containerd/io.containerd.snapshotter.v1.zfs
+</code></pre></div><h3 id=验证>验证</h3>
+<h4 id=拉取镜像>拉取镜像</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo ctr i pull --snapshotter<span class=o>=</span>zfs docker.io/library/nginx:1.17
+</code></pre></div><h4 id=启动容器>启动容器</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo ctr run --rm --net-host -d --snapshotter<span class=o>=</span>zfs docker.io/library/nginx:1.17 <span class=nb>test</span>
+</code></pre></div><h4 id=查看nginx启动结果>查看nginx启动结果</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo ctr t ls
+TASK    PID        STATUS    
+<span class=nb>test</span>    <span class=m>1494537</span>    RUNNING
+$ netstat -alptn <span class=p>|</span> grep <span class=m>80</span>
+tcp        <span class=m>0</span>      <span class=m>0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN      -
+$ curl http://127.0.0.1:80 <span class=c1># 正常可访问</span>
+&lt;!DOCTYPE html&gt;
+...
+&lt;p&gt;&lt;em&gt;Thank you <span class=k>for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/html&gt;
+</code></pre></div><h3 id=待解决的问题>待解决的问题</h3>
+<h4 id=问题-1>问题 1</h4>
+<p>非root账户，sudo权限不指定参数<code>snapshotter</code>创建container，提示<code>ctr: failed to mount /tmp/containerd-mount589724034: invalid argument</code>，无法创建容器。</p>
+<p>切换成root用户，依旧提示，但是容器可以正常创建</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=o>(</span>root<span class=o>)</span>$ ctr run --rm --net-host -d docker.io/library/nginx:1.17 <span class=nb>test</span>
+ctr: failed to mount /tmp/containerd-mount589724034: invalid argument
+<span class=o>(</span>root<span class=o>)</span>$ ctr t ls
+TASK    PID        STATUS    
+<span class=nb>test</span>    <span class=m>1494537</span>    RUNNING
+</code></pre></div><h2 id=kubernetes-安装>kubernetes 安装</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>Client Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;20&#34;</span>, GitVersion:<span class=s2>&#34;v1.20.1&#34;</span>, GitCommit:<span class=s2>&#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2020-12-18T12:09:25Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.15.5&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;linux/amd64&#34;</span><span class=o>}</span>
+Server Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;20&#34;</span>, GitVersion:<span class=s2>&#34;v1.20.1&#34;</span>, GitCommit:<span class=s2>&#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2020-12-18T12:00:47Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.15.5&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;linux/amd64&#34;</span><span class=o>}</span>
+</code></pre></div><h2 id=安装-1>安装</h2>
+<p>当前安装工具有很多，此处选择使用<code>kubeadm</code></p>
+<h3 id=准备kubernetes-源使用阿里镜像源并安装必要组件>准备kubernetes 源(使用阿里镜像源)，并安装必要组件</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sudo apt-get update
+sudo apt-get install apt-transport-https
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class=p>|</span> sudo apt-key add - 
+sudo cat <span class=s>&lt;&lt; EOF &gt;/etc/apt/sources.list.d/kubernetes.list
+</span><span class=s>deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+</span><span class=s>EOF</span>
+
+sudo apt-get update
+sudo apt-get install kubelet kubeadm kubectl
+</code></pre></div><p>安装完成后 kubelet 服务会处于不断重启状态，暂时不需要关注，kubelet等待连接kube-apiserver，预期现象。</p>
+<h2 id=启动kubernetes集群>启动kubernetes集群</h2>
+<h4 id=准备容器镜像>准备容器镜像</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ kubeadm config images list <span class=c1># 查看需要准备的镜像</span>
+k8s.gcr.io/coredns:1.7.0
+k8s.gcr.io/etcd:3.4.13-0
+k8s.gcr.io/kube-apiserver:v1.20.1
+k8s.gcr.io/kube-controller-manager:v1.20.1
+k8s.gcr.io/kube-proxy:v1.20.1
+k8s.gcr.io/kube-scheduler:v1.20.1
+k8s.gcr.io/pause:3.2
+</code></pre></div><h4 id=containerd-镜像加速>containerd 镜像加速</h4>
+<p>配置参考：</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=o>[</span>plugins.<span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span>.registry<span class=o>]</span>
+      <span class=o>[</span>plugins.<span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span>.registry.mirrors<span class=o>]</span>
+        <span class=o>[</span>plugins.<span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span>.registry.mirrors.<span class=s2>&#34;docker.io&#34;</span><span class=o>]</span>
+          <span class=c1>#endpoint = [&#34;https://registry-1.docker.io&#34;]</span>
+          <span class=nv>endpoint</span> <span class=o>=</span> <span class=o>[</span><span class=s2>&#34;https://as065r9f.mirror.aliyuncs.com&#34;</span><span class=o>]</span>
+</code></pre></div><h4 id=启动集群>启动集群</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>$ sudo kubeadm init --pod-network-cidr<span class=o>=</span>10.10.0.0/16 --service-cidr<span class=o>=</span>10.20.0.0/16 --kubernetes-version<span class=o>=</span>v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
+</code></pre></div><ul>
+<li>&ndash;kubernetes-version: 指定 kubernetes 版本；</li>
+<li>&ndash;apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；</li>
+<li>&ndash;pod-network-cidr：指定 Pod 的网络范围；</li>
+<li>&ndash;service-cidr：指定 Service 的网络范围；</li>
+<li>&ndash;cri-socket：指定cri(社区趋势：cri 采用 containerd)</li>
+</ul>
+<h4 id=验证安装结果>验证安装结果</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 根据提示拷贝kubeconfig文件</span>
+$ kubectl version
+Client Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;20&#34;</span>, GitVersion:<span class=s2>&#34;v1.20.1&#34;</span>, GitCommit:<span class=s2>&#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2020-12-18T12:09:25Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.15.5&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;linux/amd64&#34;</span><span class=o>}</span>
+Server Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;20&#34;</span>, GitVersion:<span class=s2>&#34;v1.20.1&#34;</span>, GitCommit:<span class=s2>&#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2020-12-18T12:00:47Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.15.5&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;linux/amd64&#34;</span><span class=o>}</span>
+</code></pre></div><h2 id=flannel-安装>Flannel 安装</h2>
+<p>kubernetes v1.17+ 版本</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</code></pre></div><p>需要修改配置：</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>net-conf.json: <span class=p>|</span>
+    <span class=o>{</span>
+      <span class=s2>&#34;Network&#34;</span>: <span class=s2>&#34;10.10.0.0/16&#34;</span>, <span class=c1># kubeadm init 创建时使用的pod-network-cidr</span>
+      <span class=s2>&#34;Backend&#34;</span>: <span class=o>{</span>
+        <span class=s2>&#34;Type&#34;</span>: <span class=s2>&#34;vxlan&#34;</span>
+      <span class=o>}</span>
+    <span class=o>}</span>
+</code></pre></div><p><a class=link href=https://github.com/coreos/flannel#flannel target=_blank rel=noopener>参考连接</a></p>
+<h2 id=待解决问题>待解决问题</h2>
+<p>containerd 一直会刷新 error 日志</p>
+<p><code>Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time="2021-01-11T17:49:51.380076683+08:00" level=error msg="Failed to get usage for snapshot \"sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\"" error="zfs does not implement Usage() yet"</code></p>
+<p><a class=link href=https://github.com/containerd/zfs/issues/17 target=_blank rel=noopener>参考issue</a></p>
+<h3 id=规避办法>规避办法</h3>
+<p>暂时通过修改代码规避<br>
+<a class=link href=https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c target=_blank rel=noopener>bevisy/zfs</a>
+<a class=link href=https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6 target=_blank rel=noopener>bevisy/containerd</a></p>
+</section>
+<footer class=article-footer>
+<section class=article-tags>
+<a href=/tags/containerd/>containerd</a>
+<a href=/tags/kubernetes/>kubernetes</a>
+<a href=/tags/kubeadm/>kubeadm</a>
+</section>
+<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span>
+</section>
+</footer>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script>
+</article>
+<aside class=related-contents--wrapper>
+<h2 class=section-title>Related contents</h2>
+<div class=related-contents>
+<div class="flex article-list--tile">
+<article>
+<a href=/p/close-swap-on-ubuntu20.04/>
+<div class=article-details>
+<h2 class=article-title>Close Swap on Ubuntu20.04</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/compile-linux-kernel-on-ubuntu-20.04/>
+<div class=article-details>
+<h2 class=article-title>Compile Linux Kernel on Ubuntu 20.04</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/>
+<div class=article-details>
+<h2 class=article-title>linux 利用loop设备模拟块设备</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/install-tigervncserver-on-ubuntu-20.04/>
+<div class=article-details>
+<h2 class=article-title>Install TigerVncServer On Ubuntu 20.04</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/install-wechat-client-on-ubuntu-20.04/>
+<div class=article-details>
+<h2 class=article-title>Install Wechat Client On Ubuntu 20.04</h2>
+</div>
+</a>
+</article>
+</div>
+</div>
+</aside>
+<div class=disqus-container>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//bevisy.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+<style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style>
+<script>window.addEventListener('onColorSchemeChange',a=>{DISQUS&&DISQUS.reset({reload:!0})})</script>
+<footer class=site-footer>
+<section class=copyright>
+&copy;
+2020 -
+2021 Bevisy's Blogs
+</section>
+<section class=powerby>
+Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.2.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
+</section>
+</footer>
+<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div>
+<div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+</div>
+<div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div>
+<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div>
+</div>
+<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div>
+</div>
+</div>
+</div>
+</div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
+</main>
+<aside class="sidebar right-sidebar sticky">
+<section class="widget archives">
+<div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+</div>
+<h2 class="widget-title section-title">Table of contents</h2>
+<div class=widget--toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#containerd-安装>containerd 安装</a>
+<ul>
+<li><a href=#安装>安装</a></li>
+<li><a href=#配置修改适配-zfs>配置修改适配 zfs</a></li>
+<li><a href=#挂载-zfs-到containerd指定目录>挂载 zfs 到containerd指定目录</a></li>
+<li><a href=#验证>验证</a></li>
+<li><a href=#待解决的问题>待解决的问题</a></li>
+</ul>
+</li>
+<li><a href=#kubernetes-安装>kubernetes 安装</a></li>
+<li><a href=#安装-1>安装</a>
+<ul>
+<li><a href=#准备kubernetes-源使用阿里镜像源并安装必要组件>准备kubernetes 源(使用阿里镜像源)，并安装必要组件</a></li>
+</ul>
+</li>
+<li><a href=#启动kubernetes集群>启动kubernetes集群</a>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><a href=#flannel-安装>Flannel 安装</a></li>
+<li><a href=#待解决问题>待解决问题</a>
+<ul>
+<li><a href=#规避办法>规避办法</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</section>
+</aside>
+</div>
+<script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const a=document.createElement('link');a.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",a.type="text/css",a.rel="stylesheet",document.head.appendChild(a)})()</script>
+</body>
+</html>

@@ -1,13 +1,1051 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bevisy's Blogs</title><link>https://bevisy.github.io/</link><description>Recent content on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 May 2021 13:55:24 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Close Swap on Ubuntu20.04</title><link>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</link><pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate><guid>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</guid><description>临时关闭 sudo dphys-swapfile swapoff 永久关闭 sudo systemctl disable dphys-swapfile.service --now # 注释fstab #/dev/mapper/vgubuntu-swap_1 none swap sw 0 0</description></item><item><title>linux 利用loop设备模拟块设备</title><link>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</link><pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate><guid>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</guid><description>linux 利用loop设备模拟块设备 创建虚拟设备 losetup --help -a 显示所有已经使用的回环设备状态 -d 卸除回环设备 -f 寻找第一个未使用的回环设备 -e &amp;lt;加密选项&amp;gt; 启动加密编码 # 查找第一个未使用的回环设备 losetup -f # 创建文件 dd if=/dev/zero of=./disk.img bs=4M count=1024 # 将disk.img 虚拟成一个回环设备 losetup -f disk.img # 查询此设备 losetup -a | grep disk.img /dev/loop25: [64768]:3296700 (/home/zbb/temp/disk/disk.img) # 格式化设备 mkfs.ext4 /dev/loop25 # 挂载块设备 mount /dev/loop25 test # test 为自定义目录 # 卸载设备 umount test losetup -d /dev/loop25</description></item><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>基于ZFS的Ubuntu20.04安装kubernetes1.20 containerd 安装 containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b 安装 # 安装必要组件 $ sudo apt-get update $ sudo apt-get install \ apt-transport-https \ ca-certificates \ curl \ gnupg-agent \ software-properties-common # 安装gpg key curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - # 验证gpg key $ sudo apt-key fingerprint 0EBFCD88 # 添加 repo $ sudo add-apt-repository \ &amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs)\ stable&amp;#34; # 安装containerd $ sudo apt-get update $ sudo apt-get install containerd.</description></item><item><title>Burn the Operating System Installation Disk on Mac</title><link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link><pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate><guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid><description>在Macbook上烧录iso镜像，制作操作系统盘 查看烧录U盘 diskutil list # 例如：/dev/disk3 取消挂载U盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 弹出U盘 diskutil eject /dev/disk3</description></item><item><title>About</title><link>https://bevisy.github.io/about/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>https://bevisy.github.io/about/</guid><description/></item><item><title>Install TigerVncServer On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link><pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate><guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid><description>Ubuntu 20.04 安装 Tigervncserver # 安装 $ sudo apt update $ sudo apt install xfce4 xfce4-goodies tigervnc-standalone-server # 推荐使用 xfce4 桌面 # 启动 $ vncpasswd # 配置 vnc 客户端连接密码 $ vncserver $ vncserver -kill :1 # 关闭创建的 vnc server # 修改配置，解决黑屏和灰屏问题 $ touch $HOME/.vnc/xstartup $ chmod u+x $HOME/.vnc/xstartup $ cat &amp;gt; $HOME/.vnc/xstartup &amp;lt;&amp;lt; EOF #!/bin/sh unset SESSION_MANAGER unset DBUS_SESSION_BUS_ADDRESS [ -r $HOME/.Xresources ] &amp;amp;&amp;amp; xrdb $HOME/.Xresources xsetroot -solid grey xterm -geometry 80x24+10+10 -ls -title &amp;#34;$VNCDESKTOP Desktop&amp;#34; &amp;amp; startxfce4 &amp;amp; EOF # 再次启动 $ vncserver :1 --geomotry 1366x768 # --geometry 参数随意 # 使用 vnc viewer 连接，端口号为 5091 使用 lxde 桌面 # 安装 $ sudo apt install xorg lxde-core lxterminal # 配置 vncserver 启动桌面 $ cat &amp;gt; $HOME/.</description></item><item><title>Install Wechat Client On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</link><pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate><guid>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</guid><description>Ubuntu 20.04 安装微信客户端 clone repo deepin-wine-ubuntu
-执行脚本 sudo chmod a+x install_2.8.22.sh &amp;amp;&amp;amp; ./install_2.8.22.sh
-下载微信deb包，并安装 下载地址
-安装微信： sudo dpkg –i deepin.com.wechat_2.6.8.65deepin0_i386.deb
-安装字体：(参考issue：https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/253) sudo apt install fonts-wqy-microhei fonts-wqy-zenhei</description></item><item><title>Ubuntu 20.04 显示器分辨率模式调整</title><link>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</link><pubDate>Mon, 27 Jul 2020 10:24:29 +0800</pubDate><guid>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</guid><description>Ubuntu 20.04 显示器分辨率模式调整 问题描述 Ubuntu 20.04 提示无法识别显示器，默认以分辨率1024x768(4:3)展示
-问题解决 添加新的分辨率模式
-查询输出接口 $ xrandr Screen 0: minimum 320 x 200, current 2624 x 900, maximum 16384 x 16384 eDP-1 connected primary 1600x900+0+0 (normal left inverted right x axis y axis) 309mm x 174mm 1600x900 60.01*+ 59.99 59.94 59.95 59.82 1440x900 59.89 ... 360x202 59.51 59.13 320x180 59.84 59.32 DP-1 disconnected (normal left inverted right x axis y axis) HDMI-1 disconnected (normal left inverted right x axis y axis) DP-2 connected 1024x768+1600+0 (normal left inverted right x axis y axis) 0mm x 0mm # 注意此行 1024x768 60.</description></item><item><title>Kata-containers Compile And Installed</title><link>https://bevisy.github.io/p/kata-containers-compile-and-installed/</link><pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-compile-and-installed/</guid><description>[TOC]
-kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.</description></item><item><title>Compile qemu on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 22:21:51 +0800</pubDate><guid>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</guid><description>Compile qemu on Ubuntu 20.04 下载源码 git clone https://git.qemu.org/git/qemu.git cd qemu git submodule init git submodule update --recursive 编译安装 ./configure make 问题 # ERROR: glib-2.48 gthread-2.0 is required to compile QEMU $ sudo apt install -y libglib2.0-dev # ERROR: pixman &amp;gt;= 0.21.8 not present. # Please install the pixman devel package. $ sudo apt install -y libpixman-1-dev</description></item><item><title>The Skills of VIM</title><link>https://bevisy.github.io/p/the-skills-of-vim/</link><pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate><guid>https://bevisy.github.io/p/the-skills-of-vim/</guid><description>VIM 使用技巧 查找 大小写敏感控制 # VIM 默认大小写敏感查找； # 大小写不敏感查找 ：/foo\c # 大小写敏感查找 ：/foo\C 查找光标当前单词 # normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词 Vim 查找和替换 :{作用范围}s/{目标}/{替换}/{替换标志} # 当前行替换 ：s/vivian/sky/ 替换当前行第一个 vivian 为 sky ：s/vivian/sky/g 替换当前行所有 vivian 为 sky # 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行 ：n,$s/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky ：n,$s/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky ：2,12s/hello/world/ 2-12行,第一次出现替换 ：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换 # 全行替换 ：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky ：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky # 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符 ：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/ ：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/ # 替换确认，添加参数c，提示是否替换 :%s/hello/world/gc 针对每一个匹配项，提示是否替换</description></item><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>Linux 内核编译(Ubuntu 环境) 下载内核代码 https://www.kernel.org/
-安装依赖 sudo apt update sudo apt install -y \ gcc \ make \ libncurses5-dev \ openssl \ libssl-dev \ build-essential \ pkg-config \ libc6-dev \ bison \ flex \ libelf-dev 准备.config和自定义配置 cd {Download}/linux-5.4.32/ sudo cp /boot/config-{uname -r} .config sudo make menuconfig 编译内核 # 编译内核 sudo make sudo make modules_install 安装内核 sudo mv {Download}/linux-5.4.32 /usr/src/ cd /usr/src/linux-5.</description></item><item><title>Zsh-And-Oh My Zsh-Installation summary</title><link>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</link><pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate><guid>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</guid><description>zsh 安装总结 安装zsh # Ubuntu 18.04 sudo apt update sudo apt install zsh -y 安装 Oh My Zsh # https://ohmyz.sh/#install sh -c &amp;#34;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&amp;#34; 插件安装 # 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins) git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting # 配置 .zshrc，添加插件列表 plugins=(zsh-autosuggestions zsh-syntax-highlighting) # 启动新终端，查看效果示例 zsh</description></item><item><title>通过nginx为netdata提供https访问</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</link><pubDate>Tue, 21 Jan 2020 15:56:21 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</guid><description>nginx 代理 netdata 并添加鉴权 netdata 安装 #!/bin/bash docker run -d --name=netdata \ -p 30002:19999 \ -v /etc/passwd:/host/etc/passwd:ro \ -v /etc/group:/host/etc/group:ro \ -v /proc:/host/proc:ro \ -v /sys:/host/sys:ro \ -v /var/run/docker.sock:/var/run/docker.sock:ro \ -e DO_NOT_TRACK=1 \ --cap-add SYS_PTRACE \ --security-opt apparmor=unconfined \ netdata/netdata nginx 安装 #!/usr/bin/env bash docker run -d \ --name nginx \ -v $(pwd)/html:/usr/share/nginx/html \ -v $(pwd)/conf.</description></item><item><title>通过Travis CI 部署静态页面到 github page</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</link><pubDate>Tue, 21 Jan 2020 00:25:33 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</guid><description>Travis CI 部署 Hexo 生成文件到 master 分支 文档主要实现Hexo利用 Travis CI 完成 github page 部署。
-由于 username.github.io 仓库不允许切换 github page 分支，必须将 master 分支作为静态资源分支，所以新建 develop 分支作为开发分支。
-详细的步骤参考将 Hexo 部署到 GitHub Pages，此处主要贴出区别的 Travis CI 配置文件：
-sudo: false language: node_js node_js: - 13.6.0 cache: npm branches: only: - develop script: - hexo generate deploy: provider: pages skip-cleanup: true github-token: $GH_TOKEN keep-history: false target_branch: master local-dir: public on: branch: develop 上述配置信息解释参考 GitHub Pages Deployment。
-参考文档 GitHub Pages Deployment</description></item><item><title>Archives</title><link>https://bevisy.github.io/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://bevisy.github.io/archives/</guid><description/></item><item><title>Search</title><link>https://bevisy.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://bevisy.github.io/search/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bevisy's Blogs</title><link>https://bevisy.github.io/</link><description>Recent content on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 May 2021 13:55:24 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Close Swap on Ubuntu20.04</title><link>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</link><pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate><guid>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</guid><description>&lt;h2 id="临时关闭">临时关闭&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo dphys-swapfile swapoff
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="永久关闭">永久关闭&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo systemctl disable dphys-swapfile.service --now
+&lt;span class="c1"># 注释fstab&lt;/span>
+&lt;span class="c1">#/dev/mapper/vgubuntu-swap_1 none swap sw 0 0&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>linux 利用loop设备模拟块设备</title><link>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</link><pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate><guid>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</guid><description>&lt;h1 id="linux-利用loop设备模拟块设备">linux 利用loop设备模拟块设备&lt;/h1>
+&lt;h2 id="创建虚拟设备">创建虚拟设备&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">losetup --help
+-a 显示所有已经使用的回环设备状态
+-d 卸除回环设备
+-f 寻找第一个未使用的回环设备
+-e &amp;lt;加密选项&amp;gt; 启动加密编码
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 查找第一个未使用的回环设备&lt;/span>
+losetup -f
+&lt;span class="c1"># 创建文件&lt;/span>
+dd &lt;span class="k">if&lt;/span>&lt;span class="o">=&lt;/span>/dev/zero &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>./disk.img &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>4M &lt;span class="nv">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1024&lt;/span>
+&lt;span class="c1"># 将disk.img 虚拟成一个回环设备&lt;/span>
+losetup -f disk.img
+&lt;span class="c1"># 查询此设备&lt;/span>
+losetup -a &lt;span class="p">|&lt;/span> grep disk.img
+/dev/loop25: &lt;span class="o">[&lt;/span>64768&lt;span class="o">]&lt;/span>:3296700 &lt;span class="o">(&lt;/span>/home/zbb/temp/disk/disk.img&lt;span class="o">)&lt;/span>
+&lt;span class="c1"># 格式化设备&lt;/span>
+mkfs.ext4 /dev/loop25
+&lt;span class="c1"># 挂载块设备&lt;/span>
+mount /dev/loop25 &lt;span class="nb">test&lt;/span> &lt;span class="c1"># test 为自定义目录&lt;/span>
+&lt;span class="c1"># 卸载设备&lt;/span>
+umount &lt;span class="nb">test&lt;/span>
+losetup -d /dev/loop25
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>&lt;h1 id="基于zfs的ubuntu2004安装kubernetes120">基于ZFS的Ubuntu20.04安装kubernetes1.20&lt;/h1>
+&lt;h2 id="containerd-安装">containerd 安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="安装">安装&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 安装必要组件&lt;/span>
+$ sudo apt-get update
+$ sudo apt-get install &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> apt-transport-https &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> ca-certificates &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> curl &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> gnupg-agent &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> software-properties-common
+&lt;span class="c1"># 安装gpg key&lt;/span>
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg &lt;span class="p">|&lt;/span> sudo apt-key add -
+&lt;span class="c1"># 验证gpg key&lt;/span>
+$ sudo apt-key fingerprint 0EBFCD88
+&lt;span class="c1"># 添加 repo&lt;/span>
+$ sudo add-apt-repository &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> &lt;span class="s2">&amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+&lt;/span>&lt;span class="s2"> &lt;/span>&lt;span class="k">$(&lt;/span>lsb_release -cs&lt;span class="k">)&lt;/span>&lt;span class="s2"> \
+&lt;/span>&lt;span class="s2"> stable&amp;#34;&lt;/span>
+&lt;span class="c1"># 安装containerd&lt;/span>
+$ sudo apt-get update
+$ sudo apt-get install containerd.io
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a class="link" href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener"
+>安装参考&lt;/a>&lt;/p>
+&lt;h3 id="配置修改适配-zfs">配置修改适配 zfs&lt;/h3>
+&lt;p>查看 zfs 插件&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo ctr plugins ls &lt;span class="p">|&lt;/span> grep zfs
+io.containerd.snapshotter.v1 zfs linux/amd64 ok
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>准备config.toml&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.bk
+$ sudo chmod &lt;span class="m">646&lt;/span> /etc/containerd/config.toml
+$ sudo containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改&lt;code>snapshotter&lt;/code>为&lt;code>zfs&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd&lt;span class="o">]&lt;/span>
+&lt;span class="c1">#snapshotter = &amp;#34;overlayfs&amp;#34;&lt;/span>
+&lt;span class="nv">snapshotter&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;zfs&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>重启&lt;code>containerd&lt;/code>，&lt;code>containerd&lt;/code>不支持配置热加载&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo systemctl restart containerd
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="挂载-zfs-到containerd指定目录">挂载 zfs 到containerd指定目录&lt;/h3>
+&lt;h4 id="查询-pool">查询 pool&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo zpool list
+NAME SIZE ALLOC FREE CKPOINT EXPANDSZ FRAG CAP DEDUP HEALTH ALTROOT
+rpool 460G 8.64G 451G - - 0% 1% 1.00x ONLINE -
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="挂载目录">挂载目录&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo zfs create -o &lt;span class="nv">mountpoint&lt;/span>&lt;span class="o">=&lt;/span>/var/lib/containerd/io.containerd.snapshotter.v1.zfs rpool/containerd
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="查看挂载的目录">查看挂载的目录&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo zfs list
+NAME USED AVAIL REFER MOUNTPOINT
+...
+rpool/containerd 96K 437G 96K /var/lib/containerd/io.containerd.snapshotter.v1.zfs
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="验证">验证&lt;/h3>
+&lt;h4 id="拉取镜像">拉取镜像&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo ctr i pull --snapshotter&lt;span class="o">=&lt;/span>zfs docker.io/library/nginx:1.17
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="启动容器">启动容器&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo ctr run --rm --net-host -d --snapshotter&lt;span class="o">=&lt;/span>zfs docker.io/library/nginx:1.17 &lt;span class="nb">test&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="查看nginx启动结果">查看nginx启动结果&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo ctr t ls
+TASK PID STATUS
+&lt;span class="nb">test&lt;/span> &lt;span class="m">1494537&lt;/span> RUNNING
+$ netstat -alptn &lt;span class="p">|&lt;/span> grep &lt;span class="m">80&lt;/span>
+tcp &lt;span class="m">0&lt;/span> &lt;span class="m">0&lt;/span> 0.0.0.0:80 0.0.0.0:* LISTEN -
+$ curl http://127.0.0.1:80 &lt;span class="c1"># 正常可访问&lt;/span>
+&amp;lt;!DOCTYPE html&amp;gt;
+...
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you &lt;span class="k">for&lt;/span> using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="待解决的问题">待解决的问题&lt;/h3>
+&lt;h4 id="问题-1">问题 1&lt;/h4>
+&lt;p>非root账户，sudo权限不指定参数&lt;code>snapshotter&lt;/code>创建container，提示&lt;code>ctr: failed to mount /tmp/containerd-mount589724034: invalid argument&lt;/code>，无法创建容器。&lt;/p>
+&lt;p>切换成root用户，依旧提示，但是容器可以正常创建&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="o">(&lt;/span>root&lt;span class="o">)&lt;/span>$ ctr run --rm --net-host -d docker.io/library/nginx:1.17 &lt;span class="nb">test&lt;/span>
+ctr: failed to mount /tmp/containerd-mount589724034: invalid argument
+&lt;span class="o">(&lt;/span>root&lt;span class="o">)&lt;/span>$ ctr t ls
+TASK PID STATUS
+&lt;span class="nb">test&lt;/span> &lt;span class="m">1494537&lt;/span> RUNNING
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="kubernetes-安装">kubernetes 安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">Client Version: version.Info&lt;span class="o">{&lt;/span>Major:&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>, Minor:&lt;span class="s2">&amp;#34;20&amp;#34;&lt;/span>, GitVersion:&lt;span class="s2">&amp;#34;v1.20.1&amp;#34;&lt;/span>, GitCommit:&lt;span class="s2">&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span>, GitTreeState:&lt;span class="s2">&amp;#34;clean&amp;#34;&lt;/span>, BuildDate:&lt;span class="s2">&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span>, GoVersion:&lt;span class="s2">&amp;#34;go1.15.5&amp;#34;&lt;/span>, Compiler:&lt;span class="s2">&amp;#34;gc&amp;#34;&lt;/span>, Platform:&lt;span class="s2">&amp;#34;linux/amd64&amp;#34;&lt;/span>&lt;span class="o">}&lt;/span>
+Server Version: version.Info&lt;span class="o">{&lt;/span>Major:&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>, Minor:&lt;span class="s2">&amp;#34;20&amp;#34;&lt;/span>, GitVersion:&lt;span class="s2">&amp;#34;v1.20.1&amp;#34;&lt;/span>, GitCommit:&lt;span class="s2">&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span>, GitTreeState:&lt;span class="s2">&amp;#34;clean&amp;#34;&lt;/span>, BuildDate:&lt;span class="s2">&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span>, GoVersion:&lt;span class="s2">&amp;#34;go1.15.5&amp;#34;&lt;/span>, Compiler:&lt;span class="s2">&amp;#34;gc&amp;#34;&lt;/span>, Platform:&lt;span class="s2">&amp;#34;linux/amd64&amp;#34;&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="安装-1">安装&lt;/h2>
+&lt;p>当前安装工具有很多，此处选择使用&lt;code>kubeadm&lt;/code>&lt;/p>
+&lt;h3 id="准备kubernetes-源使用阿里镜像源并安装必要组件">准备kubernetes 源(使用阿里镜像源)，并安装必要组件&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo apt-get update
+sudo apt-get install apt-transport-https
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg &lt;span class="p">|&lt;/span> sudo apt-key add -
+sudo cat &lt;span class="s">&amp;lt;&amp;lt; EOF &amp;gt;/etc/apt/sources.list.d/kubernetes.list
+&lt;/span>&lt;span class="s">deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+&lt;/span>&lt;span class="s">EOF&lt;/span>
+sudo apt-get update
+sudo apt-get install kubelet kubeadm kubectl
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>安装完成后 kubelet 服务会处于不断重启状态，暂时不需要关注，kubelet等待连接kube-apiserver，预期现象。&lt;/p>
+&lt;h2 id="启动kubernetes集群">启动kubernetes集群&lt;/h2>
+&lt;h4 id="准备容器镜像">准备容器镜像&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ kubeadm config images list &lt;span class="c1"># 查看需要准备的镜像&lt;/span>
+k8s.gcr.io/coredns:1.7.0
+k8s.gcr.io/etcd:3.4.13-0
+k8s.gcr.io/kube-apiserver:v1.20.1
+k8s.gcr.io/kube-controller-manager:v1.20.1
+k8s.gcr.io/kube-proxy:v1.20.1
+k8s.gcr.io/kube-scheduler:v1.20.1
+k8s.gcr.io/pause:3.2
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="containerd-镜像加速">containerd 镜像加速&lt;/h4>
+&lt;p>配置参考：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry.mirrors&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry.mirrors.&lt;span class="s2">&amp;#34;docker.io&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="c1">#endpoint = [&amp;#34;https://registry-1.docker.io&amp;#34;]&lt;/span>
+&lt;span class="nv">endpoint&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;https://as065r9f.mirror.aliyuncs.com&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="启动集群">启动集群&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ sudo kubeadm init --pod-network-cidr&lt;span class="o">=&lt;/span>10.10.0.0/16 --service-cidr&lt;span class="o">=&lt;/span>10.20.0.0/16 --kubernetes-version&lt;span class="o">=&lt;/span>v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
+&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&amp;ndash;kubernetes-version: 指定 kubernetes 版本；&lt;/li>
+&lt;li>&amp;ndash;apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；&lt;/li>
+&lt;li>&amp;ndash;pod-network-cidr：指定 Pod 的网络范围；&lt;/li>
+&lt;li>&amp;ndash;service-cidr：指定 Service 的网络范围；&lt;/li>
+&lt;li>&amp;ndash;cri-socket：指定cri(社区趋势：cri 采用 containerd)&lt;/li>
+&lt;/ul>
+&lt;h4 id="验证安装结果">验证安装结果&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 根据提示拷贝kubeconfig文件&lt;/span>
+$ kubectl version
+Client Version: version.Info&lt;span class="o">{&lt;/span>Major:&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>, Minor:&lt;span class="s2">&amp;#34;20&amp;#34;&lt;/span>, GitVersion:&lt;span class="s2">&amp;#34;v1.20.1&amp;#34;&lt;/span>, GitCommit:&lt;span class="s2">&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span>, GitTreeState:&lt;span class="s2">&amp;#34;clean&amp;#34;&lt;/span>, BuildDate:&lt;span class="s2">&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span>, GoVersion:&lt;span class="s2">&amp;#34;go1.15.5&amp;#34;&lt;/span>, Compiler:&lt;span class="s2">&amp;#34;gc&amp;#34;&lt;/span>, Platform:&lt;span class="s2">&amp;#34;linux/amd64&amp;#34;&lt;/span>&lt;span class="o">}&lt;/span>
+Server Version: version.Info&lt;span class="o">{&lt;/span>Major:&lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>, Minor:&lt;span class="s2">&amp;#34;20&amp;#34;&lt;/span>, GitVersion:&lt;span class="s2">&amp;#34;v1.20.1&amp;#34;&lt;/span>, GitCommit:&lt;span class="s2">&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span>, GitTreeState:&lt;span class="s2">&amp;#34;clean&amp;#34;&lt;/span>, BuildDate:&lt;span class="s2">&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span>, GoVersion:&lt;span class="s2">&amp;#34;go1.15.5&amp;#34;&lt;/span>, Compiler:&lt;span class="s2">&amp;#34;gc&amp;#34;&lt;/span>, Platform:&lt;span class="s2">&amp;#34;linux/amd64&amp;#34;&lt;/span>&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="flannel-安装">Flannel 安装&lt;/h2>
+&lt;p>kubernetes v1.17+ 版本&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>需要修改配置：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">net-conf.json: &lt;span class="p">|&lt;/span>
+&lt;span class="o">{&lt;/span>
+&lt;span class="s2">&amp;#34;Network&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;10.10.0.0/16&amp;#34;&lt;/span>, &lt;span class="c1"># kubeadm init 创建时使用的pod-network-cidr&lt;/span>
+&lt;span class="s2">&amp;#34;Backend&amp;#34;&lt;/span>: &lt;span class="o">{&lt;/span>
+&lt;span class="s2">&amp;#34;Type&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;vxlan&amp;#34;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a class="link" href="https://github.com/coreos/flannel#flannel" target="_blank" rel="noopener"
+>参考连接&lt;/a>&lt;/p>
+&lt;h2 id="待解决问题">待解决问题&lt;/h2>
+&lt;p>containerd 一直会刷新 error 日志&lt;/p>
+&lt;p>&lt;code>Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time=&amp;quot;2021-01-11T17:49:51.380076683+08:00&amp;quot; level=error msg=&amp;quot;Failed to get usage for snapshot \&amp;quot;sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\&amp;quot;&amp;quot; error=&amp;quot;zfs does not implement Usage() yet&amp;quot;&lt;/code>&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/containerd/zfs/issues/17" target="_blank" rel="noopener"
+>参考issue&lt;/a>&lt;/p>
+&lt;h3 id="规避办法">规避办法&lt;/h3>
+&lt;p>暂时通过修改代码规避&lt;br>
+&lt;a class="link" href="https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c" target="_blank" rel="noopener"
+>bevisy/zfs&lt;/a>
+&lt;a class="link" href="https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6" target="_blank" rel="noopener"
+>bevisy/containerd&lt;/a>&lt;/p></description></item><item><title>Burn the Operating System Installation Disk on Mac</title><link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link><pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate><guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid><description>&lt;img src="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg" alt="Featured image of post Burn the Operating System Installation Disk on Mac" />&lt;h1 id="在macbook上烧录iso镜像制作操作系统盘">在Macbook上烧录iso镜像，制作操作系统盘&lt;/h1>
+&lt;h2 id="查看烧录u盘">查看烧录U盘&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil list &lt;span class="c1"># 例如：/dev/disk3&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="取消挂载u盘">取消挂载U盘&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil unmountDisk /dev/disk3
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="烧录">烧录&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># 以 ubuntu-20.04.iso 为例&lt;/span>
+sudo dd &lt;span class="k">if&lt;/span>&lt;span class="o">=&lt;/span>~/Downloads/ubuntu-20.04.iso &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/dev/disk3 &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>1m &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sync &lt;span class="c1"># sync 作用: 使缓存落盘&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="弹出u盘">弹出U盘&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil eject /dev/disk3
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install TigerVncServer On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link><pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate><guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid><description>&lt;h1 id="ubuntu-2004-安装-tigervncserver">Ubuntu 20.04 安装 Tigervncserver&lt;/h1>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 安装&lt;/span>
+$ sudo apt update
+$ sudo apt install xfce4 xfce4-goodies tigervnc-standalone-server &lt;span class="c1"># 推荐使用 xfce4 桌面&lt;/span>
+&lt;span class="c1"># 启动&lt;/span>
+$ vncpasswd &lt;span class="c1"># 配置 vnc 客户端连接密码&lt;/span>
+$ vncserver
+$ vncserver -kill :1 &lt;span class="c1"># 关闭创建的 vnc server&lt;/span>
+&lt;span class="c1"># 修改配置，解决黑屏和灰屏问题&lt;/span>
+$ touch &lt;span class="nv">$HOME&lt;/span>/.vnc/xstartup
+$ chmod u+x &lt;span class="nv">$HOME&lt;/span>/.vnc/xstartup
+$ cat &amp;gt; &lt;span class="nv">$HOME&lt;/span>/.vnc/xstartup &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;span class="s">#!/bin/sh
+&lt;/span>&lt;span class="s">unset SESSION_MANAGER
+&lt;/span>&lt;span class="s">unset DBUS_SESSION_BUS_ADDRESS
+&lt;/span>&lt;span class="s">[ -r $HOME/.Xresources ] &amp;amp;&amp;amp; xrdb $HOME/.Xresources
+&lt;/span>&lt;span class="s">xsetroot -solid grey
+&lt;/span>&lt;span class="s">xterm -geometry 80x24+10+10 -ls -title &amp;#34;$VNCDESKTOP Desktop&amp;#34; &amp;amp;
+&lt;/span>&lt;span class="s">startxfce4 &amp;amp;
+&lt;/span>&lt;span class="s">EOF&lt;/span>
+&lt;span class="c1"># 再次启动&lt;/span>
+$ vncserver :1 --geomotry 1366x768 &lt;span class="c1"># --geometry 参数随意&lt;/span>
+&lt;span class="c1"># 使用 vnc viewer 连接，端口号为 5091&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="使用-lxde-桌面">使用 lxde 桌面&lt;/h1>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># 安装&lt;/span>
+$ sudo apt install xorg lxde-core lxterminal
+&lt;span class="c1"># 配置 vncserver 启动桌面&lt;/span>
+$ cat &amp;gt; &lt;span class="nv">$HOME&lt;/span>/.vnc/xstartup &lt;span class="s">&amp;lt;&amp;lt; EOF
+&lt;/span>&lt;span class="s"> #!/bin/sh
+&lt;/span>&lt;span class="s"> lxterminal &amp;amp;
+&lt;/span>&lt;span class="s"> /usr/bin/lxsession -s LXDE &amp;amp;
+&lt;/span>&lt;span class="s"> EOF&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install Wechat Client On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</link><pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate><guid>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</guid><description>&lt;h1 id="ubuntu-2004-安装微信客户端">Ubuntu 20.04 安装微信客户端&lt;/h1>
+&lt;h2 id="clone-repo">clone repo&lt;/h2>
+&lt;p>&lt;a class="link" href="https://github.com/bevisy/deepin-wine-ubuntu" target="_blank" rel="noopener"
+>deepin-wine-ubuntu &lt;/a>&lt;/p>
+&lt;h2 id="执行脚本">执行脚本&lt;/h2>
+&lt;p>&lt;code>sudo chmod a+x install_2.8.22.sh &amp;amp;&amp;amp; ./install_2.8.22.sh&lt;/code>&lt;/p>
+&lt;h2 id="下载微信deb包并安装">下载微信deb包，并安装&lt;/h2>
+&lt;p>&lt;a class="link" href="https://packages.deepin.com/deepin/pool/non-free/d/deepin.com.wechat/deepin.com.wechat_2.6.8.65deepin0_i386.deb" target="_blank" rel="noopener"
+>下载地址&lt;/a>&lt;/p>
+&lt;h3 id="安装微信">安装微信：&lt;/h3>
+&lt;p>&lt;code>sudo dpkg –i deepin.com.wechat_2.6.8.65deepin0_i386.deb&lt;/code>&lt;/p>
+&lt;h3 id="安装字体参考issuehttpsgithubcomwszqkzqkdeepin-wine-ubuntuissues253">安装字体：(参考issue：https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/253)&lt;/h3>
+&lt;p>&lt;code>sudo apt install fonts-wqy-microhei fonts-wqy-zenhei&lt;/code>&lt;/p></description></item><item><title>Ubuntu 20.04 显示器分辨率模式调整</title><link>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</link><pubDate>Mon, 27 Jul 2020 10:24:29 +0800</pubDate><guid>https://bevisy.github.io/p/ubuntu-20.04-%E6%98%BE%E7%A4%BA%E5%99%A8%E5%88%86%E8%BE%A8%E7%8E%87%E6%A8%A1%E5%BC%8F%E8%B0%83%E6%95%B4/</guid><description>&lt;h1 id="ubuntu-2004-显示器分辨率模式调整">Ubuntu 20.04 显示器分辨率模式调整&lt;/h1>
+&lt;h2 id="问题描述">问题描述&lt;/h2>
+&lt;p>Ubuntu 20.04 提示无法识别显示器，默认以分辨率1024x768(4:3)展示&lt;/p>
+&lt;h2 id="问题解决">问题解决&lt;/h2>
+&lt;p>添加新的分辨率模式&lt;/p>
+&lt;h3 id="查询输出接口">查询输出接口&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ xrandr
+Screen 0: minimum &lt;span class="m">320&lt;/span> x 200, current &lt;span class="m">2624&lt;/span> x 900, maximum &lt;span class="m">16384&lt;/span> x &lt;span class="m">16384&lt;/span>
+eDP-1 connected primary 1600x900+0+0 &lt;span class="o">(&lt;/span>normal left inverted right x axis y axis&lt;span class="o">)&lt;/span> 309mm x 174mm
+1600x900 60.01*+ 59.99 59.94 59.95 59.82
+1440x900 59.89
+...
+360x202 59.51 59.13
+320x180 59.84 59.32
+DP-1 disconnected &lt;span class="o">(&lt;/span>normal left inverted right x axis y axis&lt;span class="o">)&lt;/span>
+HDMI-1 disconnected &lt;span class="o">(&lt;/span>normal left inverted right x axis y axis&lt;span class="o">)&lt;/span>
+DP-2 connected 1024x768+1600+0 &lt;span class="o">(&lt;/span>normal left inverted right x axis y axis&lt;span class="o">)&lt;/span> 0mm x 0mm &lt;span class="c1"># 注意此行&lt;/span>
+1024x768 60.00*
+800x600 60.32 56.25
+848x480 60.00
+640x480 59.94
+HDMI-2 disconnected &lt;span class="o">(&lt;/span>normal left inverted right x axis y axis&lt;span class="o">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>外界显示器输出接口为 DP-2&lt;/p>
+&lt;h3 id="生成分辨率模式并添加">生成分辨率模式并添加&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ cvt &lt;span class="m">1920&lt;/span> &lt;span class="m">1080&lt;/span>
+&lt;span class="c1"># 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz&lt;/span>
+Modeline &lt;span class="s2">&amp;#34;1920x1080_60.00&amp;#34;&lt;/span> 173.00 &lt;span class="m">1920&lt;/span> &lt;span class="m">2048&lt;/span> &lt;span class="m">2248&lt;/span> &lt;span class="m">2576&lt;/span> &lt;span class="m">1080&lt;/span> &lt;span class="m">1083&lt;/span> &lt;span class="m">1088&lt;/span> &lt;span class="m">1120&lt;/span> -hsync +vsync
+&lt;span class="c1"># 新建分辨率模式(可以不执行)&lt;/span>
+$ sudo xrandr --newmode &lt;span class="s2">&amp;#34;1920x1080_60.00&amp;#34;&lt;/span> 173.00 &lt;span class="m">1920&lt;/span> &lt;span class="m">2048&lt;/span> &lt;span class="m">2248&lt;/span> &lt;span class="m">2576&lt;/span> &lt;span class="m">1080&lt;/span> &lt;span class="m">1083&lt;/span> &lt;span class="m">1088&lt;/span> &lt;span class="m">1120&lt;/span> -hsync +vsync
+&lt;span class="c1"># 添加分辨率模式&lt;/span>
+$ sudo xrandr --addmode DP-2 &lt;span class="s2">&amp;#34;1920x1080_60.00&amp;#34;&lt;/span>
+$ sudo xrandr --output DP-2 &lt;span class="s2">&amp;#34;1920x1080_60.00&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>这里主要是通过修改输出信号来适配外接显示器，实际上外接显示器的型号未识别。&lt;/p></description></item><item><title>Kata-containers Compile And Installed</title><link>https://bevisy.github.io/p/kata-containers-compile-and-installed/</link><pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-compile-and-installed/</guid><description>&lt;p>[TOC]&lt;/p>
+&lt;h1 id="kata-containers-编译安装">kata-containers 编译安装&lt;/h1>
+&lt;h2 id="kata-runtime-编译安装">kata-runtime 编译安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/runtime
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/runtime
+&lt;span class="c1"># compile and install&lt;/span>
+$ make
+$ make install
+&lt;span class="c1"># Install Dir&lt;/span>
+/usr/libexec/kata-containers/kata-netmon
+/usr/local/bin/kata-runtime
+/usr/local/bin/containerd-shim-kata-v2
+/usr/share/defaults/kata-containers/*
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="kata-shim-编译安装">kata-shim 编译安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/shim
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">GOTAH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/shim
+&lt;span class="c1"># compile and install &lt;/span>
+$ makn
+$ make install
+&lt;span class="c1"># Install Dir&lt;/span>
+/usr/libexec/kata-containers/kata-shim
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="kata-proxy-编译安装">kata-proxy 编译安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/proxy
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">GOTAH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/proxy
+&lt;span class="c1"># compile and install &lt;/span>
+$ make
+$ make install
+&lt;span class="c1"># Install Dir&lt;/span>
+/usr/libexec/kata-containers/kata-proxy
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译-kata-所需的-kernel">编译 kata 所需的 kernel&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/packaging
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">GOTAH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/packaging/kernel
+$ git checkout stable-1.12
+&lt;span class="c1"># On Ubuntu20.04 should install some essential packages&lt;/span>
+$ sudo apt install -y &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> gcc &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> make &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libncurses5-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> openssl &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libssl-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> build-essential &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> pkg-config &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libc6-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> bison &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> flex &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libelf-dev
+&lt;span class="c1"># Also you should install yq from github: https://github.com/mikefarah/yq&lt;/span>
+&lt;span class="c1"># 注意：如果缺少依赖，会导致内核编译所需要的 .config 文件，无法主动生成，可以将 configs/ 和 configs/fragments 目录下对应文件拼接成完整文件。&lt;/span>
+$ ./build-kernel.sh -v 5.4.60 -f -d setup &lt;span class="c1"># stable-1.12 支持的最新LTS内核&lt;/span>
+&lt;span class="c1"># compile kernel&lt;/span>
+$ ./build-kernel.sh -v 5.4.60 -f -d build
+&lt;span class="c1"># Output File:&lt;/span>
+&lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/packaging/kernel/kata-linux-5.4.60-89/vmlinux
+&lt;span class="c1"># Install Dir:&lt;/span>
+/usr/share/kata-containers/vmlinux
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译-agent--可选">编译 agent (可选)&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">$ go get -d -u github.com/kata-containers/agent
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/agent &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> make
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译-rootfs-文件系统">编译 rootfs 文件系统&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># stable-1.10 方法&lt;/span>
+&lt;span class="c1"># Download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/osbuilder
+&lt;span class="c1"># generate rootfs&lt;/span>
+$ &lt;span class="nb">export&lt;/span> &lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+$ sudo rm -rf &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder/rootfs-builder
+&lt;span class="c1"># ${distro} 需要替换成具体的系统，推荐 centos&lt;/span>
+&lt;span class="c1"># 此处增加额外的包，是为了后续便于进入虚拟机调试&lt;/span>
+&lt;span class="c1">#$ script -fec &amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils&amp;#34; ./rootfs.sh ${distro}&amp;#39;&lt;/span>
+$ script -fec &lt;span class="s1">&amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils vim net-tools procps curl iproute&amp;#34; http_proxy=http://{proxy}:{ip} https_proxy=http://{proxy}:{ip} ./rootfs.sh ${distro}&amp;#39;&lt;/span>
+&lt;span class="c1"># 由于网络原因，可以构建时候添加 http_proxy 代理;&lt;/span>
+$ script -fec &lt;span class="s1">&amp;#39;sudo -E GOPATH=$GOPATH USE_DOCKER=true EXTRA_PKGS=&amp;#34;bash coreutils&amp;#34; http_proxt=http://{IP}:{PORT} ./rootfs.sh ${distro}&amp;#39;&lt;/span>
+&lt;span class="c1"># 开启vm debug（host进入vm）&lt;/span>
+&lt;span class="c1">## 方案一(官方文档目前的方案，支持kata-containers 1.10.7;kata-agent 1.10.7)&lt;/span>
+&lt;span class="c1">## 1.确保rootfs已安装 bash coreutils&lt;/span>
+&lt;span class="c1">## 2./etc/kata-containers/configuration.toml 配置文件修改&lt;/span>
+$ sudo sed -i -e &lt;span class="s1">&amp;#39;s/^kernel_params = &amp;#34;\(.*\)&amp;#34;/kernel_params = &amp;#34;\1 agent.debug_console&amp;#34;/g&amp;#39;&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">kata_configuration_file&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;span class="c1">## 3.确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true）&lt;/span>
+$ sudo awk &lt;span class="s1">&amp;#39;{if (/^\[proxy\.kata\]/) {got=1}; if (got == 1 &amp;amp;&amp;amp; /^.*enable_debug/) {print &amp;#34;#enable_debug = true&amp;#34;; got=0; next; } else {print}}&amp;#39;&lt;/span> /etc/kata-containers/configuration.toml &amp;gt; /tmp/configuration.toml
+&lt;span class="c1">## 4.使用 socat 访问，回车可进入bash，虚拟机刚启动会刷新大量日志，等待日志刷新完毕即可&lt;/span>
+&lt;span class="c1"># 方案二（之前使用的方案，也是官方方案，通过添加额外的kata-debug.service，相比方案一qemu无需传递内核参数agent.debug_console，同样确保配置文件的[proxy.kata] enable_debug 不为 true （默认不为true））&lt;/span>
+&lt;span class="c1"># Create a debug systemd service&lt;/span>
+$ cat &lt;span class="s">&amp;lt;&amp;lt;EOT | sudo tee ${ROOTFS_DIR}/lib/systemd/system/kata-debug.service
+&lt;/span>&lt;span class="s">[Unit]
+&lt;/span>&lt;span class="s">Description=Kata Containers debug console
+&lt;/span>&lt;span class="s">
+&lt;/span>&lt;span class="s">[Service]
+&lt;/span>&lt;span class="s">Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+&lt;/span>&lt;span class="s">StandardInput=tty
+&lt;/span>&lt;span class="s">StandardOutput=tty
+&lt;/span>&lt;span class="s"># Must be disabled to allow the job to access the real console
+&lt;/span>&lt;span class="s">PrivateDevices=no
+&lt;/span>&lt;span class="s">Type=simple
+&lt;/span>&lt;span class="s">ExecStart=/bin/bash
+&lt;/span>&lt;span class="s">Restart=always
+&lt;/span>&lt;span class="s">EOT&lt;/span>
+&lt;span class="c1"># Add a dependency to start the debug console:&lt;/span>
+$ sudo sed -i &lt;span class="s1">&amp;#39;$a Requires=kata-debug.service&amp;#39;&lt;/span> &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>/lib/systemd/system/kata-containers.target
+&lt;span class="c1"># Output File:&lt;/span>
+&lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/osbuilder/rootfs-builder/rootfs
+&lt;span class="c1"># 注意事项&lt;/span>
+&lt;span class="c1"># 1.安全容器开启debug console后，host使用socat访问vm，访问console.sock一次只允许一个连接，如果已存在进入虚拟机的连接，则其它连接均被阻塞&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># stable-1.12&lt;/span>
+&lt;span class="c1"># Download source code&lt;/span>
+$ go get -d -u github.com/kata-containers/osbuilder
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder
+&lt;span class="c1"># 构建rootfs&lt;/span>
+mkdir -p &lt;span class="si">${&lt;/span>&lt;span class="nv">PWD&lt;/span>&lt;span class="si">}&lt;/span>/myrootfs
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">USE_DOCKER&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span>
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">EXTRA_PKGS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;vim bash coreutils vim net-tools procps curl iproute&amp;#34;&lt;/span>
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">AGENT_VERSION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;1.12.0&amp;#34;&lt;/span>
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">AGENT_SOURCE_BIN&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$GOPATH&lt;/span>&lt;span class="s2">/src/github.com/kata-containers/agent&amp;#34;&lt;/span> &lt;span class="c1"># kata-agent 二进制文件目录&lt;/span>
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">http_proxy&lt;/span>&lt;span class="o">=&lt;/span>http://&lt;span class="o">{}&lt;/span>
+&lt;span class="nb">export&lt;/span> &lt;span class="nv">https_proxy&lt;/span>&lt;span class="o">=&lt;/span>http://&lt;span class="o">{}&lt;/span>
+./rootfs-builder/rootfs.sh -r &lt;span class="si">${&lt;/span>&lt;span class="nv">PWD&lt;/span>&lt;span class="si">}&lt;/span>/myrootfs centos &lt;span class="c1"># 可根据需求修改 distro&lt;/span>
+&lt;span class="c1">## 如果出现镜像构建在下载github文件卡住，可将对应{distro}目录下的Dockerfile.in模板，直接添加上ENV proxy&lt;/span>
+&lt;span class="c1"># 构建img&lt;/span>
+&lt;span class="c1"># build image based rootfs created above&lt;/span>
+sudo &lt;span class="nv">USE_DOCKER&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span> ./image-builder/image_builder.sh &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">PWD&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/myrootfs&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译-rootfsimg">编译 rootfs.img&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># stable-1.10 方法&lt;/span>
+&lt;span class="c1"># make sure rootfs is not MODIFIED!!! if you want to add new Agent&lt;/span>
+&lt;span class="c1"># install agent (optional)&lt;/span>
+$ sudo install -o root -g root -m &lt;span class="m">0550&lt;/span> -t &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>/bin ../../agent/kata-agent
+$ sudo install -o root -g root -m &lt;span class="m">0440&lt;/span> ../../agent/kata-agent.service &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>/usr/lib/systemd/system/
+$ sudo install -o root -g root -m &lt;span class="m">0440&lt;/span> ../../agent/kata-containers.target &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>/usr/lib/systemd/system/
+&lt;span class="c1"># Compile&lt;/span>
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder/image-builder
+$ script -fec &lt;span class="s1">&amp;#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span>
+&lt;span class="c1"># install&lt;/span>
+$ &lt;span class="nv">commit&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git log --format&lt;span class="o">=&lt;/span>%h -1 HEAD&lt;span class="k">)&lt;/span>
+$ &lt;span class="nv">date&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%Y-%m-%d-%T.%N%z&lt;span class="k">)&lt;/span>
+$ &lt;span class="nv">image&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;kata-containers-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">date&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">commit&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+$ sudo install -o root -g root -m &lt;span class="m">0640&lt;/span> -D kata-containers.img &lt;span class="s2">&amp;#34;/usr/share/kata-containers/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">image&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+$ &lt;span class="o">(&lt;/span>&lt;span class="nb">cd&lt;/span> /usr/share/kata-containers &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo ln -sf &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$image&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> kata-containers.img&lt;span class="o">)&lt;/span>
+&lt;span class="c1"># Output File:&lt;/span>
+&lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder/image-builder/kata-containers.img
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译-initrdimg">编译 initrd.img&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># make sure rootfs is not MODIFIED!!! if you want to add new Agent&lt;/span>
+&lt;span class="c1"># install agent(optional)&lt;/span>
+$ sudo install -o root -g root -m &lt;span class="m">0550&lt;/span> -T ../../agent/kata-agent &lt;span class="si">${&lt;/span>&lt;span class="nv">ROOTFS_DIR&lt;/span>&lt;span class="si">}&lt;/span>/sbin/init
+&lt;span class="c1"># Compile&lt;/span>
+$ &lt;span class="nb">cd&lt;/span> &lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder/initrd-builder
+$ script -fec &lt;span class="s1">&amp;#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span>
+&lt;span class="c1"># install&lt;/span>
+$ &lt;span class="nv">commit&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>git log --format&lt;span class="o">=&lt;/span>%h -1 HEAD&lt;span class="k">)&lt;/span>
+$ &lt;span class="nv">date&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%Y-%m-%d-%T.%N%z&lt;span class="k">)&lt;/span>
+$ &lt;span class="nv">image&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;kata-containers-initrd-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">date&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">commit&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+$ sudo install -o root -g root -m &lt;span class="m">0640&lt;/span> -D kata-containers-initrd.img &lt;span class="s2">&amp;#34;/usr/share/kata-containers/&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">image&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+$ &lt;span class="o">(&lt;/span>&lt;span class="nb">cd&lt;/span> /usr/share/kata-containers &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sudo ln -sf &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$image&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> kata-containers-initrd.img&lt;span class="o">)&lt;/span>
+&lt;span class="c1"># Output File:&lt;/span>
+&lt;span class="nv">$GOPATH&lt;/span>/src/github.com/kata-containers/osbuilder/initrd-builder/kata-containers-initrd.img
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="编译-qemu-on-aarch64">编译 qemu on aarch64&lt;/h1>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 下载代码&lt;/span>
+$ go get -d github.com/kata-containers/tests
+&lt;span class="c1"># 准备依赖&lt;/span>
+$ sudo apt install -y libcap-ng-dev libglib2.0-dev libpixman-1-dev librbd-dev libattr1-dev libcap-dev
+&lt;span class="c1"># 编译构建&lt;/span>
+$ script -fec &lt;span class="s1">&amp;#39;sudo -E ${GOPATH}/src/github.com/kata-containers/tests/.ci/install_qemu.sh&amp;#39;&lt;/span>
+&lt;span class="c1"># 注意：如果安装失败，清直接删除文件夹，然后重新跑升级脚本&lt;/span>
+$ sudo rm -rf &lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/kata-containers/packaging &lt;span class="c1"># 可不操作&lt;/span>
+$ sudo rm -rf &lt;span class="si">${&lt;/span>&lt;span class="nv">GOPATH&lt;/span>&lt;span class="si">}&lt;/span>/src/github.com/qemu
+&lt;span class="c1"># 如果需要编译指定代码分支的qemu版本，需要切换tests分支，以及packaging分支为同一分支&lt;/span>
+&lt;span class="c1"># 由于脚本.ci/install_qemu.sh go get 获取packaging代码后未切换分支，所以需要构建失败后，手动切换分支&lt;/span>
+&lt;span class="c1"># 目前已知最新的版本的qemu patch是针对qemu 5.1的，并不能直接使用master代码，会导致patch合入失败&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="docker-对接-kata-runtime">Docker 对接 kata-runtime&lt;/h1>
+&lt;p>修改 Docker 配置文件&lt;code>/etc/docker/daemon.json&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="o">{&lt;/span>
+&lt;span class="s2">&amp;#34;debug&amp;#34;&lt;/span>: true,
+&lt;span class="s2">&amp;#34;default-runtime&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;runc&amp;#34;&lt;/span>, &lt;span class="c1"># 可替换成 kata-runtime&lt;/span>
+&lt;span class="s2">&amp;#34;runtimes&amp;#34;&lt;/span>: &lt;span class="o">{&lt;/span>
+&lt;span class="s2">&amp;#34;kata&amp;#34;&lt;/span>: &lt;span class="o">{&lt;/span>
+&lt;span class="s2">&amp;#34;path&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;/usr/local/bin/kata-runtime&amp;#34;&lt;/span> &lt;span class="c1"># 不支持直接配置成 containerd-shim-kata-v2&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>重启 docker 服务（必须）&lt;/p>
+&lt;p>验证修改生效&lt;/p>
+&lt;p>&lt;code>sudo docker run --rm --name test busybox:latest uname -a&lt;/code> 与宿主机内核对比，验证是否生效&lt;/p>
+&lt;h2 id="调试-kata-runtime">调试 kata-runtime&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># docker 开启 debug: /etc/docker/daemon.json 添加参数 (需重启服务)&lt;/span>
+&lt;span class="o">{&lt;/span> &lt;span class="s2">&amp;#34;debug&amp;#34;&lt;/span>: &lt;span class="nb">true&lt;/span> &lt;span class="o">}&lt;/span>
+&lt;span class="c1"># kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug&lt;/span>
+&lt;span class="c1"># 查看日志&lt;/span>
+$ journalctl -ft kata-runtime
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="containerd-对接-containerd-shim-kata-v2">Containerd 对接 containerd-shim-kata-v2&lt;/h1>
+&lt;p>修改 containerd 的配置&lt;code>/etc/containerd/config.toml&lt;/code>&lt;/p>
+&lt;p>&lt;code>containerd config default&lt;/code> 生成当前版本默认配置&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nv">version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2&lt;/span>
+&lt;span class="nv">root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/var/lib/containerd&amp;#34;&lt;/span>
+&lt;span class="nv">state&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/run/containerd&amp;#34;&lt;/span>
+&lt;span class="nv">plugin_dir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">disabled_plugins&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="nv">required_plugins&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="nv">oom_score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="o">[&lt;/span>grpc&lt;span class="o">]&lt;/span>
+&lt;span class="nv">address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/run/containerd/containerd.sock&amp;#34;&lt;/span>
+&lt;span class="nv">tcp_address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">tcp_tls_cert&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">tcp_tls_key&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">uid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">gid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">max_recv_message_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">16777216&lt;/span>
+&lt;span class="nv">max_send_message_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">16777216&lt;/span>
+&lt;span class="o">[&lt;/span>ttrpc&lt;span class="o">]&lt;/span>
+&lt;span class="nv">address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">uid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">gid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="o">[&lt;/span>debug&lt;span class="o">]&lt;/span>
+&lt;span class="nv">address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">uid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">gid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">level&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;debug&amp;#34;&lt;/span> &lt;span class="c1"># 开启debug&lt;/span>
+&lt;span class="o">[&lt;/span>metrics&lt;span class="o">]&lt;/span>
+&lt;span class="nv">address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">grpc_histogram&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>cgroup&lt;span class="o">]&lt;/span>
+&lt;span class="nv">path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>timeouts&lt;span class="o">]&lt;/span>
+&lt;span class="s2">&amp;#34;io.containerd.timeout.shim.cleanup&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;5s&amp;#34;&lt;/span>
+&lt;span class="s2">&amp;#34;io.containerd.timeout.shim.load&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;5s&amp;#34;&lt;/span>
+&lt;span class="s2">&amp;#34;io.containerd.timeout.shim.shutdown&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;3s&amp;#34;&lt;/span>
+&lt;span class="s2">&amp;#34;io.containerd.timeout.task.state&amp;#34;&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;2s&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.gc.v1.scheduler&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">pause_threshold&lt;/span> &lt;span class="o">=&lt;/span> 0.02
+&lt;span class="nv">deletion_threshold&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;span class="nv">mutation_threshold&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">100&lt;/span>
+&lt;span class="nv">schedule_delay&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;0s&amp;#34;&lt;/span>
+&lt;span class="nv">startup_delay&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;100ms&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">disable_tcp_service&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;span class="nv">stream_server_address&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;127.0.0.1&amp;#34;&lt;/span>
+&lt;span class="nv">stream_server_port&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;0&amp;#34;&lt;/span>
+&lt;span class="nv">stream_idle_timeout&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;4h0m0s&amp;#34;&lt;/span>
+&lt;span class="nv">enable_selinux&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">sandbox_image&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;k8s.gcr.io/pause:3.1&amp;#34;&lt;/span>
+&lt;span class="nv">stats_collect_period&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">10&lt;/span>
+&lt;span class="nv">systemd_cgroup&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">enable_tls_streaming&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">max_container_log_line_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">16384&lt;/span>
+&lt;span class="nv">disable_cgroup&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">disable_apparmor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">restrict_oom_score_adj&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">max_concurrent_downloads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">3&lt;/span>
+&lt;span class="nv">disable_proc_mount&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd&lt;span class="o">]&lt;/span>
+&lt;span class="nv">snapshotter&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;overlayfs&amp;#34;&lt;/span>
+&lt;span class="nv">default_runtime_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;runc&amp;#34;&lt;/span>
+&lt;span class="nv">no_pivot&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd.default_runtime&lt;span class="o">]&lt;/span>
+&lt;span class="nv">runtime_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_engine&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">privileged_without_host_devices&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd.untrusted_workload_runtime&lt;span class="o">]&lt;/span>
+&lt;span class="nv">runtime_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_engine&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">privileged_without_host_devices&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd.runtimes&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd.runtimes.runc&lt;span class="o">]&lt;/span>
+&lt;span class="nv">runtime_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;io.containerd.runc.v1&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_engine&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">privileged_without_host_devices&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.containerd.runtimes.kata&lt;span class="o">]&lt;/span> &lt;span class="c1"># 新增&lt;/span>
+&lt;span class="nv">runtime_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_engine&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">privileged_without_host_devices&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.cni&lt;span class="o">]&lt;/span>
+&lt;span class="nv">bin_dir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/cni/bin&amp;#34;&lt;/span>
+&lt;span class="nv">conf_dir&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/etc/cni/net.d&amp;#34;&lt;/span>
+&lt;span class="nv">max_conf_num&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;span class="nv">conf_template&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry.mirrors&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.registry.mirrors.&lt;span class="s2">&amp;#34;docker.io&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">endpoint&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;https://registry-1.docker.io&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span>.x509_key_pair_streaming&lt;span class="o">]&lt;/span>
+&lt;span class="nv">tls_cert_file&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">tls_key_file&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.internal.v1.opt&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/containerd&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.internal.v1.restart&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">interval&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;10s&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.metadata.v1.bolt&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">content_sharing_policy&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;shared&amp;#34;&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.monitor.v1.cgroups&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">no_prometheus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.runtime.v1.linux&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">shim&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;containerd-shim&amp;#34;&lt;/span>
+&lt;span class="nv">runtime&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;runc&amp;#34;&lt;/span>
+&lt;span class="nv">runtime_root&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">no_shim&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">shim_debug&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.runtime.v2.task&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">platforms&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;linux/amd64&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.service.v1.diff-service&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">default&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;walking&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>plugins.&lt;span class="s2">&amp;#34;io.containerd.snapshotter.v1.devmapper&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>
+&lt;span class="nv">root_path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">pool_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">base_image_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>注意： 确保&lt;code>containerd-shim-kata-v2&lt;/code> 文件在 $PATH 目录下&lt;/p>
+&lt;p>验证：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 创建容器&lt;/span>
+sudo ctr -n testns run --runtime io.containerd.kata.v2 -d --rm docker.io/library/busybox:latest busybox
+&lt;span class="c1"># 查看容器 id&lt;/span>
+sudo ctr -n testns t ls
+&lt;span class="c1"># 进入容器&lt;/span>
+sudo ctr -n testns t &lt;span class="nb">exec&lt;/span> -t --exec-id &lt;span class="o">{&lt;/span>ID&lt;span class="o">}&lt;/span> busybox sh
+&lt;span class="c1"># 查看内核版本&lt;/span>
+$ uname -a &lt;span class="c1"># 对比宿主机内核&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="调试-containerd-shim-runtime-v2">调试 containerd-shim-runtime-v2&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># containerd 配置开启 debug(需重启服务)&lt;/span>
+&lt;span class="c1"># kata配置文件/etc/kata-containers/configuration.toml，开启 enable_debug (需重新创建安全容器)&lt;/span>
+&lt;span class="c1"># 查看日志&lt;/span>
+$ journalctl -ft kata
+&lt;/code>&lt;/pre>&lt;/div>&lt;h1 id="附录">附录&lt;/h1>
+&lt;h2 id="kata-containers-20-安装">kata-containers 2.0 安装&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>下载release包&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/kata-containers/kata-containers/releases" target="_blank" rel="noopener"
+>Release 地址&lt;/a>&lt;/p>
+&lt;p>下载 &lt;a class="link" href="https://github.com/kata-containers/kata-containers/releases/tag/2.0.0-alpha3" target="_blank" rel="noopener"
+>Kata Containers 2.0.0-alpha3&lt;/a>&lt;/p>
+&lt;p>解压后，拷贝至文件夹 &lt;code>/opt&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>准备配置文件和&lt;code>containerd-shim-kata-v2&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 准备配置文件&lt;/span>
+$ cp /opt/kata/share/defaults/kata-containers/configuration-qemu.toml /etc/kata-containers/configuration.toml
+&lt;span class="c1"># 准备 containerd-shim-kata-v2&lt;/span>
+$ cp /opt/kata/bin/containerd-shim-kata-v2 /usr/local/bin/
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>配置文件修改如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="o">[&lt;/span>hypervisor.qemu&lt;span class="o">]&lt;/span>
+&lt;span class="nv">path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/kata/bin/qemu-system-x86_64&amp;#34;&lt;/span>
+&lt;span class="nv">kernel&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/kata/share/kata-containers/vmlinuz.container&amp;#34;&lt;/span>
+&lt;span class="nv">image&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/kata/share/kata-containers/kata-containers.img&amp;#34;&lt;/span>
+&lt;span class="nv">machine_type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;pc&amp;#34;&lt;/span>
+&lt;span class="nv">kernel_params&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">firmware&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">machine_accelerators&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="nv">cpu_features&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;pmu=off&amp;#34;&lt;/span>
+&lt;span class="nv">default_vcpus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;span class="nv">default_maxvcpus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2&lt;/span>
+&lt;span class="nv">default_bridges&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;span class="nv">default_memory&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2048&lt;/span>
+&lt;span class="nv">disable_block_device_use&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">shared_fs&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;virtio-9p&amp;#34;&lt;/span>
+&lt;span class="nv">virtio_fs_daemon&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/kata/bin/virtiofsd&amp;#34;&lt;/span>
+&lt;span class="nv">virtio_fs_cache_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1024&lt;/span>
+&lt;span class="nv">virtio_fs_extra_args&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">[]&lt;/span>
+&lt;span class="nv">virtio_fs_cache&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;auto&amp;#34;&lt;/span>
+&lt;span class="nv">block_device_driver&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;virtio-scsi&amp;#34;&lt;/span>
+&lt;span class="nv">enable_iothreads&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">enable_vhost_user_store&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">false&lt;/span>
+&lt;span class="nv">vhost_user_store_path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/var/run/kata-containers/vhost-user&amp;#34;&lt;/span>
+&lt;span class="nv">enable_debug&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;span class="o">[&lt;/span>factory&lt;span class="o">]&lt;/span>
+&lt;span class="o">[&lt;/span>agent.kata&lt;span class="o">]&lt;/span>
+&lt;span class="nv">enable_debug&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;span class="nv">kernel_modules&lt;/span>&lt;span class="o">=[]&lt;/span>
+&lt;span class="o">[&lt;/span>netmon&lt;span class="o">]&lt;/span>
+&lt;span class="nv">path&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;/opt/kata/libexec/kata-containers/kata-netmon&amp;#34;&lt;/span>
+&lt;span class="nv">enable_debug&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;span class="o">[&lt;/span>runtime&lt;span class="o">]&lt;/span>
+&lt;span class="nv">enable_debug&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;span class="nv">internetworking_model&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;tcfilter&amp;#34;&lt;/span>
+&lt;span class="nv">disable_guest_seccomp&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">true&lt;/span>
+&lt;span class="nv">sandbox_cgroup_only&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">false&lt;/span>
+&lt;span class="nv">experimental&lt;/span>&lt;span class="o">=[]&lt;/span>
+&lt;span class="nv">EnablePprof&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">true&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol>
+&lt;h2 id="对接docker和containerd需要注意">对接docker和containerd需要注意&lt;/h2>
+&lt;p>注意：此版本无法与 docker配合使用，与containerd 使用正常。&lt;/p>
+&lt;h1 id="问题探讨">问题探讨&lt;/h1>
+&lt;h2 id="1如果关闭用来开启debug-console的kata-debugservice会发生什么">1.如果关闭用来开启debug console的kata-debug.service会发生什么？&lt;/h2>
+&lt;p>进入vm，关闭kata-debug.service，等待kata-debug.service最终停止后，重新使用socat无法再进入bash终端&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">bash-4.2# systemctl stop kata-debug
+&lt;span class="o">[&lt;/span> 249.392708&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Failed to determine peer security context: Protocol not available
+&lt;span class="o">[&lt;/span> 249.394714&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Accepted new private connection.
+&lt;span class="o">[&lt;/span> 249.395681&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 249.397145&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 249.397455&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 249.397759&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got message &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>method_call &lt;span class="nv">sender&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">destination&lt;/span>&lt;span class="o">=&lt;/span>org.freedesktop.systemd1 &lt;span class="nv">object&lt;/span>&lt;span class="o">=&lt;/span>/org/freedesktop/systemd1 &lt;span class="nv">interface&lt;/span>&lt;span class="o">=&lt;/span>org.freedesktop.systemd1.Manager &lt;span class="nv">member&lt;/span>&lt;span class="o">=&lt;/span>StopUnit &lt;span class="nv">cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">reply_cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> &lt;span class="nv">error&lt;/span>&lt;span class="o">=&lt;/span>n/a
+&lt;span class="o">[&lt;/span> 249.398545&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Trying to enqueue job kata-debug.service/stop/replace
+&lt;span class="o">[&lt;/span> 249.398983&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Installed new job kata-containers.target/stop as &lt;span class="m">51&lt;/span>
+&lt;span class="o">[&lt;/span> 249.399290&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Installed new job kata-debug.service/stop as &lt;span class="m">50&lt;/span>
+&lt;span class="o">[&lt;/span> 249.399604&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Enqueued job kata-debug.service/stop as &lt;span class="m">50&lt;/span>
+Terminated
+bash-4.2# systemctl status kata-debug
+&lt;span class="o">[&lt;/span> 258.097267&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Failed to determine peer security context: Protocol not available
+&lt;span class="o">[&lt;/span> 258.098268&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Accepted new private connection.
+&lt;span class="o">[&lt;/span> 258.098453&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 258.098762&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 258.098928&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got unexpected auxiliary data with &lt;span class="nv">level&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> and &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;span class="o">[&lt;/span> 258.099088&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got message &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>method_call &lt;span class="nv">sender&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">destination&lt;/span>&lt;span class="o">=&lt;/span>org.freedesktop.systemd1 &lt;span class="nv">object&lt;/span>&lt;span class="o">=&lt;/span>/org/freedesktop/systemd1/unit/kata_2ddebug_2eservice &lt;span class="nv">interface&lt;/span>&lt;span class="o">=&lt;/span>org.freedesktop.DBus.Properties &lt;span class="nv">member&lt;/span>&lt;span class="o">=&lt;/span>GetAll &lt;span class="nv">cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">reply_cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span> &lt;span class="nv">error&lt;/span>&lt;span class="o">=&lt;/span>n/a
+&lt;span class="o">[&lt;/span> 258.099783&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Sent message &lt;span class="nv">type&lt;/span>&lt;span class="o">=&lt;/span>method_return &lt;span class="nv">sender&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">destination&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">object&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">interface&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">member&lt;/span>&lt;span class="o">=&lt;/span>n/a &lt;span class="nv">cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">reply_cookie&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">error&lt;/span>&lt;span class="o">=&lt;/span>n/a
+● kata-debug.service - Kata Containers debug console
+Loaded: loaded &lt;span class="o">(&lt;/span>/usr/lib/systemd/system/kata-debug.service&lt;span class="p">;&lt;/span> static&lt;span class="p">;&lt;/span> vendor preset: disabled&lt;span class="o">)&lt;/span>
+Active: deactivating &lt;span class="o">(&lt;/span>stop-sigterm&lt;span class="o">)&lt;/span> since Wed 2020-10-14 08:11:57 UTC&lt;span class="p">;&lt;/span> 8s ago
+Main PID: &lt;span class="m">57&lt;/span> &lt;span class="o">(&lt;/span>bash&lt;span class="o">)&lt;/span>
+CGroup: /system.slice/kata-debug.service
+├─ &lt;span class="m">57&lt;/span> /bin/bash
+└─231 systemctl status kata-debug
+&lt;span class="o">[&lt;/span> 258.101662&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Got disconnect on private connection.
+bash-4.2# system&lt;span class="o">[&lt;/span> 339.593226&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: kata-debug.service stop-sigterm timed out. Killing.
+&lt;span class="o">[&lt;/span> 339.593989&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Watching &lt;span class="m">57&lt;/span> through watch_pids1.
+&lt;span class="o">[&lt;/span> 339.594710&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: kata-debug.service changed stop-sigterm -&amp;gt; stop-sigkill
+&lt;span class="o">[&lt;/span> 339.595681&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Received SIGCHLD from PID &lt;span class="m">57&lt;/span> &lt;span class="o">(&lt;/span>bash&lt;span class="o">)&lt;/span>.
+&lt;span class="o">[&lt;/span> 339.596281&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Child &lt;span class="m">57&lt;/span> &lt;span class="o">(&lt;/span>bash&lt;span class="o">)&lt;/span> died &lt;span class="o">(&lt;/span>&lt;span class="nv">code&lt;/span>&lt;span class="o">=&lt;/span>killed, &lt;span class="nv">status&lt;/span>&lt;span class="o">=&lt;/span>9/KILL&lt;span class="o">)&lt;/span>
+&lt;span class="o">[&lt;/span> 339.596722&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Child &lt;span class="m">57&lt;/span> belongs to kata-debug.service
+&lt;span class="o">[&lt;/span> 339.597060&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Unwatching 57.
+&lt;span class="o">[&lt;/span> 339.597276&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: kata-debug.service: main process exited, &lt;span class="nv">code&lt;/span>&lt;span class="o">=&lt;/span>killed, &lt;span class="nv">status&lt;/span>&lt;span class="o">=&lt;/span>9/KILL
+&lt;span class="o">[&lt;/span> 339.597722&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: kata-debug.service changed stop-sigkill -&amp;gt; failed
+&lt;span class="o">[&lt;/span> 339.598098&lt;span class="o">]&lt;/span> systemd&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span>: Job kata-debug.service/stop finished, &lt;span class="nv">result&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">done&lt;/span>
+&lt;span class="c1"># 此处kata-debug.service完全退出，无法再进入终端&lt;/span>
+&lt;span class="c1"># 尝试重新进入终端，会发现回车后无法打开bash终端&lt;/span>
+root@zbb-pc:/run/vc/vm/d658a67be082b2952c360e7539b5bfa7ac744ae8b84d844d57547d36915e184f# socat &lt;span class="s2">&amp;#34;stdin,raw,echo=0,escape=0x11&amp;#34;&lt;/span> &lt;span class="s2">&amp;#34;unix-connect:./console.sock&amp;#34;&lt;/span>
+&lt;span class="c1"># 重启容器后，可重新进入终端&lt;/span>
+&lt;span class="c1"># 此处发现重启容器过程，其实是新建一个同名的容器，因为会发现vm原有目录文件均被删除，生成同名文件夹。如果查看前后vm目录，应该文件inode已产生变化。&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Compile qemu on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 22:21:51 +0800</pubDate><guid>https://bevisy.github.io/p/compile-qemu-on-ubuntu-20.04/</guid><description>&lt;h1 id="compile-qemu-on-ubuntu-2004">Compile qemu on Ubuntu 20.04&lt;/h1>
+&lt;h2 id="下载源码">下载源码&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">git clone https://git.qemu.org/git/qemu.git
+&lt;span class="nb">cd&lt;/span> qemu
+git submodule init
+git submodule update --recursive
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译安装">编译安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">./configure
+make
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="问题">问题&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># ERROR: glib-2.48 gthread-2.0 is required to compile QEMU&lt;/span>
+$ sudo apt install -y libglib2.0-dev
+&lt;span class="c1"># ERROR: pixman &amp;gt;= 0.21.8 not present.&lt;/span>
+&lt;span class="c1"># Please install the pixman devel package.&lt;/span>
+$ sudo apt install -y libpixman-1-dev
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>The Skills of VIM</title><link>https://bevisy.github.io/p/the-skills-of-vim/</link><pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate><guid>https://bevisy.github.io/p/the-skills-of-vim/</guid><description>&lt;h1 id="vim-使用技巧">VIM 使用技巧&lt;/h1>
+&lt;h2 id="查找">查找&lt;/h2>
+&lt;h3 id="大小写敏感控制">大小写敏感控制&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># VIM 默认大小写敏感查找；&lt;/span>
+&lt;span class="c1"># 大小写不敏感查找&lt;/span>
+：/foo&lt;span class="se">\c&lt;/span>
+&lt;span class="c1"># 大小写敏感查找&lt;/span>
+：/foo&lt;span class="se">\C&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="查找光标当前单词">查找光标当前单词&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="vim-查找和替换">Vim 查找和替换&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">:&lt;span class="o">{&lt;/span>作用范围&lt;span class="o">}&lt;/span>s/&lt;span class="o">{&lt;/span>目标&lt;span class="o">}&lt;/span>/&lt;span class="o">{&lt;/span>替换&lt;span class="o">}&lt;/span>/&lt;span class="o">{&lt;/span>替换标志&lt;span class="o">}&lt;/span>
+&lt;span class="c1"># 当前行替换&lt;/span>
+：s/vivian/sky/ 替换当前行第一个 vivian 为 sky
+：s/vivian/sky/g 替换当前行所有 vivian 为 sky
+&lt;span class="c1"># 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行 &lt;/span>
+：n,&lt;span class="nv">$s&lt;/span>/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky
+：n,&lt;span class="nv">$s&lt;/span>/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky
+：2,12s/hello/world/ 2-12行,第一次出现替换
+：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换
+&lt;span class="c1"># 全行替换&lt;/span>
+：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky
+：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky
+&lt;span class="c1"># 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符 &lt;/span>
+：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/
+：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/
+&lt;span class="c1"># 替换确认，添加参数c，提示是否替换&lt;/span>
+:%s/hello/world/gc 针对每一个匹配项，提示是否替换
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>&lt;h1 id="linux-内核编译ubuntu-环境">Linux 内核编译(Ubuntu 环境)&lt;/h1>
+&lt;h2 id="下载内核代码">下载内核代码&lt;/h2>
+&lt;p>&lt;code>https://www.kernel.org/&lt;/code>&lt;/p>
+&lt;h2 id="安装依赖">安装依赖&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo apt update
+sudo apt install -y &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> gcc &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> make &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libncurses5-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> openssl &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libssl-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> build-essential &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> pkg-config &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libc6-dev &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> bison &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> flex &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> libelf-dev
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="准备config和自定义配置">准备.config和自定义配置&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="nb">cd&lt;/span> &lt;span class="o">{&lt;/span>Download&lt;span class="o">}&lt;/span>/linux-5.4.32/
+sudo cp /boot/config-&lt;span class="o">{&lt;/span>uname -r&lt;span class="o">}&lt;/span> .config
+sudo make menuconfig
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="编译内核">编译内核&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 编译内核&lt;/span>
+sudo make
+sudo make modules_install
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="安装内核">安装内核&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo mv &lt;span class="o">{&lt;/span>Download&lt;span class="o">}&lt;/span>/linux-5.4.32 /usr/src/
+&lt;span class="nb">cd&lt;/span> /usr/src/linux-5.4.32/
+sudo make install
+sudo mkinitramfs -o /boot/initrd.img-5.4.32
+sudo update-initramfs -c -k 5.4.32
+sudo update-grub2
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="验证">验证&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo reboot
+uname -a
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Zsh-And-Oh My Zsh-Installation summary</title><link>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</link><pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate><guid>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</guid><description>&lt;h1 id="zsh-安装总结">zsh 安装总结&lt;/h1>
+&lt;h2 id="安装zsh">安装zsh&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># Ubuntu 18.04&lt;/span>
+sudo apt update
+sudo apt install zsh -y
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="安装-oh-my-zsh">安装 Oh My Zsh&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># https://ohmyz.sh/#install&lt;/span>
+sh -c &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="插件安装">插件安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins)&lt;/span>
+git clone https://github.com/zsh-users/zsh-autosuggestions.git &lt;span class="si">${&lt;/span>&lt;span class="nv">ZSH_CUSTOM&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="p">~/.oh-my-zsh/custom&lt;/span>&lt;span class="si">}&lt;/span>/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git &lt;span class="si">${&lt;/span>&lt;span class="nv">ZSH_CUSTOM&lt;/span>&lt;span class="k">:-&lt;/span>&lt;span class="p">~/.oh-my-zsh/custom&lt;/span>&lt;span class="si">}&lt;/span>/plugins/zsh-syntax-highlighting
+&lt;span class="c1"># 配置 .zshrc，添加插件列表&lt;/span>
+&lt;span class="nv">plugins&lt;/span>&lt;span class="o">=(&lt;/span>zsh-autosuggestions
+zsh-syntax-highlighting&lt;span class="o">)&lt;/span>
+&lt;span class="c1"># 启动新终端，查看效果示例&lt;/span>
+zsh
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>通过nginx为netdata提供https访问</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</link><pubDate>Tue, 21 Jan 2020 15:56:21 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87nginx%E4%B8%BAnetdata%E6%8F%90%E4%BE%9Bhttps%E8%AE%BF%E9%97%AE/</guid><description>&lt;h1 id="nginx-代理-netdata-并添加鉴权">nginx 代理 netdata 并添加鉴权&lt;/h1>
+&lt;h2 id="netdata-安装">netdata 安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;span class="cp">&lt;/span>
+docker run -d --name&lt;span class="o">=&lt;/span>netdata &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -p 30002:19999 &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v /etc/passwd:/host/etc/passwd:ro &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v /etc/group:/host/etc/group:ro &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v /proc:/host/proc:ro &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v /sys:/host/sys:ro &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v /var/run/docker.sock:/var/run/docker.sock:ro &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -e &lt;span class="nv">DO_NOT_TRACK&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> --cap-add SYS_PTRACE &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> --security-opt &lt;span class="nv">apparmor&lt;/span>&lt;span class="o">=&lt;/span>unconfined &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> netdata/netdata
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="nginx-安装">nginx 安装&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="cp">#!/usr/bin/env bash
+&lt;/span>&lt;span class="cp">&lt;/span>
+docker run -d &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> --name nginx &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>/html:/usr/share/nginx/html &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>/conf.d:/etc/nginx/conf.d &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>/ssl:/etc/nginx/ssl &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>/passwords:/etc/nginx/passwords &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -p 8080:80 &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -p 8443:443 &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> -e &lt;span class="nv">TZ&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Asia/Chongqing&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span> nginx
+&lt;span class="c1"># 需要准备的文件&lt;/span>
+.
+├── conf.d
+│   └── default.conf
+├── html
+│   ├── 50x.html
+│   └── index.html
+├── nginx-start.sh
+├── passwords
+└── ssl
+├── nginx.crt
+└── nginx.key
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="nginx-配置">nginx 配置&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">upstream netdata &lt;span class="o">{&lt;/span>
+server 192.168.124.2:19999&lt;span class="p">;&lt;/span>
+keepalive 64&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+server &lt;span class="o">{&lt;/span>
+listen 80&lt;span class="p">;&lt;/span>
+server_name localhost&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#charset koi8-r;&lt;/span>
+&lt;span class="c1">#access_log /var/log/nginx/host.access.log main;&lt;/span>
+location / &lt;span class="o">{&lt;/span>
+root /usr/share/nginx/html&lt;span class="p">;&lt;/span>
+index index.html index.htm&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="nv">location&lt;/span> &lt;span class="o">=&lt;/span> /netdata &lt;span class="o">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="m">301&lt;/span> /netdata/&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+location ~ /netdata/&lt;span class="o">(&lt;/span>?&amp;lt;ndpath&amp;gt;.*&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+proxy_redirect off&lt;span class="p">;&lt;/span>
+proxy_set_header Host &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-Host &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-Server &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-For &lt;span class="nv">$proxy_add_x_forwarded_for&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_http_version 1.1&lt;span class="p">;&lt;/span>
+proxy_pass_request_headers on&lt;span class="p">;&lt;/span>
+proxy_set_header Connection &lt;span class="s2">&amp;#34;keep-alive&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_store off&lt;span class="p">;&lt;/span>
+proxy_pass http://netdata/&lt;span class="nv">$ndpath$is_args$args&lt;/span>&lt;span class="p">;&lt;/span>
+gzip on&lt;span class="p">;&lt;/span>
+gzip_proxied any&lt;span class="p">;&lt;/span>
+gzip_types *&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="c1">#error_page 404 /404.html;&lt;/span>
+&lt;span class="c1"># redirect server error pages to the static page /50x.html&lt;/span>
+&lt;span class="c1">#&lt;/span>
+error_page &lt;span class="m">500&lt;/span> &lt;span class="m">502&lt;/span> &lt;span class="m">503&lt;/span> &lt;span class="m">504&lt;/span> /50x.html&lt;span class="p">;&lt;/span>
+&lt;span class="nv">location&lt;/span> &lt;span class="o">=&lt;/span> /50x.html &lt;span class="o">{&lt;/span>
+root /usr/share/nginx/html&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="c1"># proxy the PHP scripts to Apache listening on 127.0.0.1:80&lt;/span>
+&lt;span class="c1">#&lt;/span>
+&lt;span class="c1">#location ~ \.php$ {&lt;/span>
+&lt;span class="c1"># proxy_pass http://127.0.0.1;&lt;/span>
+&lt;span class="c1">#}&lt;/span>
+&lt;span class="c1"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000&lt;/span>
+&lt;span class="c1">#&lt;/span>
+&lt;span class="c1">#location ~ \.php$ {&lt;/span>
+&lt;span class="c1"># root html;&lt;/span>
+&lt;span class="c1"># fastcgi_pass 127.0.0.1:9000;&lt;/span>
+&lt;span class="c1"># fastcgi_index index.php;&lt;/span>
+&lt;span class="c1"># fastcgi_param SCRIPT_FILENAME /scripts$fastcgi_script_name;&lt;/span>
+&lt;span class="c1"># include fastcgi_params;&lt;/span>
+&lt;span class="c1">#}&lt;/span>
+&lt;span class="c1"># deny access to .htaccess files, if Apache&amp;#39;s document root&lt;/span>
+&lt;span class="c1"># concurs with nginx&amp;#39;s one&lt;/span>
+&lt;span class="c1">#&lt;/span>
+&lt;span class="c1">#location ~ /\.ht {&lt;/span>
+&lt;span class="c1"># deny all;&lt;/span>
+&lt;span class="c1">#}&lt;/span>
+&lt;span class="o">}&lt;/span>
+server &lt;span class="o">{&lt;/span>
+listen &lt;span class="m">443&lt;/span> ssl&lt;span class="p">;&lt;/span>
+ssl_certificate /etc/nginx/ssl/nginx.crt&lt;span class="p">;&lt;/span>
+ssl_certificate_key /etc/nginx/ssl/nginx.key&lt;span class="p">;&lt;/span>
+keepalive_timeout 60&lt;span class="p">;&lt;/span>
+server_name localhost&lt;span class="p">;&lt;/span>
+server_tokens off&lt;span class="p">;&lt;/span>
+fastcgi_param HTTPS on&lt;span class="p">;&lt;/span>
+fastcgi_param HTTP_SCHEME https&lt;span class="p">;&lt;/span>
+access_log /var/log/nginx/access.log&lt;span class="p">;&lt;/span>
+error_log /var/log/nginx/error.log&lt;span class="p">;&lt;/span>
+location / &lt;span class="o">{&lt;/span>
+root /usr/share/nginx/html/&lt;span class="p">;&lt;/span>
+index index.html index.htm&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="nv">location&lt;/span> &lt;span class="o">=&lt;/span> /netdata &lt;span class="o">{&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="m">301&lt;/span> /netdata/&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+location ~ /netdata/&lt;span class="o">(&lt;/span>?&amp;lt;ndpath&amp;gt;.*&lt;span class="o">)&lt;/span> &lt;span class="o">{&lt;/span>
+proxy_redirect off&lt;span class="p">;&lt;/span>
+proxy_set_header Host &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-Host &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-Server &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_set_header X-Forwarded-For &lt;span class="nv">$proxy_add_x_forwarded_for&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_http_version 1.1&lt;span class="p">;&lt;/span>
+proxy_pass_request_headers on&lt;span class="p">;&lt;/span>
+proxy_set_header Connection &lt;span class="s2">&amp;#34;keep-alive&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+proxy_store off&lt;span class="p">;&lt;/span>
+proxy_pass http://netdata/&lt;span class="nv">$ndpath$is_args$args&lt;/span>&lt;span class="p">;&lt;/span>
+gzip on&lt;span class="p">;&lt;/span>
+gzip_proxied any&lt;span class="p">;&lt;/span>
+gzip_types *&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>访问nginx http://nginxurl:80/netdata/ 或者 https://nginxurl:443/netdata/，验证生效。&lt;/p>
+&lt;h2 id="生成-ssl-证书和密钥">生成 ssl 证书和密钥&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 有效时间 7 天&lt;/span>
+openssl req -x509 -nodes -days &lt;span class="m">7&lt;/span> -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj &lt;span class="s2">&amp;#34;/C=CN/ST=SiChuan/L=Chengdu/O=Example Inc./OU=Web Security/CN=localhost&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>生成的证书未经权威机构认证，但是不影响使用，只是浏览器会提示非安全的证书。&lt;/p>
+&lt;h2 id="nginx-配置https-服务">nginx 配置https 服务&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">server {
+listen 443 ssl;
+ssl_certificate /etc/nginx/ssl/nginx.crt;
+ssl_certificate_key /etc/nginx/ssl/nginx.key;
+keepalive_timeout 60;
+server_name localhost;
+server_tokens off;
+fastcgi_param HTTPS on;
+fastcgi_param HTTP_SCHEME https;
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log;
+location / {
+root /usr/share/nginx/html/;
+index index.html index.htm;
+}
+location = /netdata {
+return 301 /netdata/;
+}
+location ~ /netdata/(?&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">ndpath&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>.*) {
+proxy_redirect off;
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-Host $host;
+proxy_set_header X-Forwarded-Server $host;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_http_version 1.1;
+proxy_pass_request_headers on;
+proxy_set_header Connection &amp;#34;keep-alive&amp;#34;;
+proxy_store off;
+proxy_pass http://netdata/$ndpath$is_args$args;
+gzip on;
+gzip_proxied any;
+gzip_types *;
+}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="nginx-添加鉴权">nginx 添加鉴权&lt;/h2>
+&lt;p>nginx 目前开启的是全局 ssl ，即通过 443 端口进入的请求均为 https，但是upstream 上的服务依旧是 http。&lt;/p>
+&lt;h3 id="创建认证文件开启-nginx-基础认证">创建认证文件，开启 nginx 基础认证&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 提示输入密码和确认密码&lt;/span>
+&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;username:&lt;/span>&lt;span class="k">$(&lt;/span>openssl passwd -apr1&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &amp;gt; /etc/nginx/passwords
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="在-server-directive-中开启认证">在 server directive 中开启认证&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">server &lt;span class="o">{&lt;/span>
+listen &lt;span class="m">443&lt;/span> ssl&lt;span class="p">;&lt;/span>
+&lt;span class="c1"># ...&lt;/span>
+auth_basic &lt;span class="s2">&amp;#34;Protected&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+auth_basic_user_file passwords&lt;span class="p">;&lt;/span>
+&lt;span class="c1"># ...&lt;/span>
+access_log /var/log/nginx/access.log&lt;span class="p">;&lt;/span>
+error_log /var/log/nginx/error.log&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="http-自动跳转https-安全配置">HTTP 自动跳转HTTPS 安全配置&lt;/h3>
+&lt;p>参考 &lt;a class="link" href="https://cloud.tencent.com/document/product/400/35244" target="_blank" rel="noopener"
+>Nginx 服务器证书安装&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">server &lt;span class="o">{&lt;/span>
+listen 443&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#填写绑定证书的域名&lt;/span>
+server_name www.domain.com&lt;span class="p">;&lt;/span>
+ssl on&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#网站主页路径。此路径仅供参考，具体请您按照实际目录操作。&lt;/span>
+root /var/www/www.domain.com&lt;span class="p">;&lt;/span>
+index index.html index.htm&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#证书文件名称&lt;/span>
+ssl_certificate 1_www.domain.com_bundle.crt&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#私钥文件名称&lt;/span>
+ssl_certificate_key 2_www.domain.com.key&lt;span class="p">;&lt;/span>
+ssl_session_timeout 5m&lt;span class="p">;&lt;/span>
+ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4&lt;span class="p">;&lt;/span>
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2&lt;span class="p">;&lt;/span>
+ssl_prefer_server_ciphers on&lt;span class="p">;&lt;/span>
+location / &lt;span class="o">{&lt;/span>
+index index.html index.htm&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;span class="o">}&lt;/span>
+server &lt;span class="o">{&lt;/span>
+listen 80&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#填写绑定证书的域名&lt;/span>
+server_name www.domain.com&lt;span class="p">;&lt;/span>
+&lt;span class="c1">#把http的域名请求转成https&lt;/span>
+rewrite ^&lt;span class="o">(&lt;/span>.*&lt;span class="o">)&lt;/span>$ https://&lt;span class="nv">$host$1&lt;/span> permanent&lt;span class="p">;&lt;/span>
+&lt;span class="o">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="使用权威机构签名证书">使用权威机构签名证书&lt;/h2>
+&lt;h3 id="查看证书内容">查看证书内容&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">openssl x509 -in nginx.crt -noout -text
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="查看key内容">查看key内容&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">openssl rsa -in nginx.key -noout -text
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="申请腾讯云免费ssl证书">申请腾讯云免费SSL证书&lt;/h3>
+&lt;p>&lt;a class="link" href="https://cloud.tencent.com/developer/article/1522482" target="_blank" rel="noopener"
+>腾讯云免费ssl证书申请&lt;/a>&lt;/p>
+&lt;h2 id="reference">Reference&lt;/h2>
+&lt;p>&lt;a class="link" href="https://docs.netdata.cloud/docs/running-behind-nginx/" target="_blank" rel="noopener"
+>Running Netdata behind Nginx&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="https://docs.netdata.cloud/web/server/#enabling-tls-support" target="_blank" rel="noopener"
+>Enabling TLS support&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="https://cloud.tencent.com/document/product/400/35244" target="_blank" rel="noopener"
+>Nginx 服务器证书安装&lt;/a>&lt;/p></description></item><item><title>通过Travis CI 部署静态页面到 github page</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</link><pubDate>Tue, 21 Jan 2020 00:25:33 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</guid><description>&lt;h1 id="travis-ci-部署-hexo-生成文件到-master-分支">Travis CI 部署 Hexo 生成文件到 master 分支&lt;/h1>
+&lt;p>文档主要实现Hexo利用 Travis CI 完成 github page 部署。&lt;/p>
+&lt;p>由于 username.github.io 仓库不允许切换 github page 分支，必须将 master 分支作为静态资源分支，所以新建 develop 分支作为开发分支。&lt;/p>
+&lt;p>详细的步骤参考&lt;a class="link" href="https://hexo.io/zh-cn/docs/github-pages" target="_blank" rel="noopener"
+>将 Hexo 部署到 GitHub Pages&lt;/a>，此处主要贴出区别的 Travis CI 配置文件：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">sudo: &lt;span class="nb">false&lt;/span>
+language: node_js
+node_js:
+- 13.6.0
+cache: npm
+branches:
+only:
+- develop
+script:
+- hexo generate
+deploy:
+provider: pages
+skip-cleanup: &lt;span class="nb">true&lt;/span>
+github-token: &lt;span class="nv">$GH_TOKEN&lt;/span>
+keep-history: &lt;span class="nb">false&lt;/span>
+target_branch: master
+local-dir: public
+on:
+branch: develop
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述配置信息解释参考 &lt;a class="link" href="https://docs.travis-ci.com/user/deployment/pages/" target="_blank" rel="noopener"
+>GitHub Pages Deployment&lt;/a>。&lt;/p>
+&lt;h1 id="参考文档">参考文档&lt;/h1>
+&lt;p>&lt;a class="link" href="https://docs.travis-ci.com/user/deployment/pages/" target="_blank" rel="noopener"
+>GitHub Pages Deployment&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="https://hexo.io/zh-cn/docs/github-pages" target="_blank" rel="noopener"
+>将 Hexo 部署到 GitHub Pages&lt;/a>&lt;/p></description></item></channel></rss>
