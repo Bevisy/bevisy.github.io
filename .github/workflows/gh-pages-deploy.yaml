@@ -17,6 +17,8 @@ jobs:
       
       - name: Build Blogs
         run: |
+          git submodule init
+          git submodule update
           hugo --minify
 
       - name: Deploy Blog
