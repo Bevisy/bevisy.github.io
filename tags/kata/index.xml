@@ -1,21 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Kata on Bevisy&#39;s Blogs</title>
-    <link>https://bevisy.github.io/tags/kata/</link>
-    <description>Recent content in Kata on Bevisy&#39;s Blogs</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 25 Jul 2020 23:06:12 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kata/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Kata-containers Compile And Installed</title>
-      <link>https://bevisy.github.io/p/kata-containers-compile-and-installed/</link>
-      <pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate>
-      
-      <guid>https://bevisy.github.io/p/kata-containers-compile-and-installed/</guid>
-      <description>[TOC]
-kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install  $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kata on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kata/</link><description>Recent content in Kata on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 25 Jul 2020 23:06:12 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kata/index.xml" rel="self" type="application/rss+xml"/><item><title>Kata-containers Compile And Installed</title><link>https://bevisy.github.io/p/kata-containers-compile-and-installed/</link><pubDate>Sat, 25 Jul 2020 23:06:12 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-compile-and-installed/</guid><description>[TOC]
+kata-containers 编译安装 kata-runtime 编译安装 # download source code $ go get -d -u github.com/kata-containers/runtime $ cd ${GOPATH}/src/github.com/kata-containers/runtime # compile and install $ make $ make install # Install Dir /usr/libexec/kata-containers/kata-netmon /usr/local/bin/kata-runtime /usr/local/bin/containerd-shim-kata-v2 /usr/share/defaults/kata-containers/* kata-shim 编译安装 # download source code $ go get -d -u github.com/kata-containers/shim $ cd ${GOTAH}/src/github.com/kata-containers/shim # compile and install $ makn $ make install # Install Dir /usr/libexec/kata-containers/kata-shim kata-proxy 编译安装 # download source code $ go get -d -u github.</description></item></channel></rss>
