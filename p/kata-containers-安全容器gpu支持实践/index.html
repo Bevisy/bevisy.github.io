@@ -1,0 +1,402 @@
+<!doctype html><html lang=en-us>
+<head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="kata-containers 安全容器 GPU 支持实践 本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 kata-containers 官网。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以Tesla P100 PCIe 16GB为例。
+准备阶段  下载官方 release 包 下载官方代码，编译需要使用到的组件containerd-shim-kata-v2，kata-agent，虚拟机镜像 kata-containers.img或者kata-containers-initrd.img,虚拟机内核 vmlinuz GPU 支持实践  准备 release 包 可以从官方的 release 页面获取最新的包，此处使用当前最新版本2.4.2。
+# 下载 wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz # 解压并置于 /opt 目录下 tar xf kata-static-2.4.2-x86_64.tar.xz mv opt/kata /opt/ 编译必要组件 拉取 kata-containers 源码 注意：源码需要包含此PR
+mkdir -p $GOPATH/src/github.com/kata-containers cd $GOPATH/src/github.com/kata-containers git clone https://github.com/kata-containers/kata-containers.git git clone https://github.com/kata-containers/tests.git # 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败 sudo chown -R root:root tests 编译containerd-shim-kata-v2 # 编译 containerd-shim-v2 make -C $GOPATH/src/github."><title>Kata Containers 安全容器GPU支持实践</title>
+<link rel=canonical href=https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/>
+<link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Kata Containers 安全容器GPU支持实践">
+<meta property="og:description" content="kata-containers 安全容器 GPU 支持实践 本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 kata-containers 官网。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以Tesla P100 PCIe 16GB为例。
+准备阶段  下载官方 release 包 下载官方代码，编译需要使用到的组件containerd-shim-kata-v2，kata-agent，虚拟机镜像 kata-containers.img或者kata-containers-initrd.img,虚拟机内核 vmlinuz GPU 支持实践  准备 release 包 可以从官方的 release 页面获取最新的包，此处使用当前最新版本2.4.2。
+# 下载 wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz # 解压并置于 /opt 目录下 tar xf kata-static-2.4.2-x86_64.tar.xz mv opt/kata /opt/ 编译必要组件 拉取 kata-containers 源码 注意：源码需要包含此PR
+mkdir -p $GOPATH/src/github.com/kata-containers cd $GOPATH/src/github.com/kata-containers git clone https://github.com/kata-containers/kata-containers.git git clone https://github.com/kata-containers/tests.git # 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败 sudo chown -R root:root tests 编译containerd-shim-kata-v2 # 编译 containerd-shim-v2 make -C $GOPATH/src/github.">
+<meta property="og:url" content="https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/">
+<meta property="og:site_name" content="Bevisy's Blogs">
+<meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="kata-containers"><meta property="article:published_time" content="2022-06-21T23:14:52+08:00"><meta property="article:modified_time" content="2022-06-21T23:14:52+08:00">
+<meta name=twitter:title content="Kata Containers 安全容器GPU支持实践">
+<meta name=twitter:description content="kata-containers 安全容器 GPU 支持实践 本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 kata-containers 官网。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以Tesla P100 PCIe 16GB为例。
+准备阶段  下载官方 release 包 下载官方代码，编译需要使用到的组件containerd-shim-kata-v2，kata-agent，虚拟机镜像 kata-containers.img或者kata-containers-initrd.img,虚拟机内核 vmlinuz GPU 支持实践  准备 release 包 可以从官方的 release 页面获取最新的包，此处使用当前最新版本2.4.2。
+# 下载 wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz # 解压并置于 /opt 目录下 tar xf kata-static-2.4.2-x86_64.tar.xz mv opt/kata /opt/ 编译必要组件 拉取 kata-containers 源码 注意：源码需要包含此PR
+mkdir -p $GOPATH/src/github.com/kata-containers cd $GOPATH/src/github.com/kata-containers git clone https://github.com/kata-containers/kata-containers.git git clone https://github.com/kata-containers/tests.git # 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败 sudo chown -R root:root tests 编译containerd-shim-kata-v2 # 编译 containerd-shim-v2 make -C $GOPATH/src/github.">
+</head>
+<body class="article-page has-toc">
+<script>(function(){const a='StackColorScheme';localStorage.getItem(a)||localStorage.setItem(a,"auto")})()</script><script>(function(){const b='StackColorScheme',a=localStorage.getItem(b),c=window.matchMedia('(prefers-color-scheme: dark)').matches===!0;a=='dark'||a==='auto'&&c?document.documentElement.dataset.scheme='dark':document.documentElement.dataset.scheme='light'})()</script>
+<div class="container main-container flex
+extended">
+<div id=article-toolbar>
+<a href=/ class=back-home><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="15 6 9 12 15 18"/></svg>
+<span>Back</span>
+</a>
+</div>
+<main class="main full-width">
+<article class=main-article>
+<header class=article-header>
+<div class=article-details>
+<header class=article-category>
+<a href=/categories/ubuntu/ style=background-color:#e95420;color:#fff>
+Ubuntu
+</a>
+<a href=/categories/linux/ style=background-color:#fdd134;color:#fff>
+Linux
+</a>
+</header>
+<h2 class=article-title>
+<a href=/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/>Kata Containers 安全容器GPU支持实践</a>
+</h2>
+<footer class=article-time>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jun 21, 2022</time>
+</div>
+<div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>
+4 minute read
+</time>
+</div>
+</footer>
+</div>
+</header>
+<section class=article-content>
+<h1 id=kata-containers-安全容器-gpu-支持实践>kata-containers 安全容器 GPU 支持实践</h1>
+<p>本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 <a class=link href=https://katacontainers.io/ target=_blank rel=noopener>kata-containers 官网</a>。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以<code>Tesla P100 PCIe 16GB</code>为例。</p>
+<h2 id=准备阶段>准备阶段</h2>
+<ol>
+<li>下载官方 release 包</li>
+<li>下载官方代码，编译需要使用到的组件<code>containerd-shim-kata-v2</code>，<code>kata-agent</code>，虚拟机镜像 <code>kata-containers.img</code>或者<code>kata-containers-initrd.img</code>,虚拟机内核 <code>vmlinuz</code></li>
+<li>GPU 支持实践</li>
+</ol>
+<h3 id=准备-release-包>准备 release 包</h3>
+<p>可以从官方的 <a class=link href=https://github.com/kata-containers/kata-containers/releases target=_blank rel=noopener>release 页面</a>获取最新的包，此处使用当前最新版本<code>2.4.2</code>。</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 下载</span>
+wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz
+<span class=c1># 解压并置于 /opt 目录下</span>
+tar xf kata-static-2.4.2-x86_64.tar.xz
+mv opt/kata /opt/
+</code></pre></div><h3 id=编译必要组件>编译必要组件</h3>
+<p>拉取 <a class=link href=https://github.com/kata-containers/kata-containers.git target=_blank rel=noopener>kata-containers 源码</a>
+<strong>注意</strong>：源码需要包含此<a class=link href=https://github.com/kata-containers/kata-containers/pull/4358 target=_blank rel=noopener>PR</a></p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>mkdir -p <span class=nv>$GOPATH</span>/src/github.com/kata-containers
+<span class=nb>cd</span> <span class=nv>$GOPATH</span>/src/github.com/kata-containers
+
+git clone https://github.com/kata-containers/kata-containers.git
+git clone https://github.com/kata-containers/tests.git
+<span class=c1># 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败</span>
+sudo chown -R root:root tests
+</code></pre></div><h4 id=编译containerd-shim-kata-v2>编译<code>containerd-shim-kata-v2</code></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 编译 containerd-shim-v2</span>
+make -C <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/src/runtime containerd-shim-v2
+</code></pre></div><h4 id=编译内核>编译内核</h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 准备依赖</span>
+apt-get install -y --no-install-recommends <span class=se>\
+</span><span class=se></span>	    bc <span class=se>\
+</span><span class=se></span>	    bison <span class=se>\
+</span><span class=se></span>	    build-essential <span class=se>\
+</span><span class=se></span>	    ca-certificates <span class=se>\
+</span><span class=se></span>	    curl <span class=se>\
+</span><span class=se></span>	    flex <span class=se>\
+</span><span class=se></span>	    git <span class=se>\
+</span><span class=se></span>	    iptables <span class=se>\
+</span><span class=se></span>	    libelf-dev <span class=se>\
+</span><span class=se></span>	    patch
+<span class=c1># 切换目录</span>
+<span class=nb>cd</span> <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/tools/packaging/kernel/
+<span class=c1># 下载内核源码；准备 config 文件；</span>
+./build-kernel.sh -v 5.15.23 -g nvidia -f setup
+<span class=c1># 编译 kernel</span>
+./build-kernel.sh -v 5.15.23 -g nvidia build
+<span class=c1># 安装 kernel</span>
+sudo -E ./build-kernel.sh -v 5.15.23 -g nvidia install
+<span class=c1># 安装目录 /usr/share/kata-containers</span>
+vmlinuz-5.15.23-92-nvidia-gpu <span class=c1># 所需内核模块</span>
+<span class=c1>## 或者</span>
+vmlinux-5.15.23-92-nvidia-gpu <span class=c1># 所需内核模块</span>
+
+<span class=c1># 制作 linux-header deb 或者 rpm 包，由于接下来将使用 ubuntu 作为基础镜像，所以此处使用 deb 包</span>
+<span class=nb>cd</span> kata-linux-5.15.23-92
+make deb-pkg
+<span class=c1>## 生成 deb 包</span>
+linux-headers-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+linux-image-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+linux-libc-dev_5.15.23-nvidia-gpu-1_amd64.deb
+</code></pre></div><h4 id=编译虚拟机镜像>编译虚拟机镜像</h4>
+<p>虚拟机镜像分为两种 <code>initrd</code> 和 <code>image</code>，此处以 <code>image</code> 为例。</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># rootfs 构建</span>
+<span class=nb>export</span> <span class=nv>ROOTFS_DIR</span><span class=o>=</span><span class=si>${</span><span class=nv>GOPATH</span><span class=si>}</span>/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+rm -rf <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>
+<span class=nb>cd</span> <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder
+
+<span class=c1># 确保 kata-containers/tests 仓库在 $GOPATH 目录下，且属主是 root 用户，否则安装 libseccomp 会失败</span>
+script -fec <span class=s1>&#39;sudo -E EXTRA_PKGS=&#34;gcc make curl gnupg coreutils apt tar kmod pkg-config libc-dev libc6-dev pciutils&#34; GOPATH=$GOPATH USE_DOCKER=true ./rootfs.sh ubuntu&#39;</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 下载 GPU 驱动</span>
+<span class=c1>## 根据官网 https://www.nvidia.com/Download/Find.aspx 选择所需 GPU 驱动；以 P100 显卡最新驱动 NVIDIA-Linux-x86_64-515.48.07.run 为例，将下载好的驱动放到目录 ${ROOTFS_DIR}/root</span>
+<span class=c1>## 同时将编译内核生成的 deb 包防放到目录 ${ROOTFS_DIR}/root</span>
+
+<span class=c1># 编译 GPU 驱动</span>
+<span class=c1>## 注意：确保本机有 GPU 设备，否则编译会失败；</span>
+mount -t sysfs -o ro none <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/sys
+mount -t proc -o ro none <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/proc
+mount -o bind,ro /dev <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/dev
+mount -t devpts none <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/dev/pts
+mount -t tmpfs none <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/tmp
+
+chroot <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>
+<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$PATH</span>:/bin:/usr/local/sbin:/usr/sbin:/sbin
+
+<span class=nb>cd</span> /root
+
+<span class=c1># ubuntu dpkg 命令目前处于不可用状态，需要创建一些目录如下：</span>
+mkdir /var/lib/dpkg
+touch /var/lib/dpkg/status
+mkdir /var/lib/dpkg/updates/
+mkdir -p /var/lib/dpkg/info/
+touch /var/lib/dpkg/info/format-new
+mkdir -p /var/cache/apt/archives/partial
+mkdir -p /var/log/apt/
+mkdir /var/lib/dpkg/alternatives
+
+<span class=c1># 安装之前准备的内核 deb 包</span>
+dpkg -i *.deb
+
+<span class=c1># 解压 NVIDIA 驱动包，并编译</span>
+chmod +x NVIDIA-Linux-x86_64-515.48.07.run
+./NVIDIA-Linux-x86_64-515.48.07.run -x
+<span class=nb>cd</span> NVIDIA-Linux-x86_64-515.48.07
+./nvidia-installer -k 5.15.23-nvidia-gpu
+
+<span class=c1>## 编译完成后可清理 root 目录，减少镜像体积</span>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 安装 nvidia-container-toolkit</span>
+<span class=nv>distribution</span><span class=o>=</span><span class=k>$(</span>. /etc/os-release<span class=p>;</span><span class=nb>echo</span> <span class=nv>$ID$VERSION_ID</span><span class=k>)</span>
+mkdir -p /usr/share/yrings/
+mkdir -p /etc/ssl/certs
+apt install ca-certificates
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class=p>|</span> gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/<span class=nv>$distribution</span>/libnvidia-container.list <span class=p>|</span> sed <span class=s1>&#39;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&#39;</span> <span class=p>|</span> tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+apt update
+apt install nvidia-container-toolkit
+apt clean all
+
+<span class=c1>## 准备 hook 文件</span>
+mkdir -p /usr/share/oci/hooks/prestart/
+touch /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+chmod +x /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+
+<span class=c1># /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh</span>
+cat <span class=s>&lt;&lt; EOF &gt; /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+</span><span class=s>#!/bin/bash -x
+</span><span class=s>
+</span><span class=s>/usr/bin/nvidia-container-toolkit -debug \$@
+</span><span class=s>EOF</span>
+
+<span class=c1># 退出，并清理</span>
+<span class=nb>exit</span>
+
+umount <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/sys
+umount <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/proc
+umount <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/dev
+umount <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/dev/pts
+umount <span class=si>${</span><span class=nv>ROOTFS_DIR</span><span class=si>}</span>/tmp
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 构建 image</span>
+<span class=c1>## rootfs</span>
+<span class=nb>export</span> <span class=nv>ROOTFS_DIR</span><span class=o>=</span><span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+
+<span class=c1>## image</span>
+<span class=nb>cd</span> <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/tools/osbuilder/image-builder
+script -fec <span class=s1>&#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&#39;</span>
+<span class=c1>## 得到 kata-containers.img</span>
+
+<span class=c1>## initrd 可按照如下方式：</span>
+<span class=nb>cd</span> <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/tools/osbuilder/initrd-builder
+script -fec <span class=s1>&#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&#39;</span>
+</code></pre></div><p>至此，全部文件准备完毕。</p>
+<h3 id=配置-kata-containers-和-containerd-以使用-gpu>配置 kata-containers 和 containerd 以使用 GPU</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 配置 containerd</span>
+<span class=c1>## 配置文件 /etc/containerd/config.toml，新增</span>
+        <span class=o>[</span>plugins.<span class=s2>&#34;io.containerd.grpc.v1.cri&#34;</span>.containerd.runtimes.kata<span class=o>]</span>
+          <span class=nv>runtime_type</span> <span class=o>=</span> <span class=s2>&#34;io.containerd.kata.v2&#34;</span>
+          <span class=c1># privileged_without_host_devices = true</span>
+
+<span class=c1>## 将 containerd-shim-kata-v2 移至可执行目录</span>
+cp <span class=nv>$GOPATH</span>/src/github.com/kata-containers/kata-containers/src/runtime/containerd-shim-kata-v2 /usr/local/bin/
+
+<span class=c1>## 将 kata-containers.img 移至 /usr/share/kata-containers</span>
+<span class=c1>## 将 vmlinuz-5.15.23-92-nvidia-gpu 移至 /usr/share/kata-containers</span>
+
+<span class=c1>## 配置 kata-containers</span>
+mkdir -p /etc/kata-containers
+cp /opt/kata/share/defaults/kata-containers/configuration.toml /etc/kata-containers/
+<span class=c1>## 修改配置文件 configuration.toml</span>
+<span class=nv>kernel</span> <span class=o>=</span> <span class=s2>&#34;/usr/share/kata-containers/vmlinuz-5.10.25-85-nvidia-gpu&#34;</span>
+<span class=nv>image</span> <span class=o>=</span> <span class=s2>&#34;/usr/share/kata-containers/kata-containers.img&#34;</span>
+<span class=nv>enable_iommu</span> <span class=o>=</span> <span class=nb>true</span>
+<span class=nv>hotplug_vfio_on_root_bus</span> <span class=o>=</span> <span class=nb>true</span>
+<span class=nv>pcie_root_port</span> <span class=o>=</span> <span class=m>1</span>
+</code></pre></div><p>验证 GPU</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 查看 GPU vfio id</span>
+$ sudo lspci -nn -D <span class=p>|</span> grep -i nvidia
+0000:d0:00.0 3D controller <span class=o>[</span>0302<span class=o>]</span>: NVIDIA Corporation Device <span class=o>[</span>10de:20b9<span class=o>]</span> <span class=o>(</span>rev a1<span class=o>)</span>
+$ <span class=nv>BDF</span><span class=o>=</span><span class=s2>&#34;0000:d0:00.0&#34;</span>
+$ readlink -e /sys/bus/pci/devices/<span class=nv>$BDF</span>/iommu_group
+<span class=m>79</span>
+
+<span class=c1># 启动容器验证</span>
+$ ctr -n k8s.io run --rm --runtime <span class=s2>&#34;io.containerd.kata.v2&#34;</span>  --device /dev/vfio/79 --rm -t <span class=s2>&#34;docker.io/nvidia/cuda:11.6.0-base-ubuntu20.04&#34;</span> cuda bash
+$ nvidia-smi
+Tue Jun <span class=m>21</span> 10:18:31 <span class=m>2022</span>
++-----------------------------------------------------------------------------+
+<span class=p>|</span> NVIDIA-SMI 515.48.07    Driver Version: 515.48.07    CUDA Version: 11.7     <span class=p>|</span>
+<span class=p>|</span>-------------------------------+----------------------+----------------------+
+<span class=p>|</span> GPU  Name        Persistence-M<span class=p>|</span> Bus-Id        Disp.A <span class=p>|</span> Volatile Uncorr. ECC <span class=p>|</span>
+<span class=p>|</span> Fan  Temp  Perf  Pwr:Usage/Cap<span class=p>|</span>         Memory-Usage <span class=p>|</span> GPU-Util  Compute M. <span class=p>|</span>
+<span class=p>|</span>                               <span class=p>|</span>                      <span class=p>|</span>               MIG M. <span class=p>|</span>
+<span class=p>|</span><span class=o>===============================</span>+<span class=o>======================</span>+<span class=o>======================</span><span class=p>|</span>
+<span class=p>|</span>   <span class=m>0</span>  Tesla P100-PCIE...  Off  <span class=p>|</span> 00000000:02:00.0 Off <span class=p>|</span>                  Off <span class=p>|</span>
+<span class=p>|</span> N/A   41C    P0    30W / 250W <span class=p>|</span>      0MiB / 16384MiB <span class=p>|</span>      3%      Default <span class=p>|</span>
+<span class=p>|</span>                               <span class=p>|</span>                      <span class=p>|</span>                  N/A <span class=p>|</span>
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+<span class=p>|</span> Processes:                                                                  <span class=p>|</span>
+<span class=p>|</span>  GPU   GI   CI        PID   Type   Process name                  GPU Memory <span class=p>|</span>
+<span class=p>|</span>        ID   ID                                                   Usage      <span class=p>|</span>
+<span class=p>|</span><span class=o>=============================================================================</span><span class=p>|</span>
+<span class=p>|</span>  No running processes found                                                 <span class=p>|</span>
++-----------------------------------------------------------------------------+
+</code></pre></div><p>至此，我们就可以在安全容器中使用 GPU 设备。</p>
+<h2 id=参考>参考</h2>
+<ol>
+<li><a class=link href=https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata.md target=_blank rel=noopener>NVIDIA-GPU-passthrough-and-Kata</a></li>
+</ol>
+</section>
+<footer class=article-footer>
+<section class=article-tags>
+<a href=/tags/kata-containers/>kata-containers</a>
+</section>
+<section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span>
+</section>
+</footer>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{renderMathInElement(document.querySelector(`.article-content`),{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script>
+</article>
+<aside class=related-contents--wrapper>
+<h2 class=section-title>Related contents</h2>
+<div class=related-contents>
+<div class="flex article-list--tile">
+<article>
+<a href=/p/close-swap-on-ubuntu20.04/>
+<div class=article-details>
+<h2 class=article-title>Close Swap on Ubuntu20.04</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/>
+<div class=article-details>
+<h2 class=article-title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/compile-linux-kernel-on-ubuntu-20.04/>
+<div class=article-details>
+<h2 class=article-title>Compile Linux Kernel on Ubuntu 20.04</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/>
+<div class=article-details>
+<h2 class=article-title>linux 利用loop设备模拟块设备</h2>
+</div>
+</a>
+</article>
+<article>
+<a href=/p/install-tigervncserver-on-ubuntu-20.04/>
+<div class=article-details>
+<h2 class=article-title>Install TigerVncServer On Ubuntu 20.04</h2>
+</div>
+</a>
+</article>
+</div>
+</div>
+</aside>
+<div class=disqus-container>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//bevisy.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</div>
+<style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style>
+<script>window.addEventListener('onColorSchemeChange',a=>{DISQUS&&DISQUS.reset({reload:!0})})</script>
+<footer class=site-footer>
+<section class=copyright>
+&copy;
+2020 -
+2022 Bevisy's Blogs
+</section>
+<section class=powerby>
+Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.2.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a>
+</section>
+</footer>
+<div class=pswp tabindex=-1 role=dialog aria-hidden=true>
+<div class=pswp__bg></div>
+<div class=pswp__scroll-wrap>
+<div class=pswp__container>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+<div class=pswp__item></div>
+</div>
+<div class="pswp__ui pswp__ui--hidden">
+<div class=pswp__top-bar>
+<div class=pswp__counter></div>
+<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+<div class=pswp__preloader>
+<div class=pswp__preloader__icn>
+<div class=pswp__preloader__cut>
+<div class=pswp__preloader__donut></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+<div class=pswp__share-tooltip></div>
+</div>
+<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+</button>
+<div class=pswp__caption>
+<div class=pswp__caption__center></div>
+</div>
+</div>
+</div>
+</div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous>
+</main>
+<aside class="sidebar right-sidebar sticky">
+<section class="widget archives">
+<div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg>
+</div>
+<h2 class="widget-title section-title">Table of contents</h2>
+<div class=widget--toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#准备阶段>准备阶段</a>
+<ul>
+<li><a href=#准备-release-包>准备 release 包</a></li>
+<li><a href=#编译必要组件>编译必要组件</a></li>
+<li><a href=#配置-kata-containers-和-containerd-以使用-gpu>配置 kata-containers 和 containerd 以使用 GPU</a></li>
+</ul>
+</li>
+<li><a href=#参考>参考</a></li>
+</ul>
+</nav>
+</div>
+</section>
+</aside>
+</div>
+<script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const a=document.createElement('link');a.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",a.type="text/css",a.rel="stylesheet",document.head.appendChild(a)})()</script>
+</body>
+</html>
