@@ -1,14 +1,14 @@
 <!doctype html><html lang=en-us>
 <head><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="在Macbook上烧录iso镜像，制作操作系统盘 查看烧录U盘 diskutil list # 例如：/dev/disk3 取消挂载U盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 弹出U盘 diskutil eject /dev/disk3 "><title>Burn the Operating System Installation Disk on Mac</title>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="在 Macbook 上烧录 iso 镜像，制作操作系统盘 查看烧录 U 盘 diskutil list # 例如：/dev/disk3 取消挂载 U 盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 查看 dd 烧录进度 # 查看 dd 进程 ps -ef | grep -i dd 0 188 185 0 2:33PM ttys000 0:12.33 dd if=/Users/xx/Downloads/ubuntu-20.04.5-desktop-amd64.iso of=/dev/disk2 bs=1m # 查看烧录进度 sudo kill -SIGINFO 188 弹出 U 盘 diskutil eject /dev/disk3 "><title>Burn the Operating System Installation Disk on Mac</title>
 <link rel=canonical href=https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/>
 <link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Burn the Operating System Installation Disk on Mac">
-<meta property="og:description" content="在Macbook上烧录iso镜像，制作操作系统盘 查看烧录U盘 diskutil list # 例如：/dev/disk3 取消挂载U盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 弹出U盘 diskutil eject /dev/disk3 ">
+<meta property="og:description" content="在 Macbook 上烧录 iso 镜像，制作操作系统盘 查看烧录 U 盘 diskutil list # 例如：/dev/disk3 取消挂载 U 盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 查看 dd 烧录进度 # 查看 dd 进程 ps -ef | grep -i dd 0 188 185 0 2:33PM ttys000 0:12.33 dd if=/Users/xx/Downloads/ubuntu-20.04.5-desktop-amd64.iso of=/dev/disk2 bs=1m # 查看烧录进度 sudo kill -SIGINFO 188 弹出 U 盘 diskutil eject /dev/disk3 ">
 <meta property="og:url" content="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/">
 <meta property="og:site_name" content="Bevisy's Blogs">
 <meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="macbook"><meta property="article:tag" content="iso"><meta property="article:tag" content="linux"><meta property="article:published_time" content="2021-01-06T19:22:16+08:00"><meta property="article:modified_time" content="2021-01-06T19:22:16+08:00"><meta property="og:image" content="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg">
 <meta name=twitter:title content="Burn the Operating System Installation Disk on Mac">
-<meta name=twitter:description content="在Macbook上烧录iso镜像，制作操作系统盘 查看烧录U盘 diskutil list # 例如：/dev/disk3 取消挂载U盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 弹出U盘 diskutil eject /dev/disk3 "><meta name=twitter:card content="summary_large_image">
+<meta name=twitter:description content="在 Macbook 上烧录 iso 镜像，制作操作系统盘 查看烧录 U 盘 diskutil list # 例如：/dev/disk3 取消挂载 U 盘 diskutil unmountDisk /dev/disk3 烧录 # 以 ubuntu-20.04.iso 为例 sudo dd if=~/Downloads/ubuntu-20.04.iso of=/dev/disk3 bs=1m &amp;amp;&amp;amp; sync # sync 作用: 使缓存落盘 查看 dd 烧录进度 # 查看 dd 进程 ps -ef | grep -i dd 0 188 185 0 2:33PM ttys000 0:12.33 dd if=/Users/xx/Downloads/ubuntu-20.04.5-desktop-amd64.iso of=/dev/disk2 bs=1m # 查看烧录进度 sudo kill -SIGINFO 188 弹出 U 盘 diskutil eject /dev/disk3 "><meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg">
 </head>
 <body class="article-page has-toc">
@@ -45,15 +45,21 @@ extended">
 </div>
 </header>
 <section class=article-content>
-<h1 id=在macbook上烧录iso镜像制作操作系统盘>在Macbook上烧录iso镜像，制作操作系统盘</h1>
-<h2 id=查看烧录u盘>查看烧录U盘</h2>
+<h1 id=在-macbook-上烧录-iso-镜像制作操作系统盘>在 Macbook 上烧录 iso 镜像，制作操作系统盘</h1>
+<h2 id=查看烧录-u-盘>查看烧录 U 盘</h2>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>diskutil list <span class=c1># 例如：/dev/disk3</span>
-</code></pre></div><h2 id=取消挂载u盘>取消挂载U盘</h2>
+</code></pre></div><h2 id=取消挂载-u-盘>取消挂载 U 盘</h2>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>diskutil unmountDisk /dev/disk3
 </code></pre></div><h2 id=烧录>烧录</h2>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=c1># 以 ubuntu-20.04.iso 为例</span>
 sudo dd <span class=k>if</span><span class=o>=</span>~/Downloads/ubuntu-20.04.iso <span class=nv>of</span><span class=o>=</span>/dev/disk3 <span class=nv>bs</span><span class=o>=</span>1m <span class=o>&amp;&amp;</span> sync <span class=c1># sync 作用: 使缓存落盘</span>
-</code></pre></div><h2 id=弹出u盘>弹出U盘</h2>
+</code></pre></div><h2 id=查看-dd-烧录进度>查看 dd 烧录进度</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=c1># 查看 dd 进程</span>
+ps -ef <span class=p>|</span> grep -i dd
+<span class=m>0</span>   <span class=m>188</span>   <span class=m>185</span>   <span class=m>0</span>  2:33PM ttys000    0:12.33 dd <span class=k>if</span><span class=o>=</span>/Users/xx/Downloads/ubuntu-20.04.5-desktop-amd64.iso <span class=nv>of</span><span class=o>=</span>/dev/disk2 <span class=nv>bs</span><span class=o>=</span>1m
+<span class=c1># 查看烧录进度</span>
+sudo <span class=nb>kill</span> -SIGINFO <span class=m>188</span>
+</code></pre></div><h2 id=弹出-u-盘>弹出 U 盘</h2>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>diskutil eject /dev/disk3
 </code></pre></div>
 </section>
@@ -83,7 +89,7 @@ sudo dd <span class=k>if</span><span class=o>=</span>~/Downloads/ubuntu-20.04.is
 <section class=copyright>
 &copy;
 2020 -
-2022 Bevisy's Blogs
+2023 Bevisy's Blogs
 </section>
 <section class=powerby>
 Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> <br>
@@ -135,10 +141,11 @@ Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=
 <div class=widget--toc>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#查看烧录u盘>查看烧录U盘</a></li>
-<li><a href=#取消挂载u盘>取消挂载U盘</a></li>
+<li><a href=#查看烧录-u-盘>查看烧录 U 盘</a></li>
+<li><a href=#取消挂载-u-盘>取消挂载 U 盘</a></li>
 <li><a href=#烧录>烧录</a></li>
-<li><a href=#弹出u盘>弹出U盘</a></li>
+<li><a href=#查看-dd-烧录进度>查看 dd 烧录进度</a></li>
+<li><a href=#弹出-u-盘>弹出 U 盘</a></li>
 </ul>
 </nav>
 </div>

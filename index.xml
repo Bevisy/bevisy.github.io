@@ -365,15 +365,21 @@ Server Version: version.Info&lt;span class="o">{&lt;/span>Major:&lt;span class="
 &lt;a class="link" href="https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c" target="_blank" rel="noopener"
 >bevisy/zfs&lt;/a>
 &lt;a class="link" href="https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6" target="_blank" rel="noopener"
->bevisy/containerd&lt;/a>&lt;/p></description></item><item><title>Burn the Operating System Installation Disk on Mac</title><link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link><pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate><guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid><description>&lt;img src="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg" alt="Featured image of post Burn the Operating System Installation Disk on Mac" />&lt;h1 id="在macbook上烧录iso镜像制作操作系统盘">在Macbook上烧录iso镜像，制作操作系统盘&lt;/h1>
-&lt;h2 id="查看烧录u盘">查看烧录U盘&lt;/h2>
+>bevisy/containerd&lt;/a>&lt;/p></description></item><item><title>Burn the Operating System Installation Disk on Mac</title><link>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</link><pubDate>Wed, 06 Jan 2021 19:22:16 +0800</pubDate><guid>https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/</guid><description>&lt;img src="https://bevisy.github.io/p/burn-the-operating-system-installation-disk-on-mac/macbook-wallpaper.jpg" alt="Featured image of post Burn the Operating System Installation Disk on Mac" />&lt;h1 id="在-macbook-上烧录-iso-镜像制作操作系统盘">在 Macbook 上烧录 iso 镜像，制作操作系统盘&lt;/h1>
+&lt;h2 id="查看烧录-u-盘">查看烧录 U 盘&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil list &lt;span class="c1"># 例如：/dev/disk3&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="取消挂载u盘">取消挂载U盘&lt;/h2>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="取消挂载-u-盘">取消挂载 U 盘&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil unmountDisk /dev/disk3
 &lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="烧录">烧录&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># 以 ubuntu-20.04.iso 为例&lt;/span>
 sudo dd &lt;span class="k">if&lt;/span>&lt;span class="o">=&lt;/span>~/Downloads/ubuntu-20.04.iso &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/dev/disk3 &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>1m &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> sync &lt;span class="c1"># sync 作用: 使缓存落盘&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="弹出u盘">弹出U盘&lt;/h2>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="查看-dd-烧录进度">查看 dd 烧录进度&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="c1"># 查看 dd 进程&lt;/span>
+ps -ef &lt;span class="p">|&lt;/span> grep -i dd
+&lt;span class="m">0&lt;/span> &lt;span class="m">188&lt;/span> &lt;span class="m">185&lt;/span> &lt;span class="m">0&lt;/span> 2:33PM ttys000 0:12.33 dd &lt;span class="k">if&lt;/span>&lt;span class="o">=&lt;/span>/Users/xx/Downloads/ubuntu-20.04.5-desktop-amd64.iso &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/dev/disk2 &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>1m
+&lt;span class="c1"># 查看烧录进度&lt;/span>
+sudo &lt;span class="nb">kill&lt;/span> -SIGINFO &lt;span class="m">188&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="弹出-u-盘">弹出 U 盘&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">diskutil eject /dev/disk3
 &lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Install TigerVncServer On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link><pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate><guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid><description>&lt;h1 id="ubuntu-2004-安装-tigervncserver">Ubuntu 20.04 安装 Tigervncserver&lt;/h1>
 &lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="c1"># 安装&lt;/span>
