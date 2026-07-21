@@ -1,5 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wechat on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/wechat/</link><description>Recent content in Wechat on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 Jul 2020 11:16:31 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/wechat/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Wechat Client On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</link><pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate><guid>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</guid><description>Ubuntu 20.04 安装微信客户端 clone repo deepin-wine-ubuntu
-执行脚本 sudo chmod a+x install_2.8.22.sh &amp;amp;&amp;amp; ./install_2.8.22.sh
-下载微信deb包，并安装 下载地址
-安装微信： sudo dpkg –i deepin.com.wechat_2.6.8.65deepin0_i386.deb
-安装字体：(参考issue：https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/253) sudo apt install fonts-wqy-microhei fonts-wqy-zenhei</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wechat on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/wechat/</link><description>Recent content in Wechat on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 Jul 2020 11:16:31 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/wechat/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Wechat Client On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</link><pubDate>Wed, 29 Jul 2020 11:16:31 +0800</pubDate><guid>https://bevisy.github.io/p/install-wechat-client-on-ubuntu-20.04/</guid><description>&lt;h1 id="ubuntu-2004-安装微信客户端"&gt;Ubuntu 20.04 安装微信客户端
+&lt;/h1&gt;&lt;h2 id="clone-repo"&gt;clone repo
+&lt;/h2&gt;&lt;p&gt;&lt;a class="link" href="https://github.com/bevisy/deepin-wine-ubuntu" target="_blank" rel="noopener"
+ &gt;deepin-wine-ubuntu &lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="执行脚本"&gt;执行脚本
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;sudo chmod a+x install_2.8.22.sh &amp;amp;&amp;amp; ./install_2.8.22.sh&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="下载微信deb包并安装"&gt;下载微信deb包，并安装
+&lt;/h2&gt;&lt;p&gt;&lt;a class="link" href="https://packages.deepin.com/deepin/pool/non-free/d/deepin.com.wechat/deepin.com.wechat_2.6.8.65deepin0_i386.deb" target="_blank" rel="noopener"
+ &gt;下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="安装微信"&gt;安装微信：
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;sudo dpkg –i deepin.com.wechat_2.6.8.65deepin0_i386.deb&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id="安装字体参考issuehttpsgithubcomwszqkzqkdeepin-wine-ubuntuissues253"&gt;安装字体：(参考issue：https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/253)
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;sudo apt install fonts-wqy-microhei fonts-wqy-zenhei&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>

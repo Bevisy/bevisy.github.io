@@ -1,1 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>vnc on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/vnc/</link><description>Recent content in vnc on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 31 Jul 2020 11:47:14 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/vnc/index.xml" rel="self" type="application/rss+xml"/><item><title>Install TigerVncServer On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link><pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate><guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid><description>Ubuntu 20.04 安装 Tigervncserver # 安装 $ sudo apt update $ sudo apt install xfce4 xfce4-goodies tigervnc-standalone-server # 推荐使用 xfce4 桌面 # 启动 $ vncpasswd # 配置 vnc 客户端连接密码 $ vncserver $ vncserver -kill :1 # 关闭创建的 vnc server # 修改配置，解决黑屏和灰屏问题 $ touch $HOME/.vnc/xstartup $ chmod u+x $HOME/.vnc/xstartup $ cat &amp;gt; $HOME/.vnc/xstartup &amp;lt;&amp;lt; EOF #!/bin/sh unset SESSION_MANAGER unset DBUS_SESSION_BUS_ADDRESS [ -r $HOME/.Xresources ] &amp;amp;&amp;amp; xrdb $HOME/.Xresources xsetroot -solid grey xterm -geometry 80x24+10+10 -ls -title &amp;#34;$VNCDESKTOP Desktop&amp;#34; &amp;amp; startxfce4 &amp;amp; EOF # 再次启动 $ vncserver :1 --geomotry 1366x768 # --geometry 参数随意 # 使用 vnc viewer 连接，端口号为 5091 使用 lxde 桌面 # 安装 $ sudo apt install xorg lxde-core lxterminal # 配置 vncserver 启动桌面 $ cat &amp;gt; $HOME/.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vnc on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/vnc/</link><description>Recent content in Vnc on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 31 Jul 2020 11:47:14 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/vnc/index.xml" rel="self" type="application/rss+xml"/><item><title>Install TigerVncServer On Ubuntu 20.04</title><link>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</link><pubDate>Fri, 31 Jul 2020 11:47:14 +0800</pubDate><guid>https://bevisy.github.io/p/install-tigervncserver-on-ubuntu-20.04/</guid><description>&lt;h1 id="ubuntu-2004-安装-tigervncserver"&gt;Ubuntu 20.04 安装 Tigervncserver
+&lt;/h1&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt install xfce4 xfce4-goodies tigervnc-standalone-server &lt;span class="c1"&gt;# 推荐使用 xfce4 桌面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 启动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ vncpasswd &lt;span class="c1"&gt;# 配置 vnc 客户端连接密码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ vncserver
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ vncserver -kill :1 &lt;span class="c1"&gt;# 关闭创建的 vnc server&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 修改配置，解决黑屏和灰屏问题&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ touch &lt;span class="nv"&gt;$HOME&lt;/span&gt;/.vnc/xstartup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ chmod u+x &lt;span class="nv"&gt;$HOME&lt;/span&gt;/.vnc/xstartup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ cat &amp;gt; &lt;span class="nv"&gt;$HOME&lt;/span&gt;/.vnc/xstartup &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;unset SESSION_MANAGER
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;unset DBUS_SESSION_BUS_ADDRESS
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;[ -r $HOME/.Xresources ] &amp;amp;&amp;amp; xrdb $HOME/.Xresources
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;xsetroot -solid grey
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;xterm -geometry 80x24+10+10 -ls -title &amp;#34;$VNCDESKTOP Desktop&amp;#34; &amp;amp;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;startxfce4 &amp;amp;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 再次启动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ vncserver :1 --geomotry 1366x768 &lt;span class="c1"&gt;# --geometry 参数随意&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 使用 vnc viewer 连接，端口号为 5091&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id="使用-lxde-桌面"&gt;使用 lxde 桌面
+&lt;/h1&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt install xorg lxde-core lxterminal
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 配置 vncserver 启动桌面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ cat &amp;gt; &lt;span class="nv"&gt;$HOME&lt;/span&gt;/.vnc/xstartup &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt; #!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt; lxterminal &amp;amp;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt; /usr/bin/lxsession -s LXDE &amp;amp;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt; EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

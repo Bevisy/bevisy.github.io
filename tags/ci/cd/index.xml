@@ -1,5 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CI/CD on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/ci/cd/</link><description>Recent content in CI/CD on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://bevisy.github.io/tags/ci/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>通过Travis CI 部署静态页面到 github page</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</link><pubDate>Tue, 21 Jan 2020 00:25:33 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</guid><description>Travis CI 部署 Hexo 生成文件到 master 分支 文档主要实现Hexo利用 Travis CI 完成 github page 部署。
-由于 username.github.io 仓库不允许切换 github page 分支，必须将 master 分支作为静态资源分支，所以新建 develop 分支作为开发分支。
-详细的步骤参考将 Hexo 部署到 GitHub Pages，此处主要贴出区别的 Travis CI 配置文件：
-sudo: false language: node_js node_js: - 13.6.0 cache: npm branches: only: - develop script: - hexo generate deploy: provider: pages skip-cleanup: true github-token: $GH_TOKEN keep-history: false target_branch: master local-dir: public on: branch: develop 上述配置信息解释参考 GitHub Pages Deployment。
-参考文档 GitHub Pages Deployment</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CI/CD on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/ci/cd/</link><description>Recent content in CI/CD on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jan 2020 00:25:33 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/ci/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>通过Travis CI 部署静态页面到 github page</title><link>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</link><pubDate>Tue, 21 Jan 2020 00:25:33 +0800</pubDate><guid>https://bevisy.github.io/p/%E9%80%9A%E8%BF%87travis-ci-%E9%83%A8%E7%BD%B2%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E5%88%B0-github-page/</guid><description>&lt;h1 id="travis-ci-部署-hexo-生成文件到-master-分支"&gt;Travis CI 部署 Hexo 生成文件到 master 分支
+&lt;/h1&gt;&lt;p&gt;文档主要实现Hexo利用 Travis CI 完成 github page 部署。&lt;/p&gt;
+&lt;p&gt;由于 username.github.io 仓库不允许切换 github page 分支，必须将 master 分支作为静态资源分支，所以新建 develop 分支作为开发分支。&lt;/p&gt;
+&lt;p&gt;详细的步骤参考&lt;a class="link" href="https://hexo.io/zh-cn/docs/github-pages" target="_blank" rel="noopener"
+ &gt;将 Hexo 部署到 GitHub Pages&lt;/a&gt;，此处主要贴出区别的 Travis CI 配置文件：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo: &lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;language: node_js
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;node_js:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - 13.6.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cache: npm
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;branches:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; only:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - develop
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - hexo generate
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;deploy:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; provider: pages
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; skip-cleanup: &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; github-token: &lt;span class="nv"&gt;$GH_TOKEN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; keep-history: &lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; target_branch: master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; local-dir: public
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; on:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; branch: develop
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上述配置信息解释参考 &lt;a class="link" href="https://docs.travis-ci.com/user/deployment/pages/" target="_blank" rel="noopener"
+ &gt;GitHub Pages Deployment&lt;/a&gt;。&lt;/p&gt;
+&lt;h1 id="参考文档"&gt;参考文档
+&lt;/h1&gt;&lt;p&gt;&lt;a class="link" href="https://docs.travis-ci.com/user/deployment/pages/" target="_blank" rel="noopener"
+ &gt;GitHub Pages Deployment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://hexo.io/zh-cn/docs/github-pages" target="_blank" rel="noopener"
+ &gt;将 Hexo 部署到 GitHub Pages&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

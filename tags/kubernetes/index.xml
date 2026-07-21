@@ -1,1 +1,148 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubernetes on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kubernetes/</link><description>Recent content in kubernetes on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 11 Jan 2021 13:56:02 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>基于ZFS的Ubuntu20.04安装kubernetes1.20 containerd 安装 containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b 安装 # 安装必要组件 $ sudo apt-get update $ sudo apt-get install \ apt-transport-https \ ca-certificates \ curl \ gnupg-agent \ software-properties-common # 安装gpg key curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - # 验证gpg key $ sudo apt-key fingerprint 0EBFCD88 # 添加 repo $ sudo add-apt-repository \ &amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs)\ stable&amp;#34; # 安装containerd $ sudo apt-get update $ sudo apt-get install containerd.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kubernetes/</link><description>Recent content in Kubernetes on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 11 Jan 2021 13:56:02 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>&lt;h1 id="基于zfs的ubuntu2004安装kubernetes120"&gt;基于ZFS的Ubuntu20.04安装kubernetes1.20
+&lt;/h1&gt;&lt;h2 id="containerd-安装"&gt;containerd 安装
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="安装"&gt;安装
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装必要组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get install &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; apt-transport-https &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ca-certificates &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; curl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; gnupg-agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; software-properties-common
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装gpg key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; curl -fsSL https://download.docker.com/linux/ubuntu/gpg &lt;span class="p"&gt;|&lt;/span&gt; sudo apt-key add -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 验证gpg key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-key fingerprint 0EBFCD88
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 添加 repo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo add-apt-repository &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;lsb_release -cs&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; stable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装containerd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get install containerd.io
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class="link" href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener"
+ &gt;安装参考&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="配置修改适配-zfs"&gt;配置修改适配 zfs
+&lt;/h3&gt;&lt;p&gt;查看 zfs 插件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr plugins ls &lt;span class="p"&gt;|&lt;/span&gt; grep zfs 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;io.containerd.snapshotter.v1 zfs linux/amd64 ok
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;准备config.toml&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.bk
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo chmod &lt;span class="m"&gt;646&lt;/span&gt; /etc/containerd/config.toml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改&lt;code&gt;snapshotter&lt;/code&gt;为&lt;code&gt;zfs&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;#snapshotter = &amp;#34;overlayfs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;snapshotter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;zfs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重启&lt;code&gt;containerd&lt;/code&gt;，&lt;code&gt;containerd&lt;/code&gt;不支持配置热加载&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo systemctl restart containerd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="挂载-zfs-到containerd指定目录"&gt;挂载 zfs 到containerd指定目录
+&lt;/h3&gt;&lt;h4 id="查询-pool"&gt;查询 pool
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zpool list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME SIZE ALLOC FREE CKPOINT EXPANDSZ FRAG CAP DEDUP HEALTH ALTROOT
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpool 460G 8.64G 451G - - 0% 1% 1.00x ONLINE -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="挂载目录"&gt;挂载目录
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zfs create -o &lt;span class="nv"&gt;mountpoint&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/lib/containerd/io.containerd.snapshotter.v1.zfs rpool/containerd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="查看挂载的目录"&gt;查看挂载的目录
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zfs list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME USED AVAIL REFER MOUNTPOINT
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpool/containerd 96K 437G 96K /var/lib/containerd/io.containerd.snapshotter.v1.zfs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="验证"&gt;验证
+&lt;/h3&gt;&lt;h4 id="拉取镜像"&gt;拉取镜像
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr i pull --snapshotter&lt;span class="o"&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="启动容器"&gt;启动容器
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr run --rm --net-host -d --snapshotter&lt;span class="o"&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17 &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="查看nginx启动结果"&gt;查看nginx启动结果
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr t ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;TASK PID STATUS 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="m"&gt;1494537&lt;/span&gt; RUNNING
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ netstat -alptn &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="m"&gt;80&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tcp &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; 0.0.0.0:80 0.0.0.0:* LISTEN -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ curl http://127.0.0.1:80 &lt;span class="c1"&gt;# 正常可访问&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you &lt;span class="k"&gt;for&lt;/span&gt; using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;/html&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="待解决的问题"&gt;待解决的问题
+&lt;/h3&gt;&lt;h4 id="问题-1"&gt;问题 1
+&lt;/h4&gt;&lt;p&gt;非root账户，sudo权限不指定参数&lt;code&gt;snapshotter&lt;/code&gt;创建container，提示&lt;code&gt;ctr: failed to mount /tmp/containerd-mount589724034: invalid argument&lt;/code&gt;，无法创建容器。&lt;/p&gt;
+&lt;p&gt;切换成root用户，依旧提示，但是容器可以正常创建&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;(&lt;/span&gt;root&lt;span class="o"&gt;)&lt;/span&gt;$ ctr run --rm --net-host -d docker.io/library/nginx:1.17 &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr: failed to mount /tmp/containerd-mount589724034: invalid argument
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;(&lt;/span&gt;root&lt;span class="o"&gt;)&lt;/span&gt;$ ctr t ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;TASK PID STATUS 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="m"&gt;1494537&lt;/span&gt; RUNNING
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="kubernetes-安装"&gt;kubernetes 安装
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Client Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Server Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装-1"&gt;安装
+&lt;/h2&gt;&lt;p&gt;当前安装工具有很多，此处选择使用&lt;code&gt;kubeadm&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id="准备kubernetes-源使用阿里镜像源并安装必要组件"&gt;准备kubernetes 源(使用阿里镜像源)，并安装必要组件
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get install apt-transport-https
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg &lt;span class="p"&gt;|&lt;/span&gt; sudo apt-key add - 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt;/etc/apt/sources.list.d/kubernetes.list
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get install kubelet kubeadm kubectl
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后 kubelet 服务会处于不断重启状态，暂时不需要关注，kubelet等待连接kube-apiserver，预期现象。&lt;/p&gt;
+&lt;h2 id="启动kubernetes集群"&gt;启动kubernetes集群
+&lt;/h2&gt;&lt;h4 id="准备容器镜像"&gt;准备容器镜像
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubeadm config images list &lt;span class="c1"&gt;# 查看需要准备的镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/coredns:1.7.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/etcd:3.4.13-0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-apiserver:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-controller-manager:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-proxy:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-scheduler:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/pause:3.2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="containerd-镜像加速"&gt;containerd 镜像加速
+&lt;/h4&gt;&lt;p&gt;配置参考：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors.&lt;span class="s2"&gt;&amp;#34;docker.io&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;#endpoint = [&amp;#34;https://registry-1.docker.io&amp;#34;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;endpoint&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://as065r9f.mirror.aliyuncs.com&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="启动集群"&gt;启动集群
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo kubeadm init --pod-network-cidr&lt;span class="o"&gt;=&lt;/span&gt;10.10.0.0/16 --service-cidr&lt;span class="o"&gt;=&lt;/span&gt;10.20.0.0/16 --kubernetes-version&lt;span class="o"&gt;=&lt;/span&gt;v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&amp;ndash;kubernetes-version: 指定 kubernetes 版本；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;pod-network-cidr：指定 Pod 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;service-cidr：指定 Service 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;cri-socket：指定cri(社区趋势：cri 采用 containerd)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="验证安装结果"&gt;验证安装结果
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 根据提示拷贝kubeconfig文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl version
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Client Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Server Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="flannel-安装"&gt;Flannel 安装
+&lt;/h2&gt;&lt;p&gt;kubernetes v1.17+ 版本&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;需要修改配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;net-conf.json: &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Network&amp;#34;&lt;/span&gt;: &lt;span class="s2"&gt;&amp;#34;10.10.0.0/16&amp;#34;&lt;/span&gt;, &lt;span class="c1"&gt;# kubeadm init 创建时使用的pod-network-cidr&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Backend&amp;#34;&lt;/span&gt;: &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Type&amp;#34;&lt;/span&gt;: &lt;span class="s2"&gt;&amp;#34;vxlan&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class="link" href="https://github.com/coreos/flannel#flannel" target="_blank" rel="noopener"
+ &gt;参考连接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="待解决问题"&gt;待解决问题
+&lt;/h2&gt;&lt;p&gt;containerd 一直会刷新 error 日志&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time=&amp;quot;2021-01-11T17:49:51.380076683+08:00&amp;quot; level=error msg=&amp;quot;Failed to get usage for snapshot \&amp;quot;sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\&amp;quot;&amp;quot; error=&amp;quot;zfs does not implement Usage() yet&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/containerd/zfs/issues/17" target="_blank" rel="noopener"
+ &gt;参考issue&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="规避办法"&gt;规避办法
+&lt;/h3&gt;&lt;p&gt;暂时通过修改代码规避&lt;br&gt;
+&lt;a class="link" href="https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c" target="_blank" rel="noopener"
+ &gt;bevisy/zfs&lt;/a&gt;
+&lt;a class="link" href="https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6" target="_blank" rel="noopener"
+ &gt;bevisy/containerd&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

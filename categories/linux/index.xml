@@ -1,5 +1,480 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on Bevisy's Blogs</title><link>https://bevisy.github.io/categories/linux/</link><description>Recent content in Linux on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 23:14:52 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Kata Containers 安全容器GPU支持实践</title><link>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 21 Jun 2022 23:14:52 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</guid><description>kata-containers 安全容器 GPU 支持实践 本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 kata-containers 官网。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以Tesla P100 PCIe 16GB为例。
-准备阶段 下载官方 release 包 下载官方代码，编译需要使用到的组件containerd-shim-kata-v2，kata-agent，虚拟机镜像 kata-containers.img或者kata-containers-initrd.img,虚拟机内核 vmlinuz GPU 支持实践 准备 release 包 可以从官方的 release 页面获取最新的包，此处使用当前最新版本2.4.2。
-# 下载 wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz # 解压并置于 /opt 目录下 tar xf kata-static-2.4.2-x86_64.tar.xz mv opt/kata /opt/ 编译必要组件 拉取 kata-containers 源码 注意：源码需要包含此PR
-mkdir -p $GOPATH/src/github.com/kata-containers cd $GOPATH/src/github.com/kata-containers git clone https://github.com/kata-containers/kata-containers.git git clone https://github.com/kata-containers/tests.git # 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败 sudo chown -R root:root tests 编译containerd-shim-kata-v2 # 编译 containerd-shim-v2 make -C $GOPATH/src/github.</description></item><item><title>Close Swap on Ubuntu20.04</title><link>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</link><pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate><guid>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</guid><description>临时关闭 sudo dphys-swapfile swapoff 永久关闭 sudo systemctl disable dphys-swapfile.service --now # 注释fstab #/dev/mapper/vgubuntu-swap_1 none swap sw 0 0</description></item><item><title>linux 利用loop设备模拟块设备</title><link>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</link><pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate><guid>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</guid><description>linux 利用loop设备模拟块设备 创建虚拟设备 losetup --help -a 显示所有已经使用的回环设备状态 -d 卸除回环设备 -f 寻找第一个未使用的回环设备 -e &amp;lt;加密选项&amp;gt; 启动加密编码 # 查找第一个未使用的回环设备 losetup -f # 创建文件 dd if=/dev/zero of=./disk.img bs=4M count=1024 # 将disk.img 虚拟成一个回环设备 losetup -f disk.img # 查询此设备 losetup -a | grep disk.img /dev/loop25: [64768]:3296700 (/home/zbb/temp/disk/disk.img) # 格式化设备 mkfs.ext4 /dev/loop25 # 挂载块设备 mount /dev/loop25 test # test 为自定义目录 # 卸载设备 umount test losetup -d /dev/loop25</description></item><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>基于ZFS的Ubuntu20.04安装kubernetes1.20 containerd 安装 containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b 安装 # 安装必要组件 $ sudo apt-get update $ sudo apt-get install \ apt-transport-https \ ca-certificates \ curl \ gnupg-agent \ software-properties-common # 安装gpg key curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - # 验证gpg key $ sudo apt-key fingerprint 0EBFCD88 # 添加 repo $ sudo add-apt-repository \ &amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs)\ stable&amp;#34; # 安装containerd $ sudo apt-get update $ sudo apt-get install containerd.</description></item><item><title>The Skills of VIM</title><link>https://bevisy.github.io/p/the-skills-of-vim/</link><pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate><guid>https://bevisy.github.io/p/the-skills-of-vim/</guid><description>VIM 使用技巧 查找 大小写敏感控制 # VIM 默认大小写敏感查找； # 大小写不敏感查找 ：/foo\c # 大小写敏感查找 ：/foo\C 查找光标当前单词 # normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词 Vim 查找和替换 :{作用范围}s/{目标}/{替换}/{替换标志} # 当前行替换 ：s/vivian/sky/ 替换当前行第一个 vivian 为 sky ：s/vivian/sky/g 替换当前行所有 vivian 为 sky # 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行 ：n,$s/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky ：n,$s/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky ：2,12s/hello/world/ 2-12行,第一次出现替换 ：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换 # 全行替换 ：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky ：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky # 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符 ：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/ ：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/ # 替换确认，添加参数c，提示是否替换 :%s/hello/world/gc 针对每一个匹配项，提示是否替换</description></item><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>Linux 内核编译(Ubuntu 环境) 下载内核代码 https://www.kernel.org/
-安装依赖 sudo apt update sudo apt install -y \ gcc \ make \ libncurses5-dev \ openssl \ libssl-dev \ build-essential \ pkg-config \ libc6-dev \ bison \ flex \ libelf-dev 准备.config和自定义配置 cd {Download}/linux-5.4.32/ sudo cp /boot/config-{uname -r} .config sudo make menuconfig 编译内核 # 编译内核 sudo make sudo make modules_install 安装内核 sudo mv {Download}/linux-5.4.32 /usr/src/ cd /usr/src/linux-5.</description></item><item><title>Zsh-And-Oh My Zsh-Installation summary</title><link>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</link><pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate><guid>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</guid><description>zsh 安装总结 安装zsh # Ubuntu 18.04 sudo apt update sudo apt install zsh -y 安装 Oh My Zsh # https://ohmyz.sh/#install sh -c &amp;#34;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&amp;#34; 插件安装 # 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins) git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting # 配置 .zshrc，添加插件列表 plugins=(zsh-autosuggestions zsh-syntax-highlighting) # 启动新终端，查看效果示例 zsh</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on Bevisy's Blogs</title><link>https://bevisy.github.io/categories/linux/</link><description>Recent content in Linux on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 23:14:52 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Kata Containers 安全容器GPU支持实践</title><link>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 21 Jun 2022 23:14:52 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</guid><description>&lt;h1 id="kata-containers-安全容器-gpu-支持实践"&gt;kata-containers 安全容器 GPU 支持实践
+&lt;/h1&gt;&lt;p&gt;本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 &lt;a class="link" href="https://katacontainers.io/" target="_blank" rel="noopener"
+ &gt;kata-containers 官网&lt;/a&gt;。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以&lt;code&gt;Tesla P100 PCIe 16GB&lt;/code&gt;为例。&lt;/p&gt;
+&lt;h2 id="准备阶段"&gt;准备阶段
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;下载官方 release 包&lt;/li&gt;
+&lt;li&gt;下载官方代码，编译需要使用到的组件&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt;，&lt;code&gt;kata-agent&lt;/code&gt;，虚拟机镜像 &lt;code&gt;kata-containers.img&lt;/code&gt;或者&lt;code&gt;kata-containers-initrd.img&lt;/code&gt;,虚拟机内核 &lt;code&gt;vmlinuz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;GPU 支持实践&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="准备-release-包"&gt;准备 release 包
+&lt;/h3&gt;&lt;p&gt;可以从官方的 &lt;a class="link" href="https://github.com/kata-containers/kata-containers/releases" target="_blank" rel="noopener"
+ &gt;release 页面&lt;/a&gt;获取最新的包，此处使用当前最新版本&lt;code&gt;2.4.2&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 解压并置于 /opt 目录下&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar xf kata-static-2.4.2-x86_64.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mv opt/kata /opt/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="编译必要组件"&gt;编译必要组件
+&lt;/h3&gt;&lt;p&gt;拉取 &lt;a class="link" href="https://github.com/kata-containers/kata-containers.git" target="_blank" rel="noopener"
+ &gt;kata-containers 源码&lt;/a&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：源码需要包含此&lt;a class="link" href="https://github.com/kata-containers/kata-containers/pull/4358" target="_blank" rel="noopener"
+ &gt;PR&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/kata-containers/kata-containers.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/kata-containers/tests.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo chown -R root:root tests
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译containerd-shim-kata-v2"&gt;编译&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt;
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 containerd-shim-v2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make -C &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/src/runtime containerd-shim-v2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译内核"&gt;编译内核
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 准备依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-get install -y --no-install-recommends &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 bc &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 bison &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 build-essential &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 ca-certificates &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 curl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 flex &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 git &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 iptables &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 libelf-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 切换目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/packaging/kernel/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载内核源码；准备 config 文件；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./build-kernel.sh -v 5.15.23 -g nvidia -f setup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 kernel&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./build-kernel.sh -v 5.15.23 -g nvidia build
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装 kernel&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo -E ./build-kernel.sh -v 5.15.23 -g nvidia install
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装目录 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vmlinuz-5.15.23-92-nvidia-gpu &lt;span class="c1"&gt;# 所需内核模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 或者&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vmlinux-5.15.23-92-nvidia-gpu &lt;span class="c1"&gt;# 所需内核模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 制作 linux-header deb 或者 rpm 包，由于接下来将使用 ubuntu 作为基础镜像，所以此处使用 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; kata-linux-5.15.23-92
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make deb-pkg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 生成 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-headers-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-image-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-libc-dev_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译虚拟机镜像"&gt;编译虚拟机镜像
+&lt;/h4&gt;&lt;p&gt;虚拟机镜像分为两种 &lt;code&gt;initrd&lt;/code&gt; 和 &lt;code&gt;image&lt;/code&gt;，此处以 &lt;code&gt;image&lt;/code&gt; 为例。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# rootfs 构建&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm -rf &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 确保 kata-containers/tests 仓库在 $GOPATH 目录下，且属主是 root 用户，否则安装 libseccomp 会失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E EXTRA_PKGS=&amp;#34;gcc make curl gnupg coreutils apt tar kmod pkg-config libc-dev libc6-dev pciutils&amp;#34; GOPATH=$GOPATH USE_DOCKER=true ./rootfs.sh ubuntu&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载 GPU 驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 根据官网 https://www.nvidia.com/Download/Find.aspx 选择所需 GPU 驱动；以 P100 显卡最新驱动 NVIDIA-Linux-x86_64-515.48.07.run 为例，将下载好的驱动放到目录 ${ROOTFS_DIR}/root&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 同时将编译内核生成的 deb 包防放到目录 ${ROOTFS_DIR}/root&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 GPU 驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 注意：确保本机有 GPU 设备，否则编译会失败；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t sysfs -o ro none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/sys
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t proc -o ro none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/proc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -o bind,ro /dev &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t devpts none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev/pts
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t tmpfs none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chroot &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;:/bin:/usr/local/sbin:/usr/sbin:/sbin
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /root
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# ubuntu dpkg 命令目前处于不可用状态，需要创建一些目录如下：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /var/lib/dpkg/status
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg/updates/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/lib/dpkg/info/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /var/lib/dpkg/info/format-new
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/cache/apt/archives/partial
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/log/apt/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg/alternatives
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装之前准备的内核 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dpkg -i *.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 解压 NVIDIA 驱动包，并编译&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x NVIDIA-Linux-x86_64-515.48.07.run
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./NVIDIA-Linux-x86_64-515.48.07.run -x
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; NVIDIA-Linux-x86_64-515.48.07
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./nvidia-installer -k 5.15.23-nvidia-gpu
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 编译完成后可清理 root 目录，减少镜像体积&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装 nvidia-container-toolkit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;distribution&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;. /etc/os-release&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$ID$VERSION_ID&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/share/yrings/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /etc/ssl/certs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt install ca-certificates
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey &lt;span class="p"&gt;|&lt;/span&gt; gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -s -L https://nvidia.github.io/libnvidia-container/&lt;span class="nv"&gt;$distribution&lt;/span&gt;/libnvidia-container.list &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s1"&gt;&amp;#39;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt install nvidia-container-toolkit
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt clean all
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 准备 hook 文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/share/oci/hooks/prestart/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt; /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;#!/bin/bash -x
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;/usr/bin/nvidia-container-toolkit -debug \$@
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 退出，并清理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/sys
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/proc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev/pts
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/tmp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 构建 image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## rootfs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/image-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 得到 kata-containers.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## initrd 可按照如下方式：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/initrd-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;至此，全部文件准备完毕。&lt;/p&gt;
+&lt;h3 id="配置-kata-containers-和-containerd-以使用-gpu"&gt;配置 kata-containers 和 containerd 以使用 GPU
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 配置 containerd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 配置文件 /etc/containerd/config.toml，新增&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.runtimes.kata&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;runtime_type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# privileged_without_host_devices = true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 containerd-shim-kata-v2 移至可执行目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cp &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/src/runtime/containerd-shim-kata-v2 /usr/local/bin/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 kata-containers.img 移至 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 vmlinuz-5.15.23-92-nvidia-gpu 移至 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 配置 kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /etc/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cp /opt/kata/share/defaults/kata-containers/configuration.toml /etc/kata-containers/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 修改配置文件 configuration.toml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;kernel&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/usr/share/kata-containers/vmlinuz-5.10.25-85-nvidia-gpu&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/usr/share/kata-containers/kata-containers.img&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;enable_iommu&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;hotplug_vfio_on_root_bus&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;pcie_root_port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证 GPU&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 查看 GPU vfio id&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo lspci -nn -D &lt;span class="p"&gt;|&lt;/span&gt; grep -i nvidia
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;0000:d0:00.0 3D controller &lt;span class="o"&gt;[&lt;/span&gt;0302&lt;span class="o"&gt;]&lt;/span&gt;: NVIDIA Corporation Device &lt;span class="o"&gt;[&lt;/span&gt;10de:20b9&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;rev a1&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nv"&gt;BDF&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;0000:d0:00.0&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ readlink -e /sys/bus/pci/devices/&lt;span class="nv"&gt;$BDF&lt;/span&gt;/iommu_group
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="m"&gt;79&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 启动容器验证&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ ctr -n k8s.io run --rm --runtime &lt;span class="s2"&gt;&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span&gt; --device /dev/vfio/79 --rm -t &lt;span class="s2"&gt;&amp;#34;docker.io/nvidia/cuda:11.6.0-base-ubuntu20.04&amp;#34;&lt;/span&gt; cuda bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Tue Jun &lt;span class="m"&gt;21&lt;/span&gt; 10:18:31 &lt;span class="m"&gt;2022&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; NVIDIA-SMI 515.48.07 Driver Version: 515.48.07 CUDA Version: 11.7 &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;-------------------------------+----------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; GPU Name Persistence-M&lt;span class="p"&gt;|&lt;/span&gt; Bus-Id Disp.A &lt;span class="p"&gt;|&lt;/span&gt; Volatile Uncorr. ECC &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; Fan Temp Perf Pwr:Usage/Cap&lt;span class="p"&gt;|&lt;/span&gt; Memory-Usage &lt;span class="p"&gt;|&lt;/span&gt; GPU-Util Compute M. &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; MIG M. &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="o"&gt;===============================&lt;/span&gt;+&lt;span class="o"&gt;======================&lt;/span&gt;+&lt;span class="o"&gt;======================&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; Tesla P100-PCIE... Off &lt;span class="p"&gt;|&lt;/span&gt; 00000000:02:00.0 Off &lt;span class="p"&gt;|&lt;/span&gt; Off &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; N/A 41C P0 30W / 250W &lt;span class="p"&gt;|&lt;/span&gt; 0MiB / 16384MiB &lt;span class="p"&gt;|&lt;/span&gt; 3% Default &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; N/A &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-------------------------------+----------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; Processes: &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; GPU GI CI PID Type Process name GPU Memory &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; ID ID Usage &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="o"&gt;=============================================================================&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; No running processes found &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;至此，我们就可以在安全容器中使用 GPU 设备。&lt;/p&gt;
+&lt;h2 id="参考"&gt;参考
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata.md" target="_blank" rel="noopener"
+ &gt;NVIDIA-GPU-passthrough-and-Kata&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Close Swap on Ubuntu20.04</title><link>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</link><pubDate>Tue, 25 May 2021 13:55:24 +0800</pubDate><guid>https://bevisy.github.io/p/close-swap-on-ubuntu20.04/</guid><description>&lt;h2 id="临时关闭"&gt;临时关闭
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo dphys-swapfile swapoff
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="永久关闭"&gt;永久关闭
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo systemctl disable dphys-swapfile.service --now
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 注释fstab&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#/dev/mapper/vgubuntu-swap_1 none swap sw 0 0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>linux 利用loop设备模拟块设备</title><link>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</link><pubDate>Fri, 02 Apr 2021 16:37:51 +0800</pubDate><guid>https://bevisy.github.io/p/linux-%E5%88%A9%E7%94%A8loop%E8%AE%BE%E5%A4%87%E6%A8%A1%E6%8B%9F%E5%9D%97%E8%AE%BE%E5%A4%87/</guid><description>&lt;h1 id="linux-利用loop设备模拟块设备"&gt;linux 利用loop设备模拟块设备
+&lt;/h1&gt;&lt;h2 id="创建虚拟设备"&gt;创建虚拟设备
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;losetup --help
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -a 显示所有已经使用的回环设备状态
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -d 卸除回环设备
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -f 寻找第一个未使用的回环设备
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -e &amp;lt;加密选项&amp;gt; 启动加密编码
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 查找第一个未使用的回环设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;losetup -f
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 创建文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;./disk.img &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1024&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 将disk.img 虚拟成一个回环设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;losetup -f disk.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 查询此设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;losetup -a &lt;span class="p"&gt;|&lt;/span&gt; grep disk.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/dev/loop25: &lt;span class="o"&gt;[&lt;/span&gt;64768&lt;span class="o"&gt;]&lt;/span&gt;:3296700 &lt;span class="o"&gt;(&lt;/span&gt;/home/zbb/temp/disk/disk.img&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 格式化设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkfs.ext4 /dev/loop25
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 挂载块设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount /dev/loop25 &lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="c1"&gt;# test 为自定义目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 卸载设备&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;losetup -d /dev/loop25
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Install Kubernetes1.20.1 and Containerd1.4.3 on Ubuntu with ZFS</title><link>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</link><pubDate>Mon, 11 Jan 2021 13:56:02 +0800</pubDate><guid>https://bevisy.github.io/p/install-kubernetes1.20.1-and-containerd1.4.3-on-ubuntu-with-zfs/</guid><description>&lt;h1 id="基于zfs的ubuntu2004安装kubernetes120"&gt;基于ZFS的Ubuntu20.04安装kubernetes1.20
+&lt;/h1&gt;&lt;h2 id="containerd-安装"&gt;containerd 安装
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;containerd containerd.io 1.4.3 269548fa27e0089a8b8278fc4fc781d7f65a939b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="安装"&gt;安装
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装必要组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get install &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; apt-transport-https &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ca-certificates &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; curl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; gnupg-agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; software-properties-common
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装gpg key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; curl -fsSL https://download.docker.com/linux/ubuntu/gpg &lt;span class="p"&gt;|&lt;/span&gt; sudo apt-key add -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 验证gpg key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-key fingerprint 0EBFCD88
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 添加 repo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo add-apt-repository &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;lsb_release -cs&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; stable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装containerd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get install containerd.io
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class="link" href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener"
+ &gt;安装参考&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="配置修改适配-zfs"&gt;配置修改适配 zfs
+&lt;/h3&gt;&lt;p&gt;查看 zfs 插件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr plugins ls &lt;span class="p"&gt;|&lt;/span&gt; grep zfs 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;io.containerd.snapshotter.v1 zfs linux/amd64 ok
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;准备config.toml&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo cp /etc/containerd/config.toml /etc/containerd/config.toml.bk
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo chmod &lt;span class="m"&gt;646&lt;/span&gt; /etc/containerd/config.toml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo containerd config default &amp;gt; /etc/containerd/config.toml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改&lt;code&gt;snapshotter&lt;/code&gt;为&lt;code&gt;zfs&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;#snapshotter = &amp;#34;overlayfs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;snapshotter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;zfs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重启&lt;code&gt;containerd&lt;/code&gt;，&lt;code&gt;containerd&lt;/code&gt;不支持配置热加载&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo systemctl restart containerd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="挂载-zfs-到containerd指定目录"&gt;挂载 zfs 到containerd指定目录
+&lt;/h3&gt;&lt;h4 id="查询-pool"&gt;查询 pool
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zpool list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME SIZE ALLOC FREE CKPOINT EXPANDSZ FRAG CAP DEDUP HEALTH ALTROOT
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpool 460G 8.64G 451G - - 0% 1% 1.00x ONLINE -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="挂载目录"&gt;挂载目录
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zfs create -o &lt;span class="nv"&gt;mountpoint&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/lib/containerd/io.containerd.snapshotter.v1.zfs rpool/containerd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="查看挂载的目录"&gt;查看挂载的目录
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo zfs list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME USED AVAIL REFER MOUNTPOINT
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rpool/containerd 96K 437G 96K /var/lib/containerd/io.containerd.snapshotter.v1.zfs
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="验证"&gt;验证
+&lt;/h3&gt;&lt;h4 id="拉取镜像"&gt;拉取镜像
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr i pull --snapshotter&lt;span class="o"&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="启动容器"&gt;启动容器
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr run --rm --net-host -d --snapshotter&lt;span class="o"&gt;=&lt;/span&gt;zfs docker.io/library/nginx:1.17 &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="查看nginx启动结果"&gt;查看nginx启动结果
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ctr t ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;TASK PID STATUS 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="m"&gt;1494537&lt;/span&gt; RUNNING
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ netstat -alptn &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="m"&gt;80&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tcp &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; 0.0.0.0:80 0.0.0.0:* LISTEN -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ curl http://127.0.0.1:80 &lt;span class="c1"&gt;# 正常可访问&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you &lt;span class="k"&gt;for&lt;/span&gt; using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt;/html&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="待解决的问题"&gt;待解决的问题
+&lt;/h3&gt;&lt;h4 id="问题-1"&gt;问题 1
+&lt;/h4&gt;&lt;p&gt;非root账户，sudo权限不指定参数&lt;code&gt;snapshotter&lt;/code&gt;创建container，提示&lt;code&gt;ctr: failed to mount /tmp/containerd-mount589724034: invalid argument&lt;/code&gt;，无法创建容器。&lt;/p&gt;
+&lt;p&gt;切换成root用户，依旧提示，但是容器可以正常创建&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;(&lt;/span&gt;root&lt;span class="o"&gt;)&lt;/span&gt;$ ctr run --rm --net-host -d docker.io/library/nginx:1.17 &lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr: failed to mount /tmp/containerd-mount589724034: invalid argument
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;(&lt;/span&gt;root&lt;span class="o"&gt;)&lt;/span&gt;$ ctr t ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;TASK PID STATUS 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="m"&gt;1494537&lt;/span&gt; RUNNING
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="kubernetes-安装"&gt;kubernetes 安装
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Client Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Server Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装-1"&gt;安装
+&lt;/h2&gt;&lt;p&gt;当前安装工具有很多，此处选择使用&lt;code&gt;kubeadm&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id="准备kubernetes-源使用阿里镜像源并安装必要组件"&gt;准备kubernetes 源(使用阿里镜像源)，并安装必要组件
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get install apt-transport-https
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg &lt;span class="p"&gt;|&lt;/span&gt; sudo apt-key add - 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt;/etc/apt/sources.list.d/kubernetes.list
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt-get install kubelet kubeadm kubectl
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后 kubelet 服务会处于不断重启状态，暂时不需要关注，kubelet等待连接kube-apiserver，预期现象。&lt;/p&gt;
+&lt;h2 id="启动kubernetes集群"&gt;启动kubernetes集群
+&lt;/h2&gt;&lt;h4 id="准备容器镜像"&gt;准备容器镜像
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubeadm config images list &lt;span class="c1"&gt;# 查看需要准备的镜像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/coredns:1.7.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/etcd:3.4.13-0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-apiserver:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-controller-manager:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-proxy:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/kube-scheduler:v1.20.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k8s.gcr.io/pause:3.2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="containerd-镜像加速"&gt;containerd 镜像加速
+&lt;/h4&gt;&lt;p&gt;配置参考：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.registry.mirrors.&lt;span class="s2"&gt;&amp;#34;docker.io&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;#endpoint = [&amp;#34;https://registry-1.docker.io&amp;#34;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;endpoint&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://as065r9f.mirror.aliyuncs.com&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="启动集群"&gt;启动集群
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo kubeadm init --pod-network-cidr&lt;span class="o"&gt;=&lt;/span&gt;10.10.0.0/16 --service-cidr&lt;span class="o"&gt;=&lt;/span&gt;10.20.0.0/16 --kubernetes-version&lt;span class="o"&gt;=&lt;/span&gt;v1.20.1 --apiserver-advertise-address 192.168.126.246 --cri-socket /run/containerd/containerd.sock
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&amp;ndash;kubernetes-version: 指定 kubernetes 版本；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;apiserver-advertise-address：指定 kube-apiserver 监听的ip地址；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;pod-network-cidr：指定 Pod 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;service-cidr：指定 Service 的网络范围；&lt;/li&gt;
+&lt;li&gt;&amp;ndash;cri-socket：指定cri(社区趋势：cri 采用 containerd)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="验证安装结果"&gt;验证安装结果
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 根据提示拷贝kubeconfig文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl version
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Client Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:09:25Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Server Version: version.Info&lt;span class="o"&gt;{&lt;/span&gt;Major:&lt;span class="s2"&gt;&amp;#34;1&amp;#34;&lt;/span&gt;, Minor:&lt;span class="s2"&gt;&amp;#34;20&amp;#34;&lt;/span&gt;, GitVersion:&lt;span class="s2"&gt;&amp;#34;v1.20.1&amp;#34;&lt;/span&gt;, GitCommit:&lt;span class="s2"&gt;&amp;#34;c4d752765b3bbac2237bf87cf0b1c2e307844666&amp;#34;&lt;/span&gt;, GitTreeState:&lt;span class="s2"&gt;&amp;#34;clean&amp;#34;&lt;/span&gt;, BuildDate:&lt;span class="s2"&gt;&amp;#34;2020-12-18T12:00:47Z&amp;#34;&lt;/span&gt;, GoVersion:&lt;span class="s2"&gt;&amp;#34;go1.15.5&amp;#34;&lt;/span&gt;, Compiler:&lt;span class="s2"&gt;&amp;#34;gc&amp;#34;&lt;/span&gt;, Platform:&lt;span class="s2"&gt;&amp;#34;linux/amd64&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="flannel-安装"&gt;Flannel 安装
+&lt;/h2&gt;&lt;p&gt;kubernetes v1.17+ 版本&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;需要修改配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;net-conf.json: &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Network&amp;#34;&lt;/span&gt;: &lt;span class="s2"&gt;&amp;#34;10.10.0.0/16&amp;#34;&lt;/span&gt;, &lt;span class="c1"&gt;# kubeadm init 创建时使用的pod-network-cidr&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Backend&amp;#34;&lt;/span&gt;: &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;Type&amp;#34;&lt;/span&gt;: &lt;span class="s2"&gt;&amp;#34;vxlan&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a class="link" href="https://github.com/coreos/flannel#flannel" target="_blank" rel="noopener"
+ &gt;参考连接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="待解决问题"&gt;待解决问题
+&lt;/h2&gt;&lt;p&gt;containerd 一直会刷新 error 日志&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Jan 11 17:49:51 zbb-sonypc containerd[1566292]: time=&amp;quot;2021-01-11T17:49:51.380076683+08:00&amp;quot; level=error msg=&amp;quot;Failed to get usage for snapshot \&amp;quot;sha256:ffc9b21953f4cd7956cdf532a5db04ff0a2daa7475ad796f1bad58cfbaf77a07\&amp;quot;&amp;quot; error=&amp;quot;zfs does not implement Usage() yet&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/containerd/zfs/issues/17" target="_blank" rel="noopener"
+ &gt;参考issue&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="规避办法"&gt;规避办法
+&lt;/h3&gt;&lt;p&gt;暂时通过修改代码规避&lt;br&gt;
+&lt;a class="link" href="https://github.com/Bevisy/zfs/commit/0db61529365ce48372895b240b67308a79482c2c" target="_blank" rel="noopener"
+ &gt;bevisy/zfs&lt;/a&gt;
+&lt;a class="link" href="https://github.com/Bevisy/containerd/commit/c4b21851684312f4b341bede5947454b3a997bd6" target="_blank" rel="noopener"
+ &gt;bevisy/containerd&lt;/a&gt;&lt;/p&gt;</description></item><item><title>The Skills of VIM</title><link>https://bevisy.github.io/p/the-skills-of-vim/</link><pubDate>Fri, 24 Jul 2020 15:02:12 +0800</pubDate><guid>https://bevisy.github.io/p/the-skills-of-vim/</guid><description>&lt;h1 id="vim-使用技巧"&gt;VIM 使用技巧
+&lt;/h1&gt;&lt;h2 id="查找"&gt;查找
+&lt;/h2&gt;&lt;h3 id="大小写敏感控制"&gt;大小写敏感控制
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# VIM 默认大小写敏感查找；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 大小写不敏感查找&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：/foo&lt;span class="se"&gt;\c&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 大小写敏感查找&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：/foo&lt;span class="se"&gt;\C&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="查找光标当前单词"&gt;查找光标当前单词
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# normal 模式下，&amp;#34;*&amp;#34; 键查找当前单词&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="vim-查找和替换"&gt;Vim 查找和替换
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;:&lt;span class="o"&gt;{&lt;/span&gt;作用范围&lt;span class="o"&gt;}&lt;/span&gt;s/&lt;span class="o"&gt;{&lt;/span&gt;目标&lt;span class="o"&gt;}&lt;/span&gt;/&lt;span class="o"&gt;{&lt;/span&gt;替换&lt;span class="o"&gt;}&lt;/span&gt;/&lt;span class="o"&gt;{&lt;/span&gt;替换标志&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 当前行替换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：s/vivian/sky/ 替换当前行第一个 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：s/vivian/sky/g 替换当前行所有 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 范围替换； n 为数字，若 n 为 .，表示从当前行开始到最后一行 &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：n,&lt;span class="nv"&gt;$s&lt;/span&gt;/vivian/sky/ 替换第 n 行开始到最后一行中每一行的第一个 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：n,&lt;span class="nv"&gt;$s&lt;/span&gt;/vivian/sky/g 替换第 n 行开始到最后一行中每一行所有 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：2,12s/hello/world/ 2-12行,第一次出现替换
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：.,+2s/hello/world/ 当前行与接下来的2行，第一次出现替换
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 全行替换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：%s/vivian/sky/（等同于 ：g/vivian/s//sky/） 替换每一行的第一个 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：%s/vivian/sky/g（等同于 ：g/vivian/s//sky/g） 替换每一行中所有 vivian 为 sky 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 使用&amp;#34;#&amp;#34;作为分隔符，此时中间出现的 / 不会作为分隔符 &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：s#vivian/#sky/# 替换当前行第一个 vivian/ 为 sky/ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;：%s+/oradata/apras/+/user01/apras1+ （使用+ 来 替换 / ）： /oradata/apras/替换成/user01/apras1/ 
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 替换确认，添加参数c，提示是否替换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;:%s/hello/world/gc 针对每一个匹配项，提示是否替换
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>&lt;h1 id="linux-内核编译ubuntu-环境"&gt;Linux 内核编译(Ubuntu 环境)
+&lt;/h1&gt;&lt;h2 id="下载内核代码"&gt;下载内核代码
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;https://www.kernel.org/&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="安装依赖"&gt;安装依赖
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt install -y &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	gcc &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	make &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libncurses5-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	openssl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libssl-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	build-essential &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	pkg-config &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libc6-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	bison &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	flex &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libelf-dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="准备config和自定义配置"&gt;准备.config和自定义配置
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;Download&lt;span class="o"&gt;}&lt;/span&gt;/linux-5.4.32/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo cp /boot/config-&lt;span class="o"&gt;{&lt;/span&gt;uname -r&lt;span class="o"&gt;}&lt;/span&gt; .config
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make menuconfig
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="编译内核"&gt;编译内核
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译内核&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make modules_install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装内核"&gt;安装内核
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo mv &lt;span class="o"&gt;{&lt;/span&gt;Download&lt;span class="o"&gt;}&lt;/span&gt;/linux-5.4.32 /usr/src/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/src/linux-5.4.32/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make install
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo mkinitramfs -o /boot/initrd.img-5.4.32
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo update-initramfs -c -k 5.4.32
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo update-grub2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="验证"&gt;验证
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo reboot
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;uname -a
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Zsh-And-Oh My Zsh-Installation summary</title><link>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</link><pubDate>Sat, 18 Jul 2020 12:14:33 +0800</pubDate><guid>https://bevisy.github.io/p/zsh-and-oh-my-zsh-installation-summary/</guid><description>&lt;h1 id="zsh-安装总结"&gt;zsh 安装总结
+&lt;/h1&gt;&lt;h2 id="安装zsh"&gt;安装zsh
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Ubuntu 18.04&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt install zsh -y
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装-oh-my-zsh"&gt;安装 Oh My Zsh
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# https://ohmyz.sh/#install&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sh -c &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="插件安装"&gt;插件安装
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 使用 Oh My Zsh 安装插件；默认安装目录为 $ZSH_CUSTOM/plugins (by default ~/.oh-my-zsh/custom/plugins)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/zsh-users/zsh-autosuggestions.git &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ZSH_CUSTOM&lt;/span&gt;&lt;span class="k"&gt;:-&lt;/span&gt;&lt;span class="p"&gt;~/.oh-my-zsh/custom&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/plugins/zsh-autosuggestions
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/zsh-users/zsh-syntax-highlighting.git &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ZSH_CUSTOM&lt;/span&gt;&lt;span class="k"&gt;:-&lt;/span&gt;&lt;span class="p"&gt;~/.oh-my-zsh/custom&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/plugins/zsh-syntax-highlighting
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 配置 .zshrc，添加插件列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;plugins&lt;/span&gt;&lt;span class="o"&gt;=(&lt;/span&gt;zsh-autosuggestions
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; zsh-syntax-highlighting&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 启动新终端，查看效果示例&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;zsh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

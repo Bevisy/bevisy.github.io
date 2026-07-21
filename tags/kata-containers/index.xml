@@ -1,4 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kata-containers on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kata-containers/</link><description>Recent content in kata-containers on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 23:14:52 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kata-containers/index.xml" rel="self" type="application/rss+xml"/><item><title>Kata Containers 安全容器GPU支持实践</title><link>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 21 Jun 2022 23:14:52 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</guid><description>kata-containers 安全容器 GPU 支持实践 本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 kata-containers 官网。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以Tesla P100 PCIe 16GB为例。
-准备阶段 下载官方 release 包 下载官方代码，编译需要使用到的组件containerd-shim-kata-v2，kata-agent，虚拟机镜像 kata-containers.img或者kata-containers-initrd.img,虚拟机内核 vmlinuz GPU 支持实践 准备 release 包 可以从官方的 release 页面获取最新的包，此处使用当前最新版本2.4.2。
-# 下载 wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz # 解压并置于 /opt 目录下 tar xf kata-static-2.4.2-x86_64.tar.xz mv opt/kata /opt/ 编译必要组件 拉取 kata-containers 源码 注意：源码需要包含此PR
-mkdir -p $GOPATH/src/github.com/kata-containers cd $GOPATH/src/github.com/kata-containers git clone https://github.com/kata-containers/kata-containers.git git clone https://github.com/kata-containers/tests.git # 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败 sudo chown -R root:root tests 编译containerd-shim-kata-v2 # 编译 containerd-shim-v2 make -C $GOPATH/src/github.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kata-Containers on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kata-containers/</link><description>Recent content in Kata-Containers on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 23:14:52 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kata-containers/index.xml" rel="self" type="application/rss+xml"/><item><title>Kata Containers 安全容器GPU支持实践</title><link>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</link><pubDate>Tue, 21 Jun 2022 23:14:52 +0800</pubDate><guid>https://bevisy.github.io/p/kata-containers-%E5%AE%89%E5%85%A8%E5%AE%B9%E5%99%A8gpu%E6%94%AF%E6%8C%81%E5%AE%9E%E8%B7%B5/</guid><description>&lt;h1 id="kata-containers-安全容器-gpu-支持实践"&gt;kata-containers 安全容器 GPU 支持实践
+&lt;/h1&gt;&lt;p&gt;本文着重讲述如何在 kata-containers 安全容器中支持 GPU 设备，对安全容器本身的介绍会比较少，如果感兴趣的话，可以参考 &lt;a class="link" href="https://katacontainers.io/" target="_blank" rel="noopener"
+ &gt;kata-containers 官网&lt;/a&gt;。接下来，就是讲述如何一步步在安全容器中支持 GPU 设备，以&lt;code&gt;Tesla P100 PCIe 16GB&lt;/code&gt;为例。&lt;/p&gt;
+&lt;h2 id="准备阶段"&gt;准备阶段
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;下载官方 release 包&lt;/li&gt;
+&lt;li&gt;下载官方代码，编译需要使用到的组件&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt;，&lt;code&gt;kata-agent&lt;/code&gt;，虚拟机镜像 &lt;code&gt;kata-containers.img&lt;/code&gt;或者&lt;code&gt;kata-containers-initrd.img&lt;/code&gt;,虚拟机内核 &lt;code&gt;vmlinuz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;GPU 支持实践&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="准备-release-包"&gt;准备 release 包
+&lt;/h3&gt;&lt;p&gt;可以从官方的 &lt;a class="link" href="https://github.com/kata-containers/kata-containers/releases" target="_blank" rel="noopener"
+ &gt;release 页面&lt;/a&gt;获取最新的包，此处使用当前最新版本&lt;code&gt;2.4.2&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://github.com/kata-containers/kata-containers/releases/download/2.4.2/kata-static-2.4.2-x86_64.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 解压并置于 /opt 目录下&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar xf kata-static-2.4.2-x86_64.tar.xz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mv opt/kata /opt/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="编译必要组件"&gt;编译必要组件
+&lt;/h3&gt;&lt;p&gt;拉取 &lt;a class="link" href="https://github.com/kata-containers/kata-containers.git" target="_blank" rel="noopener"
+ &gt;kata-containers 源码&lt;/a&gt;
+&lt;strong&gt;注意&lt;/strong&gt;：源码需要包含此&lt;a class="link" href="https://github.com/kata-containers/kata-containers/pull/4358" target="_blank" rel="noopener"
+ &gt;PR&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/kata-containers/kata-containers.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/kata-containers/tests.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 如果当前用户不是 root 用户，则需要将 tests 仓库切换到 root 用户，否则后续编译镜像需要安装 libseccomp 会失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo chown -R root:root tests
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译containerd-shim-kata-v2"&gt;编译&lt;code&gt;containerd-shim-kata-v2&lt;/code&gt;
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 containerd-shim-v2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make -C &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/src/runtime containerd-shim-v2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译内核"&gt;编译内核
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 准备依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-get install -y --no-install-recommends &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 bc &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 bison &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 build-essential &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 ca-certificates &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 curl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 flex &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 git &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 iptables &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 libelf-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	 patch
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 切换目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/packaging/kernel/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载内核源码；准备 config 文件；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./build-kernel.sh -v 5.15.23 -g nvidia -f setup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 kernel&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./build-kernel.sh -v 5.15.23 -g nvidia build
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装 kernel&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo -E ./build-kernel.sh -v 5.15.23 -g nvidia install
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装目录 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vmlinuz-5.15.23-92-nvidia-gpu &lt;span class="c1"&gt;# 所需内核模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 或者&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vmlinux-5.15.23-92-nvidia-gpu &lt;span class="c1"&gt;# 所需内核模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 制作 linux-header deb 或者 rpm 包，由于接下来将使用 ubuntu 作为基础镜像，所以此处使用 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; kata-linux-5.15.23-92
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make deb-pkg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 生成 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-headers-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-image-5.15.23-nvidia-gpu_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;linux-libc-dev_5.15.23-nvidia-gpu-1_amd64.deb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="编译虚拟机镜像"&gt;编译虚拟机镜像
+&lt;/h4&gt;&lt;p&gt;虚拟机镜像分为两种 &lt;code&gt;initrd&lt;/code&gt; 和 &lt;code&gt;image&lt;/code&gt;，此处以 &lt;code&gt;image&lt;/code&gt; 为例。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# rootfs 构建&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GOPATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm -rf &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 确保 kata-containers/tests 仓库在 $GOPATH 目录下，且属主是 root 用户，否则安装 libseccomp 会失败&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E EXTRA_PKGS=&amp;#34;gcc make curl gnupg coreutils apt tar kmod pkg-config libc-dev libc6-dev pciutils&amp;#34; GOPATH=$GOPATH USE_DOCKER=true ./rootfs.sh ubuntu&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 下载 GPU 驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 根据官网 https://www.nvidia.com/Download/Find.aspx 选择所需 GPU 驱动；以 P100 显卡最新驱动 NVIDIA-Linux-x86_64-515.48.07.run 为例，将下载好的驱动放到目录 ${ROOTFS_DIR}/root&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 同时将编译内核生成的 deb 包防放到目录 ${ROOTFS_DIR}/root&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译 GPU 驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 注意：确保本机有 GPU 设备，否则编译会失败；&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t sysfs -o ro none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/sys
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t proc -o ro none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/proc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -o bind,ro /dev &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t devpts none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev/pts
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mount -t tmpfs none &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chroot &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;:/bin:/usr/local/sbin:/usr/sbin:/sbin
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /root
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# ubuntu dpkg 命令目前处于不可用状态，需要创建一些目录如下：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /var/lib/dpkg/status
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg/updates/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/lib/dpkg/info/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /var/lib/dpkg/info/format-new
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/cache/apt/archives/partial
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /var/log/apt/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /var/lib/dpkg/alternatives
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装之前准备的内核 deb 包&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dpkg -i *.deb
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 解压 NVIDIA 驱动包，并编译&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x NVIDIA-Linux-x86_64-515.48.07.run
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./NVIDIA-Linux-x86_64-515.48.07.run -x
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; NVIDIA-Linux-x86_64-515.48.07
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./nvidia-installer -k 5.15.23-nvidia-gpu
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 编译完成后可清理 root 目录，减少镜像体积&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装 nvidia-container-toolkit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;distribution&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;. /etc/os-release&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$ID$VERSION_ID&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/share/yrings/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /etc/ssl/certs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt install ca-certificates
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey &lt;span class="p"&gt;|&lt;/span&gt; gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -s -L https://nvidia.github.io/libnvidia-container/&lt;span class="nv"&gt;$distribution&lt;/span&gt;/libnvidia-container.list &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s1"&gt;&amp;#39;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt install nvidia-container-toolkit
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt clean all
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 准备 hook 文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /usr/share/oci/hooks/prestart/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;chmod +x /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt; /usr/share/oci/hooks/prestart/nvidia-container-toolkit.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;#!/bin/bash -x
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;/usr/bin/nvidia-container-toolkit -debug \$@
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 退出，并清理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/sys
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/proc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/dev/pts
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;umount &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/tmp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 构建 image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## rootfs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;ROOTFS_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/rootfs-builder/rootfs
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/image-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E USE_DOCKER=true ./image_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 得到 kata-containers.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## initrd 可按照如下方式：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/tools/osbuilder/initrd-builder
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;script -fec &lt;span class="s1"&gt;&amp;#39;sudo -E AGENT_INIT=yes USE_DOCKER=true ./initrd_builder.sh ${ROOTFS_DIR}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;至此，全部文件准备完毕。&lt;/p&gt;
+&lt;h3 id="配置-kata-containers-和-containerd-以使用-gpu"&gt;配置 kata-containers 和 containerd 以使用 GPU
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 配置 containerd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 配置文件 /etc/containerd/config.toml，新增&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[&lt;/span&gt;plugins.&lt;span class="s2"&gt;&amp;#34;io.containerd.grpc.v1.cri&amp;#34;&lt;/span&gt;.containerd.runtimes.kata&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;runtime_type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# privileged_without_host_devices = true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 containerd-shim-kata-v2 移至可执行目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cp &lt;span class="nv"&gt;$GOPATH&lt;/span&gt;/src/github.com/kata-containers/kata-containers/src/runtime/containerd-shim-kata-v2 /usr/local/bin/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 kata-containers.img 移至 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 将 vmlinuz-5.15.23-92-nvidia-gpu 移至 /usr/share/kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 配置 kata-containers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir -p /etc/kata-containers
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cp /opt/kata/share/defaults/kata-containers/configuration.toml /etc/kata-containers/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## 修改配置文件 configuration.toml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;kernel&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/usr/share/kata-containers/vmlinuz-5.10.25-85-nvidia-gpu&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/usr/share/kata-containers/kata-containers.img&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;enable_iommu&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;hotplug_vfio_on_root_bus&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;pcie_root_port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证 GPU&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 查看 GPU vfio id&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo lspci -nn -D &lt;span class="p"&gt;|&lt;/span&gt; grep -i nvidia
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;0000:d0:00.0 3D controller &lt;span class="o"&gt;[&lt;/span&gt;0302&lt;span class="o"&gt;]&lt;/span&gt;: NVIDIA Corporation Device &lt;span class="o"&gt;[&lt;/span&gt;10de:20b9&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;rev a1&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nv"&gt;BDF&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;0000:d0:00.0&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ readlink -e /sys/bus/pci/devices/&lt;span class="nv"&gt;$BDF&lt;/span&gt;/iommu_group
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="m"&gt;79&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 启动容器验证&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ ctr -n k8s.io run --rm --runtime &lt;span class="s2"&gt;&amp;#34;io.containerd.kata.v2&amp;#34;&lt;/span&gt; --device /dev/vfio/79 --rm -t &lt;span class="s2"&gt;&amp;#34;docker.io/nvidia/cuda:11.6.0-base-ubuntu20.04&amp;#34;&lt;/span&gt; cuda bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Tue Jun &lt;span class="m"&gt;21&lt;/span&gt; 10:18:31 &lt;span class="m"&gt;2022&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; NVIDIA-SMI 515.48.07 Driver Version: 515.48.07 CUDA Version: 11.7 &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;-------------------------------+----------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; GPU Name Persistence-M&lt;span class="p"&gt;|&lt;/span&gt; Bus-Id Disp.A &lt;span class="p"&gt;|&lt;/span&gt; Volatile Uncorr. ECC &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; Fan Temp Perf Pwr:Usage/Cap&lt;span class="p"&gt;|&lt;/span&gt; Memory-Usage &lt;span class="p"&gt;|&lt;/span&gt; GPU-Util Compute M. &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; MIG M. &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="o"&gt;===============================&lt;/span&gt;+&lt;span class="o"&gt;======================&lt;/span&gt;+&lt;span class="o"&gt;======================&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; Tesla P100-PCIE... Off &lt;span class="p"&gt;|&lt;/span&gt; 00000000:02:00.0 Off &lt;span class="p"&gt;|&lt;/span&gt; Off &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; N/A 41C P0 30W / 250W &lt;span class="p"&gt;|&lt;/span&gt; 0MiB / 16384MiB &lt;span class="p"&gt;|&lt;/span&gt; 3% Default &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; N/A &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-------------------------------+----------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; Processes: &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; GPU GI CI PID Type Process name GPU Memory &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; ID ID Usage &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="o"&gt;=============================================================================&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;|&lt;/span&gt; No running processes found &lt;span class="p"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;+-----------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;至此，我们就可以在安全容器中使用 GPU 设备。&lt;/p&gt;
+&lt;h2 id="参考"&gt;参考
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata.md" target="_blank" rel="noopener"
+ &gt;NVIDIA-GPU-passthrough-and-Kata&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item></channel></rss>

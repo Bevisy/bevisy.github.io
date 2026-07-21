@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MoE on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/moe/</link><description>Recent content in MoE on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2026 22:30:00 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/moe/index.xml" rel="self" type="application/rss+xml"/><item><title>拆解 Kimi K3：2.8 万亿参数背后，6 项架构创新如何让 MoE 训练稳得住</title><link>https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/</link><pubDate>Tue, 21 Jul 2026 22:30:00 +0800</pubDate><guid>https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/</guid><description>&lt;img src="https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/663cb3c8-3efa-4bc4-a23a-c5185a1671c7.png" alt="Featured image of post 拆解 Kimi K3：2.8 万亿参数背后，6 项架构创新如何让 MoE 训练稳得住" /&gt;&lt;p&gt;2026 年 7 月 17 日，月之暗面（Moonshot AI）发布了 Kimi K3——全球首个公布的 3T 级开源模型。2.8 万亿参数，原生多模态视觉能力，100 万 token 上下文窗口，896 个专家中激活 16 个。这些数字本身已经足够吸引眼球。&lt;/p&gt;
+&lt;p&gt;但如果你关注大模型的工程实现，真正值得深挖的不是跑分，而是一个更本质的问题：&lt;strong&gt;把参数堆到万亿级并不难，难的是训练过程中不崩、专家负载不偏、推理成本不失控。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Kimi K3 在架构层面拿出了 6 项核心技术来回答这个问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Kimi Delta Attention (KDA)&lt;/strong&gt; — 新型注意力基座&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Attention Residuals (AttnRes)&lt;/strong&gt; — 跨深度选择性表征检索&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Stable LatentMoE&lt;/strong&gt; — 896 选 16 的极致稀疏 MoE&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Quantile Balancing&lt;/strong&gt; — 基于分位数的专家均衡&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Per-Head Muon&lt;/strong&gt; — 逐头独立优化器&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SiTU + Gated MLA&lt;/strong&gt; — 激活控制与注意力选择性&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;本文逐一拆解这 6 项技术，看它们如何共同支撑起一个稳定的 3T 级训练流程。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="一注意力机制重构kda-与-attnres"&gt;一、注意力机制重构：KDA 与 AttnRes
+&lt;/h2&gt;&lt;h3 id="11-kimi-delta-attention-kda"&gt;1.1 Kimi Delta Attention (KDA)
+&lt;/h3&gt;&lt;p&gt;KDA 是 K3 架构的注意力基座，官方将其定位为「高效 scaling 注意力的基础」。传统 Transformer 的注意力机制在超长上下文（100 万 token）下面临双重挑战：计算量随序列长度平方增长，KV cache 内存开销线性膨胀。&lt;/p&gt;
+&lt;p&gt;KDA 的设计目标是提供一种计算和内存都更高效的注意力变体，作为万亿参数规模下的基础组件。值得注意的是，KDA 在设计之初就考虑了与前缀缓存（prefix caching）的兼容性——这一点在后面的推理部署部分会再次涉及，因为 K3 团队已经将 KDA 的前缀缓存实现贡献给了 vLLM 社区。&lt;/p&gt;
+&lt;p&gt;关于 KDA 的精确数学形式（如是否采用线性注意力近似、delta 规则的具体定义），官方博客未展开，需要等待技术报告。&lt;/p&gt;
+&lt;h3 id="12-attention-residuals-attnres"&gt;1.2 Attention Residuals (AttnRes)
+&lt;/h3&gt;&lt;p&gt;如果说 KDA 解决的是序列长度方向（&amp;ldquo;宽度&amp;rdquo;）的效率问题，那么 Attention Residuals 解决的是模型深度方向（层间）的效率问题。&lt;/p&gt;
+&lt;p&gt;标准 Transformer 中，每一层的输出通过残差连接与输入相加：&lt;code&gt;x_{l+1} = x_l + f_l(x_l)&lt;/code&gt;。这种全量累加意味着信息在所有层之间无差别地传递——无论浅层学到的基础特征是否在深层仍然需要，深层都得&amp;quot;背着&amp;quot;这些信息继续往前走。&lt;/p&gt;
+&lt;p&gt;AttnRes 的核心思想是&lt;strong&gt;选择性检索&lt;/strong&gt;：不是无差别地把所有历史信息累加进来，而是让深层根据当前需要，选择性地从浅层表征中检索有用的部分。这类似于一个注意力机制，但作用域不是 token 之间，而是层与层之间。&lt;/p&gt;
+&lt;p&gt;打个比方：标准残差连接像是&amp;quot;每层都把所有行李背在身上&amp;quot;，越深的层负担越重；AttnRes 则是&amp;quot;需要的时候去对应的柜子里取&amp;quot;，深层只携带当前任务真正需要的信息。&lt;/p&gt;
+&lt;p&gt;这种设计在深层网络中尤为重要。当模型层数随参数量增长时，信息在层间的冗余传递会带来梯度消散和表征退化问题，AttnRes 通过选择性机制缓解了这一痛点。&lt;/p&gt;
+&lt;p&gt;下图是 Kimi K3 官方发布的架构总览图，展示了这六项技术如何组合在一起：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Kimi K3 架构图：左侧为 Stable LatentMoE 和 KDA 模块内部结构，右上方为 AttnRes 操作 α，右侧为 Block Attention Residuals 骨干网络" class="gallery-image" data-flex-basis="263px" data-flex-grow="109" height="1823" loading="lazy" sizes="(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px" src="https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/kimi-k3-architecture-diagram.png" srcset="https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/kimi-k3-architecture-diagram_hu_2f1331a814f2b4af.png 800w, https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/kimi-k3-architecture-diagram_hu_506efd7c51f79734.png 1600w, https://bevisy.github.io/p/%E6%8B%86%E8%A7%A3-kimi-k32.8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E8%83%8C%E5%90%8E6-%E9%A1%B9%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0%E5%A6%82%E4%BD%95%E8%AE%A9-moe-%E8%AE%AD%E7%BB%83%E7%A8%B3%E5%BE%97%E4%BD%8F/kimi-k3-architecture-diagram.png 2000w" width="2000"&gt;&lt;/p&gt;
+
+ &lt;blockquote&gt;
+ &lt;p&gt;图源：Kimi K3 官方博客（kimi.com/blog/kimi-k3）。图中左侧两个面板分别展开了 Stable LatentMoE 和 KDA 的内部结构；右侧主干展示了 Block Attention Residuals 骨干——每一层由 KDA / Gated MLA / Stable LatentMoE 组成，层间通过 α 节点（AttnRes 操作）选择性传递信息，而非全量残差累加。&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;h3 id="小结"&gt;小结
+&lt;/h3&gt;&lt;p&gt;KDA 和 AttnRes 构成了一组正交互补的设计：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;技术&lt;/th&gt;
+					&lt;th&gt;解决的问题&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;序列长度（宽度）&lt;/td&gt;
+					&lt;td&gt;KDA&lt;/td&gt;
+					&lt;td&gt;长上下文的计算/内存效率&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;模型深度（深度）&lt;/td&gt;
+					&lt;td&gt;AttnRes&lt;/td&gt;
+					&lt;td&gt;层间信息冗余传递&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="二极致稀疏的-moestable-latentmoe"&gt;二、极致稀疏的 MoE：Stable LatentMoE
+&lt;/h2&gt;&lt;p&gt;Kimi K3 的 MoE 配置是 896 个专家，每次激活 16 个，稀疏比达到 &lt;strong&gt;56:1&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这个数字有多极端？对比一下：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;模型&lt;/th&gt;
+					&lt;th&gt;专家总数&lt;/th&gt;
+					&lt;th&gt;激活专家数&lt;/th&gt;
+					&lt;th&gt;稀疏比&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek-V3&lt;/td&gt;
+					&lt;td&gt;256&lt;/td&gt;
+					&lt;td&gt;8&lt;/td&gt;
+					&lt;td&gt;32:1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Kimi K2&lt;/td&gt;
+					&lt;td&gt;384&lt;/td&gt;
+					&lt;td&gt;8&lt;/td&gt;
+					&lt;td&gt;48:1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;Kimi K3&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;896&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;16&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;56:1&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+
+ &lt;blockquote&gt;
+ &lt;p&gt;注：DeepSeek-V3 与 Kimi K2 数据来自各自官方技术报告/模型卡，供横向参考。K3 数据来自 K3 官方博客。&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;p&gt;更高的稀疏比意味着在相同激活参数量下，模型拥有更大的知识容量（总参数更多），但每次推理只动用一小部分——这就是 MoE 的核心优势。然而，稀疏比越高，两个工程难题就越尖锐：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;路由稳定性&lt;/strong&gt;：896 个专家中选 16 个，路由器需要在海量选项中做出一致的决策，训练初期很容易震荡。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;负载均衡&lt;/strong&gt;：如果某些专家总是被选中而其他专家闲置，就造成算力浪费；更严重的是，在专家并行（Expert Parallelism）部署时，负载不均直接导致 GPU 空转。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;ldquo;Stable LatentMoE&amp;rdquo; 这个名字中的两个修饰词暗示了对应的解法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Latent&lt;/strong&gt;：路由决策可能不是直接在 token embedding 空间进行，而是在隐空间（latent space）中完成，从而获得更平滑的路由信号。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Stable&lt;/strong&gt;：在 56:1 的稀疏度下保持训练稳定，依赖于后续几项配套技术——Quantile Balancing 和 Per-Head Muon。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;K3 官方称，配合训练和数据配方的改进，这些结构变化相比 K2 带来了约 &lt;strong&gt;2.5 倍的整体 scaling 效率提升&lt;/strong&gt;。需要说明的是，官方原文的表述是&amp;quot;convert compute into intelligence more effectively&amp;quot;，即每单位算力能转化为更多的智能——换言之，达到同等能力水平所需的算力显著降低（粗略理解为&amp;quot;同等能力下算力约 ÷ 2.5&amp;quot;，或&amp;quot;同等算力下能力约 × 2.5&amp;quot;）。注意这是官方自报的宏观口径，精确的测量定义有待技术报告披露。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="三专家均衡的新解法quantile-balancing"&gt;三、专家均衡的新解法：Quantile Balancing
+&lt;/h2&gt;&lt;h3 id="背景痛点"&gt;背景痛点
+&lt;/h3&gt;&lt;p&gt;专家负载不均衡是 MoE 训练的经典难题。主流的解决方案是引入辅助损失（auxiliary loss）：给&amp;quot;热门&amp;quot;专家施加惩罚，鼓励路由器更均匀地分配 token。这个方法有效，但有一个臭名昭著的副作用——&lt;strong&gt;balancing 超参数极度敏感&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;不同的模型规模、不同的训练阶段，最优的 loss 权重各不相同。调大了，好的专家被压制，模型能力下降；调小了均衡无效，部分专家饿死。在实践中，这个超参往往是 MoE 训练中最难调的旋钮之一。&lt;/p&gt;
+&lt;h3 id="k3-的做法"&gt;K3 的做法
+&lt;/h3&gt;&lt;p&gt;K3 的 Quantile Balancing 采取了完全不同的思路：&lt;/p&gt;
+
+ &lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;直接从 router score 的分位数（quantile）推导专家分配，消除启发式更新和敏感的 balancing 超参数。&lt;/strong&gt;&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;p&gt;传统方法看的是 router 给每个专家打的绝对分数，然后通过 loss 去调整这些分数的分布。Quantile Balancing 不看绝对分数，而是看&lt;strong&gt;相对排名&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;直觉上可以这样理解：假设 router 对 896 个专家各打了一个分数，Quantile Balancing 会把这些分数排序，然后根据分位数（如前 1.8% 的分位阈值，对应 16/896）来确定哪些专家被激活。因为分位数天然适应不同专家之间分数尺度的差异——不管某个专家的绝对分数是 0.9 还是 0.09，只要它排在前面就会被选中。&lt;/p&gt;
+&lt;p&gt;这种做法的好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;无需调超参&lt;/strong&gt;：不再需要一个手工设定的 balancing loss 权重&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自适应&lt;/strong&gt;：分位数天然随训练过程变化，不需要退火策略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大规模友好&lt;/strong&gt;：在 896 个专家的大规模 EP（Expert Parallelism）下依然有效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="四优化器进化per-head-muon"&gt;四、优化器进化：Per-Head Muon
+&lt;/h2&gt;&lt;h3 id="先说-muon-是什么"&gt;先说 Muon 是什么
+&lt;/h3&gt;&lt;p&gt;Muon 是 2024 年由 Keller Jordan 等人推动走红的优化器，核心创新是对权重矩阵的梯度做 &lt;strong&gt;Newton-Schulz 迭代正交化&lt;/strong&gt;。不过，对梯度/权重矩阵做正交化以改善优化的思想并非 Muon 首创——更早的 RightMatrix 等工作就探索过类似思路，Muon 的贡献在于将其工程化为一个通用、可大规模训练的优化器。简单来说，标准优化器（Adam、AdamW）直接用梯度更新权重，而 Muon 先把梯度投影到一个更&amp;quot;正交&amp;quot;的方向上再更新。&lt;/p&gt;
+&lt;p&gt;效果是在小至中规模模型上显著加速收敛。Moonshot 自己在 K2 时期就已经采用了 Muon 优化器。&lt;/p&gt;
+&lt;h3 id="per-head-的改进"&gt;Per-Head 的改进
+&lt;/h3&gt;&lt;p&gt;标准 Muon 对一个权重矩阵做统一的正交化处理。但注意力层的权重矩阵实际上是由多个 head 拼接而成的，而不同 head 学到的模式差异很大：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有的 head 关注局部依赖（邻近 token 的句法关系）&lt;/li&gt;
+&lt;li&gt;有的 head 关注长程依赖（段落级的语义关联）&lt;/li&gt;
+&lt;li&gt;有的 head 负责位置信息编码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果对这些 head 统一施加相同的正交化处理，可能对某些 head 过于激进，对另一些又不够。&lt;strong&gt;Per-Head Muon 的改进是对每个 attention head 独立执行优化&lt;/strong&gt;，让每个 head 获得最适合自己的更新策略。&lt;/p&gt;
+&lt;p&gt;在 3T 规模下，这个改进的意义不仅是收敛速度。大模型训练一次的成本极高（以百万美元计），优化器效率的每一点提升，都意味着用更少的算力和时间达到同样的效果。K3 官方将 Per-Head Muon 列为前述 2.5 倍 scaling 效率提升的关键因素之一。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="五激活与注意力控制situ-与-gated-mla"&gt;五、激活与注意力控制：SiTU 与 Gated MLA
+&lt;/h2&gt;&lt;h3 id="51-situ-sigmoid-tanh-unit"&gt;5.1 SiTU (Sigmoid Tanh Unit)
+&lt;/h3&gt;&lt;p&gt;SiTU 是 K3 采用的新型激活函数，结合了 sigmoid 和 tanh 的特性。它的定位是替代 GELU、SwiGLU 等主流激活函数，改善激活值的分布控制。&lt;/p&gt;
+&lt;p&gt;在万亿参数规模下，激活函数的选择看似微小，实则影响巨大。不良的激活值分布会导致梯度传播不稳定，尤其在深层网络中。SiTU 的具体数学形式有待技术报告披露，但其设计目标是明确的：在极端规模下提供更受控的激活行为。&lt;/p&gt;
+&lt;h3 id="52-gated-mla"&gt;5.2 Gated MLA
+&lt;/h3&gt;&lt;p&gt;MLA（Multi-head Latent Attention）是 DeepSeek 提出的注意力变体，核心是将 KV cache 压缩到隐空间中——用一个低秩的隐向量来表示原本需要大量内存的 Key 和 Value，在推理时再解压还原。&lt;/p&gt;
+&lt;p&gt;Gated MLA 在此基础上引入了门控（gate）机制。门控的作用是让模型学会&amp;quot;什么时候该注意、什么时候该忽略&amp;quot;，提升注意力的选择性。这在 100 万 token 的上下文中尤为重要：面对海量输入，模型需要高效地忽略无关信息，而非对所有内容分配等量的注意力资源。&lt;/p&gt;
+&lt;p&gt;MLA 的 KV 压缩 + 门控的选择性 = 推理时显著更省显存，这对于部署成本至关重要。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="六训练与部署工程"&gt;六、训练与部署工程
+&lt;/h2&gt;&lt;h3 id="61-量化感知训练qat"&gt;6.1 量化感知训练（QAT）
+&lt;/h3&gt;&lt;p&gt;K3 从 SFT 阶段起就引入了量化感知训练：&lt;strong&gt;MXFP4 权重 + MXFP8 激活&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这里需要区分两种量化策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;训练后量化（PTQ）&lt;/strong&gt;：模型训练完成后，再把权重/激活压到低精度。简单但可能掉精度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量化感知训练（QAT）&lt;/strong&gt;：在训练过程中就让模型&amp;quot;感受&amp;quot;到量化带来的噪声，模型参数在训练时就适应了低精度表示。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;K3 选择 QAT 的好处是推理时直接使用 MXFP4/MXFP8，无需额外转换步骤，同时保持了模型质量。MXFP4（Microscaling FP4）是 OCP 制定的新兴低精度格式，相比传统 INT4 有更好的数值动态范围，硬件兼容性也在快速扩展。&lt;/p&gt;
+&lt;h3 id="62-全平衡专家并行"&gt;6.2 全平衡专家并行
+&lt;/h3&gt;&lt;p&gt;在大规模 EP（Expert Parallelism）部署下，896 个专家分布在多张 GPU 上。如果某些 GPU 上的专家总是被频繁调用而另一些空闲，就会造成整体吞吐瓶颈。&lt;/p&gt;
+&lt;p&gt;K3 的方案是&lt;strong&gt;全平衡的专家并行训练&lt;/strong&gt;，两个关键设计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;静态 shape&lt;/strong&gt;：所有计算图的形状在编译时就确定，避免运行时动态分配带来的开销&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键路径无 host 同步&lt;/strong&gt;：传统方案中，负载均衡调度通常需要在 CPU（host）端进行决策，然后同步给 GPU，这个 host↔GPU 同步是性能杀手。K3 把均衡逻辑完全做到 GPU 侧，消除了同步等待&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="63-推理部署supernode--mooncake--vllm"&gt;6.3 推理部署：supernode + Mooncake + vLLM
+&lt;/h3&gt;&lt;p&gt;K3 的推理部署方案是一个完整的系统工程：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;硬件层面&lt;/strong&gt;——推荐 supernode 配置，即 64 张以上加速器组成的高带宽通信域。大规模 MoE 推理对 all-to-all 通信带宽极度敏感，supernode 架构通过 NVLink/高速互联将通信延迟降到最低。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;缓存层面&lt;/strong&gt;——KDA 的前缀缓存实现已贡献给 vLLM 社区。前缀缓存是降低推理成本的利器：对于编码场景，大量请求共享相同的系统提示和代码上下文，缓存这些前缀可以避免重复计算。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;架构层面&lt;/strong&gt;——基于 Mooncake 的分离式推理架构（disaggregated inference），将 prefill（首 token 计算）和 decode（续写）分配到不同的计算资源上，各自独立扩缩容。&lt;/p&gt;
+&lt;p&gt;实战效果：在编码工作负载中，官方 API 的缓存命中率超过 &lt;strong&gt;90%&lt;/strong&gt;。这直接反映在定价上：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;计费类型&lt;/th&gt;
+					&lt;th&gt;价格&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;缓存命中输入&lt;/td&gt;
+					&lt;td&gt;$0.30 / MTok&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;缓存未命中输入&lt;/td&gt;
+					&lt;td&gt;$3.00 / MTok&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;输出&lt;/td&gt;
+					&lt;td&gt;$15.00 / MTok&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;缓存命中的输入价格仅为未命中的十分之一。对于高频编码场景（如 IDE 插件、代码 agent），绝大部分输入都会命中缓存，实际使用成本可以压到非常低。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="结语k3-架构给行业带来了什么信号"&gt;结语：K3 架构给行业带来了什么信号
+&lt;/h2&gt;&lt;p&gt;回顾 Kimi K3 的 6 项架构创新，可以提炼出三个值得行业关注的趋势：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;信号一：万亿级 MoE 的训练稳定性问题，正在被系统性地解决。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;过去，把 MoE 推到万亿规模最大的障碍不是算力，而是训练过程中各种不稳定——路由震荡、专家失衡、梯度异常。K3 的做法是针对每个环节给出专门的解法：KDA/AttnRes 稳住信息流，Quantile Balancing 稳住路由，Per-Head Muon 稳住优化，QAT 稳住精度。这不是某一项技术的一招鲜，而是一套系统工程。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;信号二：优化器和路由均衡这两个方向正在快速成熟。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Muon 系列优化器从 2024 年提出到 2026 年被用于 3T 级模型，只用了不到两年。Quantile Balancing 则直接替代了 MoE 训练中最让人头疼的 balancing 超参。这两个方向的成熟速度意味着，它们很可能成为下一代大模型训练的标配。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;信号三：开源模型正在以「架构效率」缩小与闭源的差距。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;K3 的总参数是 2.8T，但激活参数量远小于此。真正的竞争力不来自参数总量，而来自每一单位算力能转化为多少智能——K3 称相比 K2 提升了约 2.5 倍（前文已说明口径）。当开源模型在架构效率上逼近甚至局部超越闭源模型时，开源与闭源的差距将以新的方式被重新定义。&lt;/p&gt;
+&lt;p&gt;最后提醒：本文的分析基于官方博客的公开信息。K3 的完整技术报告将随模型权重一同发布，届时我们会对架构细节做更精确的验证和补充。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本文基于 Kimi K3 官方技术博客（https://www.kimi.com/blog/kimi-k3）撰写。&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>

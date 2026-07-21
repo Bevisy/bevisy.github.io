@@ -1,2 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kernel on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kernel/</link><description>Recent content in Kernel on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Jul 2020 00:41:59 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kernel/index.xml" rel="self" type="application/rss+xml"/><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>Linux 内核编译(Ubuntu 环境) 下载内核代码 https://www.kernel.org/
-安装依赖 sudo apt update sudo apt install -y \ gcc \ make \ libncurses5-dev \ openssl \ libssl-dev \ build-essential \ pkg-config \ libc6-dev \ bison \ flex \ libelf-dev 准备.config和自定义配置 cd {Download}/linux-5.4.32/ sudo cp /boot/config-{uname -r} .config sudo make menuconfig 编译内核 # 编译内核 sudo make sudo make modules_install 安装内核 sudo mv {Download}/linux-5.4.32 /usr/src/ cd /usr/src/linux-5.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kernel on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/kernel/</link><description>Recent content in Kernel on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Jul 2020 00:41:59 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/kernel/index.xml" rel="self" type="application/rss+xml"/><item><title>Compile Linux Kernel on Ubuntu 20.04</title><link>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</link><pubDate>Fri, 24 Jul 2020 00:41:59 +0800</pubDate><guid>https://bevisy.github.io/p/compile-linux-kernel-on-ubuntu-20.04/</guid><description>&lt;h1 id="linux-内核编译ubuntu-环境"&gt;Linux 内核编译(Ubuntu 环境)
+&lt;/h1&gt;&lt;h2 id="下载内核代码"&gt;下载内核代码
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;https://www.kernel.org/&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id="安装依赖"&gt;安装依赖
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt install -y &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	gcc &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	make &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libncurses5-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	openssl &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libssl-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	build-essential &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	pkg-config &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libc6-dev &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	bison &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	flex &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;	libelf-dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="准备config和自定义配置"&gt;准备.config和自定义配置
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;Download&lt;span class="o"&gt;}&lt;/span&gt;/linux-5.4.32/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo cp /boot/config-&lt;span class="o"&gt;{&lt;/span&gt;uname -r&lt;span class="o"&gt;}&lt;/span&gt; .config
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make menuconfig
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="编译内核"&gt;编译内核
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 编译内核&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make modules_install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="安装内核"&gt;安装内核
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo mv &lt;span class="o"&gt;{&lt;/span&gt;Download&lt;span class="o"&gt;}&lt;/span&gt;/linux-5.4.32 /usr/src/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/src/linux-5.4.32/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo make install
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo mkinitramfs -o /boot/initrd.img-5.4.32
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo update-initramfs -c -k 5.4.32
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo update-grub2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="验证"&gt;验证
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo reboot
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;uname -a
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
