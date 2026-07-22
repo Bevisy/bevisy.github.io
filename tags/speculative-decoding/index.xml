@@ -1,0 +1,1258 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Speculative Decoding on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/speculative-decoding/</link><description>Recent content in Speculative Decoding on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Jul 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/speculative-decoding/index.xml" rel="self" type="application/rss+xml"/><item><title>推测解码技术全景对比与 DeepSpec 落地分析</title><link>https://bevisy.github.io/p/%E6%8E%A8%E6%B5%8B%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%AF%B9%E6%AF%94%E4%B8%8E-deepspec-%E8%90%BD%E5%9C%B0%E5%88%86%E6%9E%90/</link><pubDate>Wed, 22 Jul 2026 18:00:00 +0800</pubDate><guid>https://bevisy.github.io/p/%E6%8E%A8%E6%B5%8B%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%AF%B9%E6%AF%94%E4%B8%8E-deepspec-%E8%90%BD%E5%9C%B0%E5%88%86%E6%9E%90/</guid><description>&lt;img src="https://bevisy.github.io/p/%E6%8E%A8%E6%B5%8B%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF%E5%AF%B9%E6%AF%94%E4%B8%8E-deepspec-%E8%90%BD%E5%9C%B0%E5%88%86%E6%9E%90/ae72ff10-6529-4be6-8ecb-333f95ccda2c.png" alt="Featured image of post 推测解码技术全景对比与 DeepSpec 落地分析" /&gt;
+ &lt;blockquote&gt;
+ &lt;p&gt;项目：DeepSpec | 撰写日期：2026-07-22
+目标：系统讲解推测解码技术优缺点，对比 DeepSpec 项目包含的三种方案（DSpark / DFlash / Eagle3）以及 DeepSeek MTP，并梳理各方案在 vLLM 和 SGLang 两大推理引擎中的落地情况（附 PR 链接）。&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="一推测解码技术概述"&gt;一、推测解码技术概述
+&lt;/h2&gt;&lt;h3 id="11-核心思想"&gt;1.1 核心思想
+&lt;/h3&gt;&lt;p&gt;推测解码（Speculative Decoding）借鉴 CPU 投机执行的思想：先用一个「又快又小」的草稿模型（draft model）猜接下来的 γ 个 token，再让「又慢又准」的目标模型（target model）一次性验证这一整块。猜对的直接用，猜错的修正。&lt;/p&gt;
+&lt;p&gt;加速公式（DSpark 论文式 1）：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;L = (T_draft + T_verify) / τ
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;τ：每轮目标模型平均接受的 token 数（接受长度）&lt;/li&gt;
+&lt;li&gt;T_draft：草稿模型生成花费&lt;/li&gt;
+&lt;li&gt;T_verify：目标模型验证花费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;加速只有三条路：&lt;strong&gt;草稿更快&lt;/strong&gt;（降低 T_draft）、&lt;strong&gt;草稿更准&lt;/strong&gt;（提高 τ）、&lt;strong&gt;验证更聪明&lt;/strong&gt;（降低 T_verify / 按需截断）。&lt;/p&gt;
+&lt;h3 id="12-无损保证"&gt;1.2 无损保证
+&lt;/h3&gt;&lt;p&gt;推测解码最精妙的数学性质：&lt;strong&gt;无论草稿模型多烂，输出分布严格等于目标模型。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;核心机制是拒绝采样（Rejection Sampling）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接受概率 = min(1, p_target(x) / p_draft(x))&lt;/li&gt;
+&lt;li&gt;被拒绝位置从残差分布重采一个修正 token（bonus token）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两路径合并后，最终输出每个 token 的概率严格等于 p_target(x)。草稿模型只影响速度，不影响质量。&lt;/p&gt;
+&lt;h3 id="13-三种草稿生成方式"&gt;1.3 三种草稿生成方式
+&lt;/h3&gt;&lt;p&gt;这是理解各方法差异的关键：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;纯串行（自回归派）&lt;/strong&gt;：逐 token 生成，每步一次前向&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：每个 token 基于已确定的前文，准确&lt;/li&gt;
+&lt;li&gt;缺点：γ 次前向，T_draft ∝ γ；为控延迟被迫用极浅网络（1 层），容量受限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;纯并行（并行派）&lt;/strong&gt;：一次前向同时出 γ 个 token&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：1 次前向出全部 token，T_draft 几乎与 γ 无关；可用更深网络（5 层）&lt;/li&gt;
+&lt;li&gt;缺点：位置间独立，无法建模依赖，后缀衰减严重（多模态碰撞问题）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;半自回归（混合派）&lt;/strong&gt;：并行 backbone 出基线 + 串行 head 注入依赖&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优点：兼顾速度和后端质量&lt;/li&gt;
+&lt;li&gt;缺点：串行 head 有少量额外延迟（极小）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="二deepspec-项目中的三种方案对比"&gt;二、DeepSpec 项目中的三种方案对比
+&lt;/h2&gt;&lt;p&gt;DeepSpec 仓库当前包含三种草稿模型算法，代表了推测解码的三个技术方向。&lt;/p&gt;
+&lt;h3 id="21-dspark半自回归--置信度调度"&gt;2.1 DSpark（半自回归 + 置信度调度）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;论文&lt;/strong&gt;：arXiv 2607.05147（DeepSeek-AI，2026）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;架构&lt;/strong&gt;：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[并行 backbone: 5层，一次出全部基线 logits]
+ ↓
+[串行 Markov head: 轻，逐位注入前一个 token 的偏置]
+ ↓
+[置信度头: 预测每个位置的接受概率，调度器据此截断]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;核心技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;半自回归生成&lt;/strong&gt;：并行 backbone 一次出 γ 个基线 logit，串行 Markov head 逐位加低秩转移偏置 B_k = W2·W1[x_{k-1}]（rank=256），使第 k 位依赖前面已采样的 token。每个 token 概率都是精确 softmax，满足无损保证。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;置信度调度验证&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;置信度头：给每个位置打条件接受概率 c_k&lt;/li&gt;
+&lt;li&gt;STS 校准：逐位温度校准，ECE 从 3%-8% 降到约 1%&lt;/li&gt;
+&lt;li&gt;硬件感知前缀调度器：按生存概率贪心截断，最大化全局吞吐 Θ = τ × SPS(B)，且截断只依赖已处理前缀（因果性/无损）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;训练损失&lt;/strong&gt;：CE(0.1) + L1/TV(0.9) + 置信度 BCE(1.0)，位置加权 w_k = e^{-(k-1)/γ}&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;离线效果&lt;/strong&gt;（Table 1，平均接受长度 τ，block_size=7）：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;目标模型&lt;/th&gt;
+					&lt;th&gt;vs Eagle3&lt;/th&gt;
+					&lt;th&gt;vs DFlash&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Qwen3-4B&lt;/td&gt;
+					&lt;td&gt;+30.9%&lt;/td&gt;
+					&lt;td&gt;+16.3%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Qwen3-8B&lt;/td&gt;
+					&lt;td&gt;+26.7%&lt;/td&gt;
+					&lt;td&gt;+18.4%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Qwen3-14B&lt;/td&gt;
+					&lt;td&gt;+30.0%&lt;/td&gt;
+					&lt;td&gt;+18.3%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Gemma4-12B&lt;/td&gt;
+					&lt;td&gt;全面领先&lt;/td&gt;
+					&lt;td&gt;跨模型族泛化&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;具体（Qwen3-4B, GSM8K）：Eagle3=5.14，DFlash=5.40，DSpark=6.11&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;线上效果&lt;/strong&gt;（DeepSeek-V4-Flash/Pro 真实流量，对比 MTP-1）：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;引擎&lt;/th&gt;
+					&lt;th&gt;等吞吐下单用户提速&lt;/th&gt;
+					&lt;th&gt;中等 SLA 下吞吐提升&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;V4-Flash&lt;/td&gt;
+					&lt;td&gt;+60%-85%&lt;/td&gt;
+					&lt;td&gt;+51%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;V4-Pro&lt;/td&gt;
+					&lt;td&gt;+57%-78%&lt;/td&gt;
+					&lt;td&gt;+52%&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接受长度 τ 最高（~6+），块越长优势越大（γ=7 时 +16%，γ=15 时 +30%）&lt;/li&gt;
+&lt;li&gt;2 层 DSpark 超过 5 层 DFlash——注入一点自回归比堆并行层更划算&lt;/li&gt;
+&lt;li&gt;串行 head 几乎不增延迟（γ 从 4→16，每轮延迟只比 DFlash 多 0.2%-1.3%）&lt;/li&gt;
+&lt;li&gt;置信度调度首次让高并发生产环境安全使用多 token 推测解码&lt;/li&gt;
+&lt;li&gt;负载自适应：低并发扩验证预算榨干算力，高并发自动收缩保护 batch 容量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要为每个目标模型单独训练草稿（紧耦合：同族、hidden_size 匹配、tokenizer 一致）&lt;/li&gt;
+&lt;li&gt;置信度调度器的线上版本（异步 ZOS 适配、变长路由 kernel）属 DeepSeek 内部框架，未开源&lt;/li&gt;
+&lt;li&gt;对本身接受率极低的复杂查询，草稿侧固定开销无法回收&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="22-dflash纯并行"&gt;2.2 DFlash（纯并行）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;论文&lt;/strong&gt;：arXiv 2602.06036&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;架构&lt;/strong&gt;：DSpark 去掉 Markov head 和置信度头&lt;/p&gt;
+&lt;p&gt;DeepSpec 仓库中，DFlash 和 DSpark 共用同一个 Trainer 和模型代码，仅配置不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;markov_rank=0&lt;/code&gt; → Markov head 变零矩阵，退化为纯并行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;confidence_head_alpha=0&lt;/code&gt; → 不训练置信度头&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;l1_loss_alpha=0&lt;/code&gt;，&lt;code&gt;ce_loss_alpha=1.0&lt;/code&gt; → 只用 CE loss&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;生成方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;backbone([anchor, mask, mask, ..., mask]) → [l₁, l₂, ..., l₇] → 独立采样
+1 次草稿前向，但位置间无依赖
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 次前向出全部 token，T_draft 几乎与 γ 无关&lt;/li&gt;
+&lt;li&gt;可用深网络（5 层），位置 1 的接受率最高（数学 0.88，优于自回归派的 0.81）&lt;/li&gt;
+&lt;li&gt;实现简单（无串行 head，无置信度调度）&lt;/li&gt;
+&lt;li&gt;训练只需 CE loss，不需置信度标签&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;后缀衰减&lt;/strong&gt;：后面位置因位置间独立，接受率急剧下降（位置 2-7 从 0.72 降到 0.63）&lt;/li&gt;
+&lt;li&gt;多模态碰撞：上下文可能是 &amp;ldquo;of course&amp;rdquo; 也可能是 &amp;ldquo;no problem&amp;rdquo;，并行 head 同时推 &amp;ldquo;course&amp;rdquo; 和 &amp;ldquo;problem&amp;rdquo;，串成 &amp;ldquo;of problem&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;无法在高并发下安全使用长块（无置信度截断机制，验证浪费 batch 容量）&lt;/li&gt;
+&lt;li&gt;接受长度 τ ~4-5，不如半自回归派&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="23-eagle3纯串行--ttt"&gt;2.3 Eagle3（纯串行 + TTT）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;论文&lt;/strong&gt;：arXiv 2503.01840&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;架构&lt;/strong&gt;：1 层自回归草稿头 + Test-Time Training（TTT）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心技术&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;草稿模型只有 1 层（&lt;code&gt;draft_num_hidden_layers=1&lt;/code&gt;），逐 token 串行生成&lt;/li&gt;
+&lt;li&gt;TTT（Test-Time Training）：推理过程中草稿模型参数动态更新，每 7 步用目标模型反馈微调&lt;/li&gt;
+&lt;li&gt;读目标模型最后层 hidden state，共享 embedding 和 lm_head&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;生成方式&lt;/strong&gt;：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;draft(t₁) → draft(t₂) → ... → draft(t₇)
+7 次草稿前向，但每步有完整依赖
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个 token 基于已确定前文，准确度高&lt;/li&gt;
+&lt;li&gt;TTT 机制让草稿适应当前上下文，长期对话中越来越准（分布外泛化能力强）&lt;/li&gt;
+&lt;li&gt;1 层网络前向+反向极快，TTT 微调开销小&lt;/li&gt;
+&lt;li&gt;第一个 token 准确率最高（前缀匹配生存的关键）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;T_draft ∝ γ，块越长草稿越慢，被迫用极浅网络（1 层），容量受限&lt;/li&gt;
+&lt;li&gt;位置 1 的接受率不如并行派（数学 0.81 vs 0.88），因 1 层网络容量小&lt;/li&gt;
+&lt;li&gt;TTT 推理时有额外梯度计算开销&lt;/li&gt;
+&lt;li&gt;高并发下多 token 验证开销大（无置信度调度）&lt;/li&gt;
+&lt;li&gt;接受长度 τ ~4-5，块越长劣势越明显&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="24-三方案对比总表"&gt;2.4 三方案对比总表
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;DSpark&lt;/th&gt;
+					&lt;th&gt;DFlash&lt;/th&gt;
+					&lt;th&gt;Eagle3&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;生成方式&lt;/td&gt;
+					&lt;td&gt;半自回归&lt;/td&gt;
+					&lt;td&gt;纯并行&lt;/td&gt;
+					&lt;td&gt;纯串行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;草稿层数&lt;/td&gt;
+					&lt;td&gt;5 层&lt;/td&gt;
+					&lt;td&gt;5 层&lt;/td&gt;
+					&lt;td&gt;1 层&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;串行依赖&lt;/td&gt;
+					&lt;td&gt;Markov head（低秩 rank=256）&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;完整自回归&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;置信度调度&lt;/td&gt;
+					&lt;td&gt;有（STS 校准 + 贪心调度器）&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;T_draft vs γ&lt;/td&gt;
+					&lt;td&gt;几乎无关 + 极小串行开销&lt;/td&gt;
+					&lt;td&gt;几乎无关&lt;/td&gt;
+					&lt;td&gt;∝ γ（线性增长）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;位置 1 接受率&lt;/td&gt;
+					&lt;td&gt;高（深网络 + 串行修正）&lt;/td&gt;
+					&lt;td&gt;最高（深网络）&lt;/td&gt;
+					&lt;td&gt;中（1 层容量受限）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;后缀衰减&lt;/td&gt;
+					&lt;td&gt;轻微（Markov head 注入依赖）&lt;/td&gt;
+					&lt;td&gt;严重（位置间独立）&lt;/td&gt;
+					&lt;td&gt;无（逐 token 依赖）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;TTT 推理时训练&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;有（每 7 步微调）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练损失&lt;/td&gt;
+					&lt;td&gt;CE + L1/TV + 置信度 BCE&lt;/td&gt;
+					&lt;td&gt;仅 CE&lt;/td&gt;
+					&lt;td&gt;CE + step loss&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;接受长度 τ&lt;/td&gt;
+					&lt;td&gt;~6+（最高）&lt;/td&gt;
+					&lt;td&gt;~4-5&lt;/td&gt;
+					&lt;td&gt;~4-5&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;高并发安全&lt;/td&gt;
+					&lt;td&gt;是（置信度截断）&lt;/td&gt;
+					&lt;td&gt;否&lt;/td&gt;
+					&lt;td&gt;否&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;分布外适应&lt;/td&gt;
+					&lt;td&gt;依赖训练数据覆盖&lt;/td&gt;
+					&lt;td&gt;依赖训练数据覆盖&lt;/td&gt;
+					&lt;td&gt;TTT 动态适应&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;代码位置&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;modeling/dspark/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;modeling/dspark/&lt;/code&gt;（配置不同）&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;modeling/eagle3/&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="三deepseek-mtp-与推测解码的关系"&gt;三、DeepSeek MTP 与推测解码的关系
+&lt;/h2&gt;&lt;h3 id="31-mtp-是什么"&gt;3.1 MTP 是什么
+&lt;/h3&gt;&lt;p&gt;MTP（Multi-Token Prediction，多 Token 预测）是 DeepSeek-V3 技术报告提出的&lt;strong&gt;训练阶段&lt;/strong&gt;技术。预训练时不只预测下一个 token，还同时预测未来第 2、3&amp;hellip;个 token，迫使模型学更好的表征。&lt;/p&gt;
+&lt;h3 id="32-mtp-架构"&gt;3.2 MTP 架构
+&lt;/h3&gt;&lt;p&gt;DeepSeek-V3 的 MTP 是串行链式的，每个模块的输入依赖前一个模块的输出（保持完整因果链）：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;主模型 → hidden h₀ → MTP模块1 → 预测 token₂ → hidden h₁ → MTP模块2 → 预测 token₃ → ...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每个 MTP 模块：输入 = concat(RMSNorm(h_{k-1}), RMSNorm(Emb(token_k))) → 投影 → Transformer → 预测 token_{k+1}&lt;/p&gt;
+&lt;h3 id="33-mtp-vs-推测解码"&gt;3.3 MTP vs 推测解码
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;MTP&lt;/th&gt;
+					&lt;th&gt;推测解码&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;本质&lt;/td&gt;
+					&lt;td&gt;训练阶段技术&lt;/td&gt;
+					&lt;td&gt;推理阶段技术&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;主要目的&lt;/td&gt;
+					&lt;td&gt;改善训练表征质量&lt;/td&gt;
+					&lt;td&gt;加速推理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;草稿来源&lt;/td&gt;
+					&lt;td&gt;MTP 模块（预训练时联合训练）&lt;/td&gt;
+					&lt;td&gt;独立小模型 / 挂载头 / n-gram&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练方式&lt;/td&gt;
+					&lt;td&gt;与主模型联合预训练&lt;/td&gt;
+					&lt;td&gt;草稿模型单独训练&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;推理时&lt;/td&gt;
+					&lt;td&gt;默认丢弃 MTP 模块&lt;/td&gt;
+					&lt;td&gt;必须有草稿模型参与&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;结合点&lt;/td&gt;
+					&lt;td&gt;MTP 模块可当推测解码的草稿模型&lt;/td&gt;
+					&lt;td&gt;DeepSeek 生产环境就是如此&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="34-deepseek-生产环境的实际做法"&gt;3.4 DeepSeek 生产环境的实际做法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;预训练时：主模型 + MTP 模块联合训练，MTP loss 权重 0.1&lt;/li&gt;
+&lt;li&gt;推理时：保留 MTP-1（只保留第一个 MTP 模块，预测 2 个 token），因为高并发下多 token 验证开销过大&lt;/li&gt;
+&lt;li&gt;MTP-1 第二 token 接受率约 85%-90%，约 1.8x 推理加速&lt;/li&gt;
+&lt;li&gt;DSpark 论文的核心贡献之一：&lt;strong&gt;首次让高并发生产环境安全使用多 token 推测解码&lt;/strong&gt;，此前只能用 MTP-1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="35-mtp-vs-eagledspark-的技术亲缘"&gt;3.5 MTP vs EAGLE/DSpark 的技术亲缘
+&lt;/h3&gt;&lt;p&gt;共同点：都读目标模型 hidden state，都有轻量 Transformer 层 + 共享 embedding/unembedding。&lt;/p&gt;
+&lt;p&gt;关键区别：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MTP 模块：&lt;strong&gt;预训练时与主模型联合训练&lt;/strong&gt;，权重与主模型耦合优化&lt;/li&gt;
+&lt;li&gt;EAGLE/DSpark 草稿：&lt;strong&gt;后训练阶段单独训练&lt;/strong&gt;，主模型冻结&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MTP 当草稿用时接受率不如专门训练的方案（MTP-1 τ&lt;del&gt;2 vs DSpark τ&lt;/del&gt;6+），但 MTP 的额外好处是&lt;strong&gt;训练阶段就提升了主模型质量&lt;/strong&gt;，这是推测解码草稿不具备的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="四各方案在-vllm-中的落地情况"&gt;四、各方案在 vLLM 中的落地情况
+&lt;/h2&gt;&lt;p&gt;vLLM 是当前最活跃的开源 LLM 推理引擎，对推测解码的支持最为全面。&lt;/p&gt;
+&lt;h3 id="41-总览"&gt;4.1 总览
+&lt;/h3&gt;&lt;p&gt;vLLM 支持的推测解码方法（截至 2026-07）：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方法&lt;/th&gt;
+					&lt;th&gt;支持状态&lt;/th&gt;
+					&lt;th&gt;配置 method&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;EAGLE / EAGLE-3&lt;/td&gt;
+					&lt;td&gt;已合并，生产可用&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;eagle3&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;已合并，生产可用&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;dflash&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;已合并，积极完善中&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;dspark&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek MTP&lt;/td&gt;
+					&lt;td&gt;已合并，成熟&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;deepseek_mtp&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;P-EAGLE（并行 EAGLE）&lt;/td&gt;
+					&lt;td&gt;已合并&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;eagle3&lt;/code&gt; + &lt;code&gt;parallel_drafting: true&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;N-gram&lt;/td&gt;
+					&lt;td&gt;已合并&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;ngram&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;独立草稿模型&lt;/td&gt;
+					&lt;td&gt;已合并&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;draft&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;官方文档：https://docs.vllm.ai/en/latest/features/speculative_decoding&lt;/p&gt;
+&lt;h3 id="42-eagle3-在-vllm"&gt;4.2 Eagle3 在 vLLM
+&lt;/h3&gt;&lt;p&gt;Eagle3 于 2026 年 4 月开始在 vLLM 中落地，Red Hat 团队主导集成。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/37512" target="_blank" rel="noopener"
+ &gt;#37512&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;MiniMax-M2: add Eagle3 speculative decoding support&lt;/td&gt;
+					&lt;td&gt;2026-04-06&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/39450" target="_blank" rel="noopener"
+ &gt;#39450&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Add Gemma4 Eagle3 support&lt;/td&gt;
+					&lt;td&gt;2026-04-10&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/43132" target="_blank" rel="noopener"
+ &gt;#43132&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] Add Qwen3 architecture support for EAGLE3&lt;/td&gt;
+					&lt;td&gt;2026-06-21&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/42764" target="_blank" rel="noopener"
+ &gt;#42764&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Model] Support post-norm architecture for EAGLE-3 speculators&lt;/td&gt;
+					&lt;td&gt;2026-05-19&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/41826" target="_blank" rel="noopener"
+ &gt;#41826&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Added peagle speculators support&lt;/td&gt;
+					&lt;td&gt;2026-05-12&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Red Hat 博客报道 Eagle3 在 vLLM 中最高可达 2.5x 加速：
+&lt;a class="link" href="https://developers.redhat.com/articles/2025/07/01/fly-eagle3-fly-faster-inference-vllm-speculative-decoding" target="_blank" rel="noopener"
+ &gt;https://developers.redhat.com/articles/2025/07/01/fly-eagle3-fly-faster-inference-vllm-speculative-decoding&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;P-EAGLE（并行版 Eagle3）在 vLLM 中通过 &lt;code&gt;parallel_drafting: true&lt;/code&gt; 启用，B200 上比 Eagle3 快 1.05x-1.69x：
+&lt;a class="link" href="https://vllm.ai/blog/2026-03-13-p-eagle" target="_blank" rel="noopener"
+ &gt;https://vllm.ai/blog/2026-03-13-p-eagle&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="43-dflash-在-vllm"&gt;4.3 DFlash 在 vLLM
+&lt;/h3&gt;&lt;p&gt;DFlash 于 2026 年 4 月开始在 vLLM 中落地，同样由 Red Hat 团队主导。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/38300" target="_blank" rel="noopener"
+ &gt;#38300&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Speculative Decoding] Add DFlash speculators config parsing&lt;/td&gt;
+					&lt;td&gt;2026-04-15&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/43445" target="_blank" rel="noopener"
+ &gt;#43445&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] Allow causal DFlash&lt;/td&gt;
+					&lt;td&gt;2026-05-28&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/44586" target="_blank" rel="noopener"
+ &gt;#44586&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[MRV2][Spec Decode] DFlash&lt;/td&gt;
+					&lt;td&gt;2026-06-10&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/45181" target="_blank" rel="noopener"
+ &gt;#45181&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] Support mixed KV page sizes for DFlash&lt;/td&gt;
+					&lt;td&gt;2026-06-21&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/45319" target="_blank" rel="noopener"
+ &gt;#45319&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Model][Dflash] Enable Dflash for Qwen3NextForCausalLM&lt;/td&gt;
+					&lt;td&gt;2026-06-12&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/46770" target="_blank" rel="noopener"
+ &gt;#46770&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Model Runner V2][DFlash] Enable dflash attention backend selection&lt;/td&gt;
+					&lt;td&gt;2026-06-26&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47914" target="_blank" rel="noopener"
+ &gt;#47914&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] Support hybrid (SWA + full attention) DFlash drafters&lt;/td&gt;
+					&lt;td&gt;2026-07-08&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;vllm-project/speculators 项目提供 DFlash 草稿模型训练，训练后可直接部署到 vLLM：
+&lt;a class="link" href="https://github.com/vllm-project/speculators" target="_blank" rel="noopener"
+ &gt;https://github.com/vllm-project/speculators&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="44-dspark-在-vllm"&gt;4.4 DSpark 在 vLLM
+&lt;/h3&gt;&lt;p&gt;DSpark 于 2026 年 7 月 1 日合并到 vLLM，目前处于积极完善阶段，有大量 follow-up PR 在修复边缘情况和扩展支持。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR/Issue&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;状态&lt;/th&gt;
+					&lt;th&gt;日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/issues/46910" target="_blank" rel="noopener"
+ &gt;#46910&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Feature]: Support DSpark for DeepSeek V4（Feature Issue）&lt;/td&gt;
+					&lt;td&gt;Closed (COMPLETED)&lt;/td&gt;
+					&lt;td&gt;2026-06，2026-07-02 关闭&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/46995" target="_blank" rel="noopener"
+ &gt;#46995&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] DSpark（主 PR）&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-01&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47093" target="_blank" rel="noopener"
+ &gt;#47093&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] DSpark speculators checkpoint support&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-02&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47216" target="_blank" rel="noopener"
+ &gt;#47216&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode][DSpark] Add Gemma4-12B DSpark draft model&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47419" target="_blank" rel="noopener"
+ &gt;#47419&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[ROCm] Enable DeepSeek-V4 DSpark on AMD (MI350X/MI355X)&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-10&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47677" target="_blank" rel="noopener"
+ &gt;#47677&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[XPU] Add DSpark speculative decoding support for DeepSeek-V4&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47377" target="_blank" rel="noopener"
+ &gt;#47377&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode] Add DSpark support for Qwen3.5 target models&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/48692" target="_blank" rel="noopener"
+ &gt;#48692&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[MRV2][Spec Decode] Adaptive Speculative Decoding - Initial Support&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47584" target="_blank" rel="noopener"
+ &gt;#47584&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec Decode][Perf] Rowwise-fp8 draft lm_head for DSpark (opt-in)&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;主 PR #46995 的设计说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持加载 DeepSeek-V4 DSpark 模型和 DeepSeek 训练的 Qwen3-DSpark 模型&lt;/li&gt;
+&lt;li&gt;DSpark 使用非因果滑动窗口注意力，复用现有 SparseMLA 后端（扩展 topk），无需重新实现 MLA attention&lt;/li&gt;
+&lt;li&gt;支持通过 &lt;code&gt;--speculative-config&lt;/code&gt; 配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;vLLM Ascend 也有对应 RFC：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm-ascend/issues/11126" target="_blank" rel="noopener"
+ &gt;vllm-ascend#11126&lt;/a&gt;：[RFC]: Add DSpark speculative decoding support for DeepSeek-V4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="45-deepseek-mtp-在-vllm"&gt;4.5 DeepSeek MTP 在 vLLM
+&lt;/h3&gt;&lt;p&gt;DeepSeek MTP 是 vLLM 中最早支持的推测解码方法之一，2025 年 2 月即合并。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/12755" target="_blank" rel="noopener"
+ &gt;#12755&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Model][Speculative Decoding] DeepSeek MTP spec decode&lt;/td&gt;
+					&lt;td&gt;2025-02-19&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/44821" target="_blank" rel="noopener"
+ &gt;#44821&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;fix: prefix DeepSeek V4 MTP projections&lt;/td&gt;
+					&lt;td&gt;2026-06-10&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/44420" target="_blank" rel="noopener"
+ &gt;#44420&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[feature] add index share feature for DSA MTP&lt;/td&gt;
+					&lt;td&gt;2026-06-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/46994" target="_blank" rel="noopener"
+ &gt;#46994&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec][V2] Support MTP speculative decoding under pipeline parallelism&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;配置示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;method&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;deepseek_mtp&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;&amp;#34;num_speculative_tokens&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;MTP 已支持 PP &amp;gt; 1（pipeline parallelism），是当前最成熟的推测解码选项。&lt;/p&gt;
+&lt;h3 id="46-vllm-推测解码生态vllm-projectspeculators"&gt;4.6 vLLM 推测解码生态：vllm-project/speculators
+&lt;/h3&gt;&lt;p&gt;vLLM 团队维护了专门的草稿模型训练库：
+&lt;a class="link" href="https://github.com/vllm-project/speculators" target="_blank" rel="noopener"
+ &gt;https://github.com/vllm-project/speculators&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一训练框架，训练后直接部署到 vLLM&lt;/li&gt;
+&lt;li&gt;支持 P-EAGLE、DFlash、EAGLE-3 训练&lt;/li&gt;
+&lt;li&gt;已发布多个模型：Qwen3-8B DFlash（τ~3.74）、Gemma4-31B DFlash/Eagle3 等&lt;/li&gt;
+&lt;li&gt;DFlash 模型通过 PR #38300 实现无缝部署&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="五各方案在-sglang-中的落地情况"&gt;五、各方案在 SGLang 中的落地情况
+&lt;/h2&gt;&lt;p&gt;SGLang 是 LMSYS 团队维护的高性能推理引擎，对推测解码的支持同样全面。&lt;/p&gt;
+&lt;h3 id="51-总览"&gt;5.1 总览
+&lt;/h3&gt;&lt;p&gt;SGLang 支持的推测解码方法：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方法&lt;/th&gt;
+					&lt;th&gt;支持状态&lt;/th&gt;
+					&lt;th&gt;配置&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;EAGLE-2&lt;/td&gt;
+					&lt;td&gt;已合并，成熟&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm EAGLE&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;EAGLE-3&lt;/td&gt;
+					&lt;td&gt;已合并，成熟&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm EAGLE3&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;已合并，成熟&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm DFLASH&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;已合并，积极完善中&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm DSPARK&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MTP&lt;/td&gt;
+					&lt;td&gt;已合并，成熟&lt;/td&gt;
+					&lt;td&gt;DeepSeek 模型原生支持&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;N-gram&lt;/td&gt;
+					&lt;td&gt;已合并&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm NGRAM&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;独立草稿模型&lt;/td&gt;
+					&lt;td&gt;已合并&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;--speculative-algorithm STANDALONE&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;官方文档：https://docs.sglang.ai/advanced_features/speculative_decoding.html&lt;/p&gt;
+&lt;h3 id="52-eagle3-在-sglang"&gt;5.2 Eagle3 在 SGLang
+&lt;/h3&gt;&lt;p&gt;Eagle3 通过 SpecForge 框架训练，部署到 SGLang：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SpecForge（sgl-project/SpecForge）：Eagle3 训练框架
+&lt;ul&gt;
+&lt;li&gt;仓库：https://github.com/sgl-project/SpecForge&lt;/li&gt;
+&lt;li&gt;博客：https://www.lmsys.org/blog/2025-07-25-spec-forge&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SGLang Eagle3 已支持多种模型（Llama、Qwen3、Kimi-K2.6 等）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;关键 PR（SGLang 中的 Eagle3 相关）：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/26506" target="_blank" rel="noopener"
+ &gt;#26506&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[spec decoding] support kimi-k2.6-eagle3.1-mla draft&lt;/td&gt;
+					&lt;td&gt;2026-05-28&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29464" target="_blank" rel="noopener"
+ &gt;#29464&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Fix EAGLE draft hidden dim extraction and centralize spec helpers&lt;/td&gt;
+					&lt;td&gt;2026-06-28&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/26726" target="_blank" rel="noopener"
+ &gt;#26726&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;fix(spec-dec): treat num_nextn_predict_layers=0 the same as absent for EAGLE3&lt;/td&gt;
+					&lt;td&gt;2026-06-05&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30947" target="_blank" rel="noopener"
+ &gt;#30947&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[EAGLE] perf: Fuse topk=1 draft postprocess&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31380" target="_blank" rel="noopener"
+ &gt;#31380&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Consolidate the verify step into eagle_worker_common&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="53-dflash-在-sglang"&gt;5.3 DFlash 在 SGLang
+&lt;/h3&gt;&lt;p&gt;DFlash 在 SGLang 中已成熟，支持多种后端和优化。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29338" target="_blank" rel="noopener"
+ &gt;#29338&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Add DFLASH basic sanity CI test&lt;/td&gt;
+					&lt;td&gt;2026-06-29&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29228" target="_blank" rel="noopener"
+ &gt;#29228&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Merge dflash triton kernels into a single dflash.py&lt;/td&gt;
+					&lt;td&gt;2026-06-25&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29541" target="_blank" rel="noopener"
+ &gt;#29541&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Publish DFLASH verify read-done event for fine-grained WAR barrier&lt;/td&gt;
+					&lt;td&gt;2026-06-29&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29446" target="_blank" rel="noopener"
+ &gt;#29446&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Add Laguna XS.2.1 DFlash support to SGLang&lt;/td&gt;
+					&lt;td&gt;2026-07-02&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29218" target="_blank" rel="noopener"
+ &gt;#29218&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] DFlash: support pure-MLA targets with an fp8 KV cache (Kimi-K2.x-NVFP4)&lt;/td&gt;
+					&lt;td&gt;2026-07-08&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29995" target="_blank" rel="noopener"
+ &gt;#29995&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Remove the ServerArgs clone hack from DFlashWorkerV2&lt;/td&gt;
+					&lt;td&gt;2026-07-03&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31468" target="_blank" rel="noopener"
+ &gt;#31468&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] DFlash: remove per-step host syncs (spec-v2 overlap)&lt;/td&gt;
+					&lt;td&gt;2026-07-18&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31677" target="_blank" rel="noopener"
+ &gt;#31677&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Extract DFlash compact draft-cache rebuild helpers&lt;/td&gt;
+					&lt;td&gt;2026-07-20&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29884" target="_blank" rel="noopener"
+ &gt;#29884&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Doc] Cookbook: Laguna-XS-2.1 (DFlash low-latency + high-throughput)&lt;/td&gt;
+					&lt;td&gt;2026-07-02&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="54-dspark-在-sglang"&gt;5.4 DSpark 在 SGLang
+&lt;/h3&gt;&lt;p&gt;DSpark 于 2026 年 7 月 12 日合并到 SGLang，LMSYS 团队发布了详细的工程博客。&lt;/p&gt;
+&lt;p&gt;主 PR 及关键 follow-up：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;状态&lt;/th&gt;
+					&lt;th&gt;日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/issues/29488" target="_blank" rel="noopener"
+ &gt;#29488&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Feature] Support DSpark Speculative Decoding for DeepSeek V4（Feature Issue）&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-06-27&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30261" target="_blank" rel="noopener"
+ &gt;#30261&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Add DSpark: confidence-scheduled speculative decoding（主 PR）&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-12&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31434" target="_blank" rel="noopener"
+ &gt;#31434&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Perf] Cache uniform ragged-verify layout for DSpark verify-all compact&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31985" target="_blank" rel="noopener"
+ &gt;#31985&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Perf] Fold dspark dense draft embedding into the draft graph&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-22&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31986" target="_blank" rel="noopener"
+ &gt;#31986&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Perf] Stack dspark dense draft per-layer ctx KV projection into one GEMM&lt;/td&gt;
+					&lt;td&gt;Merged&lt;/td&gt;
+					&lt;td&gt;2026-07-22&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30720" target="_blank" rel="noopener"
+ &gt;#30720&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[WIP] Enable GLM-5.2 DSpark compact verify functionality&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31026" target="_blank" rel="noopener"
+ &gt;#31026&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[ROCm] Add DeepSeek-V4 DSpark for AMD GPU (MI350X/MI355X)&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30964" target="_blank" rel="noopener"
+ &gt;#30964&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[AMD] Support DeepSeek V4 DSpark on AMD HIP platform&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31139" target="_blank" rel="noopener"
+ &gt;#31139&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[PP&amp;amp;Spec] enable speculative decoding (MTP&amp;amp;DSpark) under PP&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31466" target="_blank" rel="noopener"
+ &gt;#31466&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] DSpark support prefill/decode disaggregation&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31513" target="_blank" rel="noopener"
+ &gt;#31513&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Spec] Support DSPARK in disaggregation decode mode&lt;/td&gt;
+					&lt;td&gt;Open&lt;/td&gt;
+					&lt;td&gt;2026-07&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;SGLang DSpark 工程博客（强烈推荐阅读）：
+&lt;a class="link" href="https://www.lmsys.org/blog/2026-07-06-dspark-sglang" target="_blank" rel="noopener"
+ &gt;https://www.lmsys.org/blog/2026-07-06-dspark-sglang&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;博客核心内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SGLang 实现了 DSpark 的置信度调度器、逐请求变长验证（ragged verify）、全 CUDA graph 覆盖&lt;/li&gt;
+&lt;li&gt;三种验证模式：&lt;code&gt;static&lt;/code&gt;（全块验证）、&lt;code&gt;compact&lt;/code&gt;（按调度器截断，生产路径）、&lt;code&gt;cap-accept&lt;/code&gt;（全块验证但只提交截断窗口，用于观测上限）&lt;/li&gt;
+&lt;li&gt;Ragged verify under full CUDA graphs：变长请求前打包到一个紧凑缓冲区，按总量对齐到捕获的 graph tier，截断后重放真正更小的 graph&lt;/li&gt;
+&lt;li&gt;SPS cost table：离线 profiling 步时间模型，在线让调度器决定每请求验证预算&lt;/li&gt;
+&lt;li&gt;零开销调度（ZOS）：集成到 SGLang 的 overlap scheduler&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;启动命令示例（DeepSeek-V4-Flash）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;python3 -m sglang.launch_server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --model-path deepseek-ai/DeepSeek-V4-Flash-DSpark &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --speculative-algorithm DSPARK &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --tp &lt;span class="m"&gt;4&lt;/span&gt; --dp-size &lt;span class="m"&gt;4&lt;/span&gt; --enable-dp-attention --enable-dp-lm-head &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --moe-a2a-backend none --moe-runner-backend flashinfer_mxfp4 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --swa-full-tokens-ratio 0.1 --chunked-prefill-size &lt;span class="m"&gt;1024&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --mem-fraction-static 0.8 --cuda-graph-max-bs &lt;span class="m"&gt;192&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --max-running-requests &lt;span class="m"&gt;1024&lt;/span&gt; --disable-radix-cache &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --trust-remote-code --host 0.0.0.0 --port &lt;span class="m"&gt;30000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="55-mtp-在-sglang"&gt;5.5 MTP 在 SGLang
+&lt;/h3&gt;&lt;p&gt;SGLang 从 2025 年 1 月起就提供 DeepSeek 模型的 day-0 支持，MTP 支持较早成熟。&lt;/p&gt;
+&lt;p&gt;关键 PR：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;PR&lt;/th&gt;
+					&lt;th&gt;标题&lt;/th&gt;
+					&lt;th&gt;合并日期&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/26471" target="_blank" rel="noopener"
+ &gt;#26471&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;DeepSeek-V4 Online Compress support MTP&lt;/td&gt;
+					&lt;td&gt;2026-06-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/24436" target="_blank" rel="noopener"
+ &gt;#24436&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[Gemma 4] Adding MTP support&lt;/td&gt;
+					&lt;td&gt;2026-05-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30333" target="_blank" rel="noopener"
+ &gt;#30333&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[AMD] Fix DeepSeek V4 MTP accuracy issue&lt;/td&gt;
+					&lt;td&gt;2026-07-07&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30238" target="_blank" rel="noopener"
+ &gt;#30238&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;[AMD] Support two batch overlap with MTP on DeepSeekV4&lt;/td&gt;
+					&lt;td&gt;2026-07-16&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/28982" target="_blank" rel="noopener"
+ &gt;#28982&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;fix(mtp): avoid mtp perf regression in deepseek when enable eplb&lt;/td&gt;
+					&lt;td&gt;2026-07-09&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;SGLang MTP 教程：
+&lt;a class="link" href="https://company.hpc-ai.com/blog/sglang-speculative-decoding-tutorial" target="_blank" rel="noopener"
+ &gt;https://company.hpc-ai.com/blog/sglang-speculative-decoding-tutorial&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="六deepspec-落地情况总结"&gt;六、DeepSpec 落地情况总结
+&lt;/h2&gt;&lt;h3 id="61-落地成熟度对比"&gt;6.1 落地成熟度对比
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方案&lt;/th&gt;
+					&lt;th&gt;vLLM&lt;/th&gt;
+					&lt;th&gt;SGLang&lt;/th&gt;
+					&lt;th&gt;备注&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Eagle3&lt;/td&gt;
+					&lt;td&gt;生产可用（2026-04 起合并，多模型支持）&lt;/td&gt;
+					&lt;td&gt;生产可用（SpecForge 训练 + SGLang 部署）&lt;/td&gt;
+					&lt;td&gt;两个引擎都成熟&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;生产可用（2026-04 起合并，多后端支持）&lt;/td&gt;
+					&lt;td&gt;生产可用（多 kernel 优化，多模型支持）&lt;/td&gt;
+					&lt;td&gt;两个引擎都成熟&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;已合并（2026-07-01），积极完善中&lt;/td&gt;
+					&lt;td&gt;已合并（2026-07-12），积极完善中&lt;/td&gt;
+					&lt;td&gt;大量 follow-up PR 修复边缘情况&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek MTP&lt;/td&gt;
+					&lt;td&gt;成熟（2025-02 起合并）&lt;/td&gt;
+					&lt;td&gt;成熟（day-0 支持）&lt;/td&gt;
+					&lt;td&gt;两个引擎最早支持的方法&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="62-dspark-落地特点"&gt;6.2 DSpark 落地特点
+&lt;/h3&gt;&lt;p&gt;DSpark 在两个引擎中的落地都处于「核心功能已合并、积极扩展」阶段：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;vLLM 侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主 PR #46995 支持加载 DeepSeek-V4 DSpark 和 Qwen3-DSpark 检查点&lt;/li&gt;
+&lt;li&gt;已扩展到 Gemma4-12B（#47216）、ROCm（#47419）、XPU（#47677）&lt;/li&gt;
+&lt;li&gt;正在添加 Qwen3.5 支持（#47377）、自适应推测解码（#48692）&lt;/li&gt;
+&lt;li&gt;Red Hat 团队发布了 GLM-5.2 DSpark speculator preview：
+&lt;a class="link" href="https://huggingface.co/RedHatAI/GLM-5.2-speculator.dspark-preview" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/RedHatAI/GLM-5.2-speculator.dspark-preview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SGLang 侧&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主 PR #30261 实现了完整的置信度调度 + ragged verify + CUDA graph&lt;/li&gt;
+&lt;li&gt;LMSYS 发布了详细工程博客，展示了 DSpark 对 MTP 和 non-spec 的吞吐/延迟优势&lt;/li&gt;
+&lt;li&gt;正在扩展到 GLM-5.2（#30720, #31047）、ROCm（#30964, #31026）、PD 分离（#31466, #31513）&lt;/li&gt;
+&lt;li&gt;性能优化 PR 持续合并（#31985, #31986 融合 embedding 和 KV projection）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="63-从研究到生产的完整路径"&gt;6.3 从研究到生产的完整路径
+&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;1. 训练（DeepSpec / SpecForge / vllm-project/speculators）
+ 准备数据 → 用目标模型重新生成回答 → 预计算 target cache → 训练草稿模型
+
+2. 评测（DeepSpec eval.py）
+ accept_len / accept_rate@k 指标
+
+3. 部署（vLLM / SGLang）
+ --speculative-config &amp;#39;{&amp;#34;method&amp;#34;: &amp;#34;dspark&amp;#34;, &amp;#34;model&amp;#34;: &amp;#34;path/to/draft&amp;#34;}&amp;#39;
+ --speculative-algorithm DSPARK --speculative-draft-model-path ...
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="七方案选型建议"&gt;七、方案选型建议
+&lt;/h2&gt;&lt;h3 id="71-按场景选"&gt;7.1 按场景选
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;场景&lt;/th&gt;
+					&lt;th&gt;推荐方案&lt;/th&gt;
+					&lt;th&gt;理由&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;高并发生产服务&lt;/td&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;置信度调度负载自适应，不拖垮吞吐&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;低并发交互式（batch=1）&lt;/td&gt;
+					&lt;td&gt;Eagle3 / DSpark&lt;/td&gt;
+					&lt;td&gt;接受率高的方案在低并发下收益最大&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;目标模型有原生 MTP&lt;/td&gt;
+					&lt;td&gt;DeepSeek MTP&lt;/td&gt;
+					&lt;td&gt;零额外训练，直接用&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不想训练草稿模型&lt;/td&gt;
+					&lt;td&gt;N-gram / Lookahead&lt;/td&gt;
+					&lt;td&gt;零训练成本，但加速有限&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;跨模型族通用&lt;/td&gt;
+					&lt;td&gt;独立草稿模型&lt;/td&gt;
+					&lt;td&gt;即插即用，但接受率最低&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;追求最高接受长度&lt;/td&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;τ~6+，块越长优势越大&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;追求分布外泛化&lt;/td&gt;
+					&lt;td&gt;Eagle3（TTT）&lt;/td&gt;
+					&lt;td&gt;推理时动态适应新上下文&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;快速验证 / 不确定效果&lt;/td&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;实现简单，训练只需 CE loss&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="72-按引擎选"&gt;7.2 按引擎选
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;需求&lt;/th&gt;
+					&lt;th&gt;vLLM&lt;/th&gt;
+					&lt;th&gt;SGLang&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;最全面的 spec decode 支持&lt;/td&gt;
+					&lt;td&gt;方法最多&lt;/td&gt;
+					&lt;td&gt;方法最多&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark 置信度调度&lt;/td&gt;
+					&lt;td&gt;基础支持&lt;/td&gt;
+					&lt;td&gt;完整实现（compact ragged verify）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Eagle3 训练框架&lt;/td&gt;
+					&lt;td&gt;vllm-project/speculators&lt;/td&gt;
+					&lt;td&gt;SpecForge&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek 模型优化&lt;/td&gt;
+					&lt;td&gt;支持&lt;/td&gt;
+					&lt;td&gt;day-0 深度优化&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AMD GPU 支持&lt;/td&gt;
+					&lt;td&gt;支持（ROCm）&lt;/td&gt;
+					&lt;td&gt;支持（ROCm）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;文档/教程&lt;/td&gt;
+					&lt;td&gt;完善&lt;/td&gt;
+					&lt;td&gt;完善 + cookbook&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="八参考文献"&gt;八、参考文献
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;DSpark 论文：arXiv 2607.05147（本仓库 &lt;code&gt;dspark_paper.pdf&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;DFlash 论文：arXiv 2602.06036&lt;/li&gt;
+&lt;li&gt;Eagle3 论文：arXiv 2503.01840&lt;/li&gt;
+&lt;li&gt;EAGLE 论文：arXiv 2401.15077&lt;/li&gt;
+&lt;li&gt;Medusa 论文：arXiv 2401.10774&lt;/li&gt;
+&lt;li&gt;Leviathan 2023（经典推测解码）：arXiv 2211.17192&lt;/li&gt;
+&lt;li&gt;DeepSeek-V3 技术报告（MTP 原始来源）&lt;/li&gt;
+&lt;li&gt;Better &amp;amp; Faster LLMs via Multi-token prediction：arXiv 2404.19737&lt;/li&gt;
+&lt;li&gt;推测解码综述：arXiv 2411.13157、arXiv 2502.19732&lt;/li&gt;
+&lt;li&gt;vLLM 推测解码文档：https://docs.vllm.ai/en/latest/features/speculative_decoding&lt;/li&gt;
+&lt;li&gt;SGLang 推测解码文档：https://docs.sglang.ai/advanced_features/speculative_decoding.html&lt;/li&gt;
+&lt;li&gt;DSpark in SGLang 博客：https://www.lmsys.org/blog/2026-07-06-dspark-sglang&lt;/li&gt;
+&lt;li&gt;SpecForge：https://github.com/sgl-project/SpecForge&lt;/li&gt;
+&lt;li&gt;vllm-project/speculators：https://github.com/vllm-project/speculators&lt;/li&gt;
+&lt;li&gt;Red Hat Eagle3 博客：https://developers.redhat.com/articles/2025/07/01/fly-eagle3-fly-faster-inference-vllm-speculative-decoding&lt;/li&gt;
+&lt;li&gt;P-EAGLE 博客：https://vllm.ai/blog/2026-03-13-p-eagle&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="附录关键-pr-速查索引"&gt;附录：关键 PR 速查索引
+&lt;/h2&gt;&lt;h3 id="vllm"&gt;vLLM
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方案&lt;/th&gt;
+					&lt;th&gt;关键 PR&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek MTP&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/12755" target="_blank" rel="noopener"
+ &gt;#12755&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;初始支持（2025-02）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Eagle3&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/37512" target="_blank" rel="noopener"
+ &gt;#37512&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/39450" target="_blank" rel="noopener"
+ &gt;#39450&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/43132" target="_blank" rel="noopener"
+ &gt;#43132&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;MiniMax-M2 / Gemma4 / Qwen3 支持&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/38300" target="_blank" rel="noopener"
+ &gt;#38300&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/44586" target="_blank" rel="noopener"
+ &gt;#44586&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/43445" target="_blank" rel="noopener"
+ &gt;#43445&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;配置解析 / MRV2 / causal DFlash&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/46995" target="_blank" rel="noopener"
+ &gt;#46995&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47093" target="_blank" rel="noopener"
+ &gt;#47093&lt;/a&gt;, &lt;a class="link" href="https://github.com/vllm-project/vllm/pull/47216" target="_blank" rel="noopener"
+ &gt;#47216&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;主 PR / speculators checkpoint / Gemma4&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;P-EAGLE&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/vllm-project/vllm/pull/41826" target="_blank" rel="noopener"
+ &gt;#41826&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;peagle speculators 支持&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="sglang"&gt;SGLang
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方案&lt;/th&gt;
+					&lt;th&gt;关键 PR&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Eagle3&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/26506" target="_blank" rel="noopener"
+ &gt;#26506&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29464" target="_blank" rel="noopener"
+ &gt;#29464&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;Kimi-K2.6 / 通用 spec helper&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DFlash&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29338" target="_blank" rel="noopener"
+ &gt;#29338&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29228" target="_blank" rel="noopener"
+ &gt;#29228&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/29446" target="_blank" rel="noopener"
+ &gt;#29446&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;CI / triton kernel / Laguna XS&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DSpark&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/30261" target="_blank" rel="noopener"
+ &gt;#30261&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31434" target="_blank" rel="noopener"
+ &gt;#31434&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/31985" target="_blank" rel="noopener"
+ &gt;#31985&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;主 PR / ragged-verify layout / perf 优化&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MTP&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="https://github.com/sgl-project/sglang/pull/26471" target="_blank" rel="noopener"
+ &gt;#26471&lt;/a&gt;, &lt;a class="link" href="https://github.com/sgl-project/sglang/pull/24436" target="_blank" rel="noopener"
+ &gt;#24436&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;DeepSeek-V4 / Gemma4 MTP&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;</description></item></channel></rss>
