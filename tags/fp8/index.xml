@@ -7,14 +7,12 @@
 &lt;hr&gt;
 &lt;h2 id="开篇量化的两条路线分野"&gt;开篇：量化的两条路线分野
 &lt;/h2&gt;&lt;p&gt;量化在 LLM 时代分出两条路线。数据中心路线——GPTQ、AWQ、SmoothQuant、FP8——面向 GPU 高吞吐服务，在精度与算力间求平衡：权重压到 INT4 省显存，激活保高精度，或用 W8A8 享受 Tensor Core 算力翻倍。消费级路线——GGUF——面向 CPU 与 Apple Metal 本地部署，把权重、tokenizer、架构参数打包进单文件，让 MacBook 也能跑 70B 模型。两条路线工具链不重叠，场景互补。路线内部一个明确趋势：FP8 正在取代 INT8 成为数据中心推理首选。LLM 激活值有大量异常值，定点 INT8 难以同时覆盖，需 SmoothQuant 辅助；而 FP8 浮点格式的指数位天然适配异常值动态范围，几乎无损即可拿到 Hopper GPU 上 BF16 两倍的 Tensor Core 算力。本篇按此脉络梳理 6 个量化术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="量化方法quantization-methods"&gt;量化方法（Quantization Methods）
 &lt;/h2&gt;
  &lt;blockquote&gt;
  &lt;p&gt;量化是将高精度模型参数降至低精度以减少显存和加速推理的技术。本篇展开具体方法。&lt;/p&gt;
 
  &lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;h3 id="gptq"&gt;GPTQ
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -62,7 +60,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="activation-aware-weight-quantization"&gt;Activation-aware Weight Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -138,7 +135,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="smoothquant"&gt;SmoothQuant
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -182,7 +178,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="gguf--llamacpp-quantization"&gt;GGUF / llama.cpp Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -271,7 +266,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="fp8-quantization"&gt;FP8 Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -367,7 +361,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="quantization-aware-training"&gt;Quantization-Aware Training
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -418,7 +411,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;p&gt;本篇 6 个量化术语沿&amp;quot;两条路线 + 一个趋势&amp;quot;归位：&lt;/p&gt;
 &lt;ul&gt;
@@ -430,7 +422,6 @@
 &lt;li&gt;&lt;strong&gt;QAT&lt;/strong&gt; 精度高于 PTQ 但需训练成本，LLM 实践中很少用 QAT，PTQ（GPTQ/AWQ/FP8）已足够；QAT 主要用于 CV 模型与移动端部署。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;两条路线的边界清晰：数据中心 GPU 上 FP8/INT8 量化服务高吞吐推理，消费级 CPU/Metal 上 GGUF 单文件服务本地部署；FP8 取代 INT8 的趋势由 LLM 激活异常值分布驱动，定点格式需 SmoothQuant 辅助，浮点格式原生适配。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 8 篇。&lt;/p&gt;</description></item><item><title>LLM 术语全景图（七）：GPU 硬件与计算——从 Tensor Core 到 HBM</title><link>https://bevisy.github.io/p/llm-terminology-07-gpu-hardware/</link><pubDate>Mon, 27 Jul 2026 10:30:00 +0800</pubDate><guid>https://bevisy.github.io/p/llm-terminology-07-gpu-hardware/</guid><description>&lt;img src="https://bevisy.github.io/p/llm-terminology-07-gpu-hardware/07.png" alt="Featured image of post LLM 术语全景图（七）：GPU 硬件与计算——从 Tensor Core 到 HBM" /&gt;
  &lt;blockquote&gt;
  &lt;p&gt;这是「大模型训练与推理术语全景图」系列的第 7 篇，覆盖 GPU 硬件与计算的 8 个概念：Tensor Core、MMA/WGMMA、TMA、HBM、BF16、FP8、AllReduce/AllGather/ReduceScatter、NVLink/NVSwitch。
@@ -440,10 +431,8 @@
 &lt;hr&gt;
 &lt;h2 id="开篇理解-gpu-硬件是优化-llm-的前提"&gt;开篇：理解 GPU 硬件是优化 LLM 的前提
 &lt;/h2&gt;&lt;p&gt;LLM 推理的两个阶段受限于完全不同的资源。prefill 一次性处理整段 prompt，矩阵乘法的 FLOPs 大、每个权重被反复使用，瓶颈落在 Tensor Core 算力上，属于 compute-bound；decode 逐 token 自回归生成，每生成 1 个 token 都要把全部模型权重和当前 KV Cache 从 HBM 读进 SM，FLOPs 很小但读取量极大，瓶颈落在 HBM 带宽上，属于 memory-bound。这两种瓶颈分别决定了优化方向：compute-bound 看算力（更低精度、更稠密的 Tensor Core 利用率），memory-bound 看带宽（更小的权重、更少的读取）。量化把权重从 BF16 压到 FP8/INT4，本质是减少单位计算的 HBM 读取量；MoE 每次只激活少数专家，本质是减少单次 decode 实际需要读取的权重。所有主流 LLM 优化都能归到&amp;quot;降读取&amp;quot;或&amp;quot;降计算&amp;quot;这两条路径上，而判断走哪条路径的前提，是先看清 GPU 的算力墙和带宽墙分别在哪。本篇按硬件层次梳理 8 个术语：从计算单元（Tensor Core、MMA/WGMMA、TMA）、到内存与数据格式（HBM、BF16、FP8）、再到多卡互连（AllReduce 系原语、NVLink/NVSwitch）。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="gpu-硬件与计算gpu-hardware--compute"&gt;GPU 硬件与计算（GPU Hardware &amp;amp; Compute）
-&lt;/h2&gt;&lt;hr&gt;
-&lt;h3 id="tensor-core"&gt;Tensor Core
+&lt;/h2&gt;&lt;h3 id="tensor-core"&gt;Tensor Core
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;缩写&lt;/strong&gt;：—&lt;/p&gt;
@@ -511,7 +500,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="matrix-multiply-accumulate"&gt;Matrix Multiply-Accumulate
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -561,7 +549,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="tensor-memory-accelerator"&gt;Tensor Memory Accelerator
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -606,7 +593,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="high-bandwidth-memory"&gt;High Bandwidth Memory
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -690,7 +676,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="bfloat16"&gt;Bfloat16
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -768,7 +753,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="fp8"&gt;FP8
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -862,7 +846,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="allreduce--allgather--reducescatter"&gt;AllReduce / AllGather / ReduceScatter
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -920,7 +903,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="nvlink--nvswitch"&gt;NVLink / NVSwitch
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -1002,7 +984,6 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;p&gt;本篇 8 个 GPU 硬件术语沿&amp;quot;算力墙 vs 带宽墙&amp;quot;两条主线归位：&lt;/p&gt;
 &lt;ul&gt;
@@ -1016,5 +997,4 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;li&gt;&lt;strong&gt;NVLink / NVSwitch&lt;/strong&gt; 是 NVIDIA 的高速 GPU 互连：NVLink 是点对点直连，NVSwitch 是全互连交换芯片。NVLink 总带宽从 V100 的 300 GB/s 增长到 B200 的 1.8 TB/s，比 PCIe 5.0 高 10-15 倍。TP 通信量大必须在 NVLink 域内，DP/PP 可跨节点。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;一句话收束：LLM 的所有主流优化都能归到&amp;quot;降读取&amp;quot;（量化、MoE、Flash Attention）或&amp;quot;降计算&amp;quot;（更低精度、更稠密的 Tensor Core 利用率）两条路径上；判断走哪条路径，前提是先看清算力墙和带宽墙分别在哪——这正是本篇 8 个术语要回答的问题。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 7 篇。&lt;/p&gt;</description></item></channel></rss>

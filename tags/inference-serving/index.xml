@@ -7,14 +7,12 @@
 &lt;hr&gt;
 &lt;h2 id="开篇推理服务的两个阶段和两个指标"&gt;开篇：推理服务的两个阶段和两个指标
 &lt;/h2&gt;&lt;p&gt;LLM 推理不是一次&amp;quot;模型前向&amp;quot;，而是两个特性截然不同的阶段。Prefill（预填充）一次性处理整个 prompt，构造 N×N 注意力矩阵、打满 GPU 算力，是 compute-bound；Decode（解码）逐 token 生成，每步都要读回全部模型权重与 KV Cache、算力利用率往往低于 5%，是 memory-bound。用户感知到的两个维度恰好对应这两阶段：TTFT（首 token 延迟）由 prefill 主导，决定&amp;quot;是不是即时响应&amp;quot;；TPOT（单 token 生成时间）由 decode 主导，决定&amp;quot;是不是流畅&amp;quot;。高效推理服务（vLLM、SGLang）的所有优化都围绕这两阶段展开——Chunked Prefill 把长 prompt 切块，避免 prefill 阻塞正在 decode 的请求；Prefix Caching 复用历史 KV，多轮对话 TTFT 降低 50-90%；Disaggregated Inference 干脆把两阶段分池部署，prefill 池高算力、decode 池高带宽，吞吐再提 30-60%。本篇按&amp;quot;两阶段 → 两指标 → 三类优化&amp;quot;的脉络梳理这 6 个术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="推理服务与性能指标inference-serving--metrics"&gt;推理服务与性能指标（Inference Serving &amp;amp; Metrics）
 &lt;/h2&gt;
  &lt;blockquote&gt;
  &lt;p&gt;LLM 推理不是简单的&amp;quot;模型前向&amp;quot;。高效推理服务需要理解 prefill/decode 两阶段、关键延迟指标和缓存策略。&lt;/p&gt;
 
  &lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;h3 id="prefilldecode"&gt;Prefill/Decode
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -68,7 +66,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="time-to-first-token"&gt;Time To First Token
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -113,7 +110,6 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="time-per-output-token"&gt;Time Per Output Token
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -161,7 +157,6 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="prefix-caching--radixattention"&gt;Prefix Caching / RadixAttention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -216,7 +211,6 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="chunked-prefill"&gt;Chunked Prefill
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -265,7 +259,6 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="disaggregated-inference"&gt;Disaggregated Inference
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -323,7 +316,15 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="结语"&gt;结语
-&lt;/h2&gt;&lt;p&gt;推理服务的优化空间全部来自 Prefill 与 Decode 两阶段的特性鸿沟：前者 compute-bound，优化的方向是 Flash Attention、TP、Chunked Prefill；后者 memory-bound，优化的方向是量化、 batching、推测解码。两个用户感知指标——TTFT 和 TPOT——分别锚定这两阶段，增大 batch 能提高系统吞吐却不改变单请求 TPOT，因为权重只需读一次、多请求共享。三类服务级优化层层递进：Prefix Caching 复用历史 KV 把多轮对话 TTFT 压到 1/10；Chunked Prefill 让长 prompt 不再阻塞 decode；Disaggregated Inference 干脆把两阶段分池部署，DeepSeek 推理服务已落地，吞吐再提 30-60%，代价是 KV Cache 跨池传输。&lt;/p&gt;
+&lt;h2 id="本篇小结"&gt;本篇小结
+&lt;/h2&gt;&lt;p&gt;本篇 6 个推理服务术语沿&amp;quot;两阶段 → 两指标 → 三类优化&amp;quot;的脉络归位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Prefill/Decode&lt;/strong&gt; 是推理的两个阶段：前者一次性处理整个 prompt，compute-bound，GPU 算力打满；后者逐 token 生成，memory-bound，每步读全部权重但算力利用率常 &amp;lt; 5%。两阶段特性截然不同，优化策略也不同。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TTFT&lt;/strong&gt;（首 token 延迟）由 prefill 主导，决定&amp;quot;是不是即时响应&amp;quot;，对话场景尤其敏感。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TPOT&lt;/strong&gt;（单 token 生成时间）由 decode 主导，决定&amp;quot;是不是流畅&amp;quot;；其倒数即单请求解码速度（token/s）。增大 batch 能提高系统吞吐却不改变单请求 TPOT，因为权重只需读一次、多请求共享。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Prefix Caching / RadixAttention&lt;/strong&gt; 缓存已计算 prompt 的 KV，新请求共享前缀时直接复用跳过 prefill；SGLang 的 RadixAttention 用基数树管理缓存，多轮对话 TTFT 可降至 1/10。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chunked Prefill&lt;/strong&gt; 把长 prompt 的 prefill 切块与 decode 混合调度，避免长 prefill 阻塞正在 decode 的请求；vLLM V1 的核心调度策略之一。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Disaggregated Inference&lt;/strong&gt; 把 prefill 和 decode 分到不同 GPU 池，各池针对各自阶段优化（prefill 池高算力、decode 池高带宽），DeepSeek 推理服务已落地，吞吐再提 30-60%，代价是 KV Cache 跨池传输。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;三类优化层层递进：Prefix Caching 复用历史 KV → Chunked Prefill 让长 prompt 不再阻塞 decode → Disaggregated Inference 干脆分池部署。前两者在单池内调度，后者跨越池边界，代价是 KV Cache 传输开销。&lt;/p&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 10 篇。系列导读见：&lt;a class="link" href="https://bevisy.github.io/p/llm-terminology-series-guide/" &gt;LLM 术语全景图：系列导读&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

@@ -7,10 +7,8 @@
 &lt;hr&gt;
 &lt;h2 id="开篇后训练范式的三个阶段"&gt;开篇：后训练范式的三个阶段
 &lt;/h2&gt;&lt;p&gt;后训练（post-training）在 2022-2026 年间走过三个可辨识的阶段。第一阶段是 SFT（Supervised Fine-Tuning）：用人工标注的高质量 (prompt, response) 对微调预训练基座，让模型学会遵循指令、采用对话格式输出，几乎所有对话 LLM 的第一步后训练都是 SFT。第二阶段是 RLHF/DPO 对齐人类偏好：RLHF 先训练 Reward Model 再用 RL 优化，DPO 则跳过 Reward Model 直接从偏好数据优化，目标是让模型输出符合人类对&amp;quot;有用、无害、诚实&amp;quot;的偏好。第三阶段是 GRPO/RLVR 用可验证奖励驱动推理能力涌现：RLVR（RL with Verifiable Rewards）用规则验证奖励（如数学答案对错、代码测试通过）替代学到的 Reward Model，GRPO 去掉 PPO 的 Critic 用组内相对优势做基线。DeepSeek R1-Zero 跳过 SFT 直接做纯 GRPO（RLVR）就涌现出长链推理和&amp;quot;Aha Moment&amp;quot;，是这一阶段的标志性事件——它证明 RL 可独立于 SFT 涌现推理能力，但 R1 正式版仍加入 SFT 阶段以提升最终可用性。本篇按这条主线梳理 6 个训练方法术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="训练方法training-methods"&gt;训练方法（Training Methods）
-&lt;/h2&gt;&lt;hr&gt;
-&lt;h3 id="group-relative-policy-optimization"&gt;Group Relative Policy Optimization
+&lt;/h2&gt;&lt;h3 id="group-relative-policy-optimization"&gt;Group Relative Policy Optimization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;缩写&lt;/strong&gt;：GRPO&lt;/p&gt;
@@ -34,7 +32,7 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;/ol&gt;
 &lt;p&gt;关键优势：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;省去 Critic 模型——PPO 需训练 Actor 和 Critic 两个模型，GRPO 只训练 Actor 一个，需训练的模型显存减少约一半（口径：按&amp;quot;需训练的模型&amp;quot;计；若按 PPO 全部 4 个模型计，去掉 Critic 是去掉 1/4）&lt;/li&gt;
+&lt;li&gt;省去 Critic 模型——PPO 需训练 Actor 和 Critic 两个模型，GRPO 只训练 Actor 一个，需训练的模型显存减少约一半&lt;/li&gt;
 &lt;li&gt;组内相对比较天然适合推理任务（数学/代码有明确对错）&lt;/li&gt;
 &lt;li&gt;DeepSeek R1-Zero 证明纯 RL（无 SFT）也能涌现推理能力（&amp;ldquo;Aha Moment&amp;rdquo;）&lt;/li&gt;
 &lt;/ul&gt;
@@ -60,7 +58,6 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="reinforcement-learning-from-human-feedback"&gt;Reinforcement Learning from Human Feedback
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -106,7 +103,6 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="direct-preference-optimization"&gt;Direct Preference Optimization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -140,7 +136,6 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="supervised-fine-tuning"&gt;Supervised Fine-Tuning
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -179,7 +174,6 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="knowledge-distillation"&gt;Knowledge Distillation
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -230,7 +224,6 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="muon-optimizer"&gt;Muon Optimizer
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -266,7 +259,6 @@ Muon：对 2D 权重矩阵的梯度做正交化（Newton-Schulz 迭代近似 SVD
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;p&gt;本篇 6 个训练方法术语沿&amp;quot;后训练三阶段&amp;quot;归位：&lt;/p&gt;
 &lt;ul&gt;
@@ -276,6 +268,4 @@ Muon：对 2D 权重矩阵的梯度做正交化（Newton-Schulz 迭代近似 SVD
 &lt;li&gt;&lt;strong&gt;Knowledge Distillation&lt;/strong&gt; 不创造新能力，只传递教师已有能力；R1 蒸馏 800K 推理数据到 Qwen 1.5B~32B 和 Llama 8B/70B，其中 R1-Distill-Qwen-1.5B 在 AIME 28.9% 已超过 GPT-4o。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Muon Optimizer&lt;/strong&gt; 是 2025 年新优化器，对 2D 矩阵参数做正交化更新，已被 DeepSeek V4 和 Kimi K2（MuonClip）采用，生态发展中。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;口径提示：GRPO 的&amp;quot;省一半显存&amp;quot;严格限定在&amp;quot;需训练的模型&amp;quot;这一口径下（PPO 训 Actor+Critic，GRPO 只训 Actor）；若按 PPO 全部 4 个模型计，去掉 Critic 是去掉 1/4。引用时需注明口径。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 4 篇。系列导航见：LLM 术语全景图系列导读。&lt;/p&gt;</description></item></channel></rss>

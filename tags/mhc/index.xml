@@ -11,10 +11,8 @@
 &lt;p&gt;&lt;strong&gt;第二条线是残差连接从单流到多流。&lt;/strong&gt; 标准 ResNet 残差是 &lt;code&gt;y = x + F(x)&lt;/code&gt; 的单残差通路；Hyper-Connections 把它扩展为 n 个并行残差流，并用 Pre/Res/Post 三类映射在层间混合；mHC 进一步把 Res Mapping 约束到双随机矩阵流形，避免深层堆叠时信号不可预测地放大或缩小。残差通路变宽，但 FLOPs 几乎不增。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;第三条线是基础组件趋于稳定。&lt;/strong&gt; 位置编码收敛到 RoPE（长上下文用 YaRN 扩展），归一化收敛到 RMSNorm 的 Pre-Norm 用法，FFN 激活收敛到 SwiGLU，KV Cache 则成为所有自回归推理绕不开的物理瓶颈。这三类组件已没有太多设计争议，新一代模型主要在 MoE 和残差结构上做差异化。&lt;/p&gt;
 &lt;p&gt;下面逐一展开。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="模型架构architecture-components"&gt;模型架构（Architecture Components）
-&lt;/h2&gt;&lt;hr&gt;
-&lt;h3 id="mixture-of-experts"&gt;Mixture of Experts
+&lt;/h2&gt;&lt;h3 id="mixture-of-experts"&gt;Mixture of Experts
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;缩写&lt;/strong&gt;：MoE&lt;/p&gt;
@@ -110,7 +108,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="multi-token-prediction"&gt;Multi-Token Prediction
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -155,7 +152,6 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="manifold-constrained-hyper-connections"&gt;Manifold-Constrained Hyper-Connections
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -201,7 +197,6 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="rotary-position-embedding"&gt;Rotary Position Embedding
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -239,7 +234,6 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="yet-another-rope-extension"&gt;Yet Another RoPE Extension
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -276,7 +270,6 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;YaRN: Efficient Context Window Extension&amp;rdquo; (Peng et al., 2023, arXiv:2309.00071)；Qwen、DeepSeek、LLaMA 系列&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="rmsnorm"&gt;RMSNorm
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -314,7 +307,6 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="swiglu"&gt;SwiGLU
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -350,7 +342,6 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="kv-cache"&gt;KV Cache
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -395,5 +386,17 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
+&lt;h2 id="本篇小结"&gt;本篇小结
+&lt;/h2&gt;&lt;p&gt;本篇 8 个模型架构术语沿&amp;quot;稀疏激活 + 残差连接进化 + 位置编码/归一化/FFN 标准件 + KV Cache 瓶颈&amp;quot;四条线归位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;MoE&lt;/strong&gt; 把 FFN 替换为多个并行专家网络，路由器为每个 token 选少量专家，实现大参数量但低激活成本；2025-2026 年大模型几乎全部 MoE 化，激活比持续下降（DeepSeek V4 ~4%）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MTP&lt;/strong&gt; 训练时同时预测未来多个 token 增加训练信号密度，推理时可复用 MTP 模块做推测解码；DeepSeek V3 用 MTP，是训练与推理的连接点。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;mHC&lt;/strong&gt; 把 Transformer 块的单残差流扩展为多个并行残差流，用双随机矩阵约束保证混合稳定；DeepSeek V4 引入，信息通路更宽。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RoPE&lt;/strong&gt; 通过旋转矩阵把相对位置编入 Q/K 的旋转中，使注意力分数自然反映相对距离；当前绝大多数 LLM 的默认位置编码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;YaRN&lt;/strong&gt; 通过分段插值 + 温度缩放做 RoPE 上下文扩展，约 400 步微调即可从 4K 扩到 128K+；目前最主流的上下文扩展方法。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RMSNorm&lt;/strong&gt; 去掉 LayerNorm 的均值计算仅用均方根归一化，计算更快且大规模训练稳定；几乎所有现代 LLM 的默认归一化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SwiGLU&lt;/strong&gt; 用 SiLU 作为 GLU 门控激活替代 ReLU/GELU；几乎所有现代 LLM FFN 层的标准配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;KV Cache&lt;/strong&gt; 缓存历史 token 的 K/V 避免重复计算，但其体积随上下文线性增长，是长上下文推理最硬的物理瓶颈——催生篇 1 的 MLA/CSA/HCA 压缩、篇 5 的 PagedAttention 分页管理、篇 10 的 Prefix Caching 复用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;KV Cache 是本篇与篇 1（注意力压缩）、篇 5（推理优化）、篇 10（推理服务）的交叉点：架构设计层面的每一次创新，最终都要回到这个物理瓶颈上检验。&lt;/p&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 3 篇。系列导航见：LLM 术语全景图系列导读。&lt;/p&gt;</description></item></channel></rss>

@@ -7,7 +7,6 @@
 &lt;hr&gt;
 &lt;h2 id="开篇线性注意力从理论到生产的曲折路径"&gt;开篇：线性注意力从理论到生产的曲折路径
 &lt;/h2&gt;&lt;p&gt;线性注意力从理论到生产的路径比预想中曲折。Lightning Attention 在 MiniMax-01 上把注意力复杂度从 O(n^2) 降到 O(n)，纸面效率可观；但 MiniMax 在 M2 中放弃了 Lightning Attention，回归完整 softmax attention。这不是个别工程取舍，而是一个清晰的技术信号：在推理和多轮任务中，线性注意力的精度无法满足生产要求，且其低精度 KV 状态对 prefix caching 支持偏弱，使得长上下文复用这一关键推理优化失去杠杆。生产环境的精度门槛比纸面效率更重要，这是 2025-2026 年线性注意力落地必须正视的现实。本篇沿着这条主线，展开 Lightning Attention、KDA、NoPE、QK-Norm、CCA 与 Hybrid Attention 六个概念。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h3 id="lightning-attention"&gt;Lightning Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -41,7 +40,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="kimi-delta-attention"&gt;Kimi Delta Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -85,7 +83,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="no-positional-encoding"&gt;No Positional Encoding
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -126,7 +123,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="qk-norm"&gt;QK-Norm
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -164,7 +160,6 @@ Attention = softmax(Q&amp;rsquo; · K&amp;rsquo;^T / sqrt(d_k)) · V&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="compressed-convolutional-attention"&gt;Compressed Convolutional Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -196,7 +191,6 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="hybrid-attention"&gt;Hybrid Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -257,5 +251,14 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
+&lt;h2 id="本篇小结"&gt;本篇小结
+&lt;/h2&gt;&lt;p&gt;本篇 6 个注意力相关术语沿&amp;quot;线性注意力从理论到生产 + 配套稳定性与混合架构&amp;quot;两条线归位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Lightning Attention&lt;/strong&gt; 把 softmax 近似为线性形式并用结合律重排计算，将注意力复杂度从 O(n²) 降到 O(n)；但 MiniMax 在 M2 中放弃它回归完整注意力，原因是线性注意力在推理和多轮任务中精度不足，且低精度 KV 状态对 prefix caching 支持偏弱——生产环境的精度门槛比纸面效率更重要。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;KDA&lt;/strong&gt; 是 Gated DeltaNet 的改进，把标量衰减门控升级为逐通道对角门控 Diag(α_t)，每个通道独立控制遗忘率；Kimi Linear 用 3:1 混合（3 层 KDA + 1 层全局 MLA），1M token 上下文下最高 75% KV 压缩与 6× 解码提升（Moonshot 官方指标，限定 1M 上下文）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NoPE&lt;/strong&gt; 在选定层省略位置编码，依赖因果掩码隐式编码位置，降低长上下文计算开销；常见于线性注意力层（Kimi Linear、Qwen3-Next）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;QK-Norm&lt;/strong&gt; 在注意力计算前对 Q/K 做 RMSNorm，防止注意力分数过大导致训练不稳定；OLMo 2、Qwen3、Gemma 3 已广泛采用，是&amp;quot;免费的稳定性增强&amp;quot;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CCA&lt;/strong&gt; 把 Q/K/V 压缩到低维潜在空间后直接在压缩空间执行注意力，并用卷积混合增强表达力；ZAYA1-8B 的实践，与 MLA 的区别是 MLA 上投影还原后再算注意力，CCA 在压缩空间直接算。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hybrid Attention&lt;/strong&gt; 在同一模型中交替使用不同注意力层（线性 + 完整、SWA + 全局、CSA + HCA），完整注意力作为稀缺资源放在关键层；2025-2026 年的主流趋势，但 MiniMax M2 放弃混合回归完整注意力是重要反例。&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 2 篇。系列导航见：LLM 术语全景图系列导读。&lt;/p&gt;</description></item></channel></rss>

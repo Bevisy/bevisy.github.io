@@ -7,10 +7,8 @@
 &lt;hr&gt;
 &lt;h2 id="开篇为什么-2025-2026-年注意力机制在密集创新"&gt;开篇：为什么 2025-2026 年注意力机制在密集创新
 &lt;/h2&gt;&lt;p&gt;2025-2026 年，注意力机制的迭代密度显著上升，其驱动力并非抽象的&amp;quot;模型变大&amp;quot;，而是一个具体的工程瓶颈：KV Cache 已成为长上下文推理的第一代价。在自回归解码阶段，每生成一个 token 都要对所有历史 token 的 K/V 做注意力，这意味着 KV Cache 的体积随上下文长度线性增长，而它在显存中的驻留又直接挤占了 batch size 与并发上限。当推理模型需要维持数万 token 的思维链、Agent 工作流需要在单次会话中携带工具调用历史与检索结果时，KV Cache 从&amp;quot;可优化项&amp;quot;变成了&amp;quot;硬约束&amp;quot;。MHA 到 MQA、GQA 的头维度压缩，MLA 的潜在维度压缩，SWA/DSA 的序列维度稀疏，CSA/HCA 的序列维度压缩，本质都在回答同一个问题：在不牺牲检索精度的情况下，如何让 KV Cache 不再是长上下文推理的瓶颈。本篇按这条主线梳理前 8 个注意力变体。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="注意力机制上"&gt;注意力机制（上）
-&lt;/h2&gt;&lt;hr&gt;
-&lt;h3 id="multi-head-attention"&gt;Multi-Head Attention
+&lt;/h2&gt;&lt;h3 id="multi-head-attention"&gt;Multi-Head Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;缩写&lt;/strong&gt;：MHA&lt;/p&gt;
@@ -41,7 +39,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="multi-query-attention"&gt;Multi-Query Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -72,7 +69,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="grouped-query-attention"&gt;Grouped Query Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -114,7 +110,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="multi-head-latent-attention"&gt;Multi-head Latent Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -157,7 +152,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="sliding-window-attention"&gt;Sliding Window Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -195,7 +189,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="deepseek-sparse-attention"&gt;DeepSeek Sparse Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -239,7 +232,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="compressed-sparse-attention"&gt;Compressed Sparse Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -276,7 +268,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="heavily-compressed-attention"&gt;Heavily Compressed Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -321,7 +312,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;p&gt;本篇 8 个注意力变体可以沿三条压缩主线归位：&lt;/p&gt;
 &lt;ul&gt;
@@ -329,6 +319,4 @@
 &lt;li&gt;&lt;strong&gt;潜在维度压缩&lt;/strong&gt;：MLA 把 per-token 的 K/V 压进低秩潜在空间，是另一种正交的压缩方向。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;序列维度压缩 / 稀疏&lt;/strong&gt;：SWA 用固定窗口、DSA 用学习到的 indexer 做稀疏选择，CSA/HCA 则直接压缩序列长度本身，HCA 更激进、CSA 更温和，DeepSeek V4 让两者交替互补。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;效果数字仅在注明前提时有意义：HCA 的 27%/10% 与 10%/7% 是 1M token 上下文、相对 V3.2 的结果；KDA 的 75% KV 压缩与 6x 解码同样是 1M token 上下文下的&amp;quot;up to&amp;quot;值。脱离前提引用这些数字会误导。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 1 篇。系列导航见：LLM 术语全景图系列导读。&lt;/p&gt;</description></item></channel></rss>

@@ -7,14 +7,12 @@
 &lt;hr&gt;
 &lt;h2 id="开篇量化的两条路线分野"&gt;开篇：量化的两条路线分野
 &lt;/h2&gt;&lt;p&gt;量化在 LLM 时代分出两条路线。数据中心路线——GPTQ、AWQ、SmoothQuant、FP8——面向 GPU 高吞吐服务，在精度与算力间求平衡：权重压到 INT4 省显存，激活保高精度，或用 W8A8 享受 Tensor Core 算力翻倍。消费级路线——GGUF——面向 CPU 与 Apple Metal 本地部署，把权重、tokenizer、架构参数打包进单文件，让 MacBook 也能跑 70B 模型。两条路线工具链不重叠，场景互补。路线内部一个明确趋势：FP8 正在取代 INT8 成为数据中心推理首选。LLM 激活值有大量异常值，定点 INT8 难以同时覆盖，需 SmoothQuant 辅助；而 FP8 浮点格式的指数位天然适配异常值动态范围，几乎无损即可拿到 Hopper GPU 上 BF16 两倍的 Tensor Core 算力。本篇按此脉络梳理 6 个量化术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="量化方法quantization-methods"&gt;量化方法（Quantization Methods）
 &lt;/h2&gt;
  &lt;blockquote&gt;
  &lt;p&gt;量化是将高精度模型参数降至低精度以减少显存和加速推理的技术。本篇展开具体方法。&lt;/p&gt;
 
  &lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;h3 id="gptq"&gt;GPTQ
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -62,7 +60,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="activation-aware-weight-quantization"&gt;Activation-aware Weight Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -138,7 +135,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="smoothquant"&gt;SmoothQuant
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -182,7 +178,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="gguf--llamacpp-quantization"&gt;GGUF / llama.cpp Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -271,7 +266,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="fp8-quantization"&gt;FP8 Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -367,7 +361,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="quantization-aware-training"&gt;Quantization-Aware Training
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -418,7 +411,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;p&gt;本篇 6 个量化术语沿&amp;quot;两条路线 + 一个趋势&amp;quot;归位：&lt;/p&gt;
 &lt;ul&gt;
@@ -430,5 +422,4 @@
 &lt;li&gt;&lt;strong&gt;QAT&lt;/strong&gt; 精度高于 PTQ 但需训练成本，LLM 实践中很少用 QAT，PTQ（GPTQ/AWQ/FP8）已足够；QAT 主要用于 CV 模型与移动端部署。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;两条路线的边界清晰：数据中心 GPU 上 FP8/INT8 量化服务高吞吐推理，消费级 CPU/Metal 上 GGUF 单文件服务本地部署；FP8 取代 INT8 的趋势由 LLM 激活异常值分布驱动，定点格式需 SmoothQuant 辅助，浮点格式原生适配。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 8 篇。&lt;/p&gt;</description></item></channel></rss>

@@ -7,14 +7,12 @@
 &lt;hr&gt;
 &lt;h2 id="开篇并行策略是组合问题"&gt;开篇：并行策略是组合问题
 &lt;/h2&gt;&lt;p&gt;大模型的多卡并行不是单一策略的选择题，而是多维度的组合题。各策略切分的对象不同：Data Parallelism（DP）切 batch，Tensor Parallelism（TP）在层内切权重矩阵，Pipeline Parallelism（PP）在层间切模型，Expert Parallelism（EP）切专家，Context/Sequence Parallelism（CP/SP）切序列。训练大 MoE 模型常同时叠加 TP+EP+PP+DP（或 FSDP/ZeRO 替代纯 DP），DeepSeek V3 即是 TP=8 + EP=32 + PP + DP 的组合；推理侧则以 TP+EP 为主，PP 较少使用（vLLM V1 才补上 PP 推理）。组合时关键约束是通信带宽层级——TP 每层都要 AllReduce，对带宽极敏感，必须放在 NVLink 域内（单节点，TP=2/4/8）；PP 的 stage 间只传隐状态、EP 的 All-to-All 通信量较小，可跨节点；DP 的 AllReduce 介于二者之间。一句话：高带宽通信配高频切分（TP 在节点内），低带宽链路配低频切分（PP/EP 跨节点）。本篇按切分对象逐条梳理这 8 个术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="并行策略parallelism-strategies"&gt;并行策略（Parallelism Strategies）
 &lt;/h2&gt;
  &lt;blockquote&gt;
  &lt;p&gt;LLM 训练和推理都需要多 GPU 协作。并行策略决定模型参数、梯度、优化器状态、激活值如何在多卡间分割与通信。&lt;/p&gt;
 
  &lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;h3 id="data-parallelism"&gt;Data Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -51,7 +49,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="tensor-parallelism"&gt;Tensor Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -103,7 +100,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="pipeline-parallelism"&gt;Pipeline Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -144,7 +140,6 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="expert-parallelism"&gt;Expert Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -193,7 +188,6 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="context-parallelism"&gt;Context Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -238,7 +232,6 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="sequence-parallelism"&gt;Sequence Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -288,7 +281,6 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="fully-sharded-data-parallelism"&gt;Fully Sharded Data Parallelism
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -333,7 +325,6 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="zero-redundancy-optimizer"&gt;Zero Redundancy Optimizer
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -386,5 +377,17 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
+&lt;h2 id="本篇小结"&gt;本篇小结
+&lt;/h2&gt;&lt;p&gt;本篇 8 个并行策略术语沿&amp;quot;切什么维度 + 内存如何分片&amp;quot;两条线归位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;DP&lt;/strong&gt; 每卡完整模型分不同数据，最简单但要求单卡放下完整模型；反向后 AllReduce 同步梯度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TP&lt;/strong&gt; 层内切权重矩阵，各卡算矩阵乘法的不同部分再 AllReduce/AllGather 拼接；NVLink 域内有效，是 MoE 大模型推理标配。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PP&lt;/strong&gt; 层间切分，数据像流水线依次通过各卡，解决深模型单卡放不下的问题，但有流水线气泡开销；GPipe 和 1F1B 两种调度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;EP&lt;/strong&gt; MoE 专用，把不同专家分到不同 GPU，token 通过 All-to-All 通信路由到专家所在卡。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CP&lt;/strong&gt; 把输入序列按长度切分到多卡，各卡处理不同段落并通过环式通信交换 KV 实现完整注意力；用于超长上下文训练和推理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SP&lt;/strong&gt; 切序列的激活值，主要用于减少 TP 中 LayerNorm/Dropout 的冗余计算；是 TP 的辅助，与 CP 的区别是 SP 依附于 TP、CP 是独立的注意力并行。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;FSDP&lt;/strong&gt; DP 的进化版，参数/梯度/优化器状态全部分片，计算时按需 AllGather 恢复完整参数；PyTorch 原生支持的大模型训练方案。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ZeRO&lt;/strong&gt; DeepSpeed 的内存优化三阶段：ZeRO-1 分片优化器状态、ZeRO-2 加分片梯度、ZeRO-3 加分片参数（= FSDP）；ZeRO-2 是性能与内存的最佳平衡点（无额外通信），ZeRO-3 用于单卡放不下的超大模型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;组合关系：大模型训练标配 TP+EP+PP+DP/ZeRO 多维并行（TP 在 NVLink 域内、PP 跨节点、DP/ZeRO 切数据、EP 切专家），推理标配 TP+EP。FSDP 是 ZeRO-3 的工程实现，两者理论基础一致。&lt;/p&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 6 篇。&lt;/p&gt;</description></item></channel></rss>

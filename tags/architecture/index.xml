@@ -7,7 +7,6 @@
 &lt;hr&gt;
 &lt;h2 id="开篇把-64-个术语放回关系网络"&gt;开篇：把 64 个术语放回关系网络
 &lt;/h2&gt;&lt;p&gt;本篇是系列收尾，不引入新概念，而是把前 10 篇的 64 个术语放回它们的关系网络中：注意力机制的演进谱系、模型与术语的对照、并行策略的组合、量化方法的选型、GPU 精度与算力。最后给出 10 条核心趋势和参考资源索引。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="注意力机制演进关系图"&gt;注意力机制演进关系图
 &lt;/h2&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;MHA (原始 Transformer)
 ├── MQA (极端共享 K/V，1 组)
@@ -322,7 +321,6 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;hr&gt;
 &lt;h2 id="核心趋势总结"&gt;核心趋势总结
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;KV Cache 是第一瓶颈&lt;/strong&gt;：MLA → DSA → CSA/HCA → 线性注意力，所有创新都围绕降低 KV Cache 成本&lt;/li&gt;
@@ -336,7 +334,17 @@
 &lt;li&gt;&lt;strong&gt;并行策略组合化&lt;/strong&gt;：大模型训练标配 TP+EP+PP+DP/ZeRO 多维并行，推理标配 TP+EP&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;PEFT 成为微调标配&lt;/strong&gt;：LoRA/QLoRA 使单卡微调 70B 模型成为可能，多 LoRA 热切换服务&lt;/li&gt;
 &lt;/ol&gt;
-&lt;hr&gt;
+&lt;h2 id="本篇小结"&gt;本篇小结
+&lt;/h2&gt;&lt;p&gt;本篇是系列收尾，不引入新概念，而是把前 10 篇的 64 个术语放回关系网络：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;演进谱系图&lt;/strong&gt;把注意力机制从 MHA 到 MLA、CSA/HCA、线性注意力、混合架构的分支与组合画在一棵树上，让前两篇的概念回到同一张图里。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;模型与术语对照表&lt;/strong&gt;把 15 个代表模型按注意力、架构、位置编码、后训练、特殊技术五列对齐，读者可横向对照&amp;quot;谁用了什么&amp;quot;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;并行策略关系图&lt;/strong&gt;把训练侧的 DP/TP/PP/EP/CP/SP 与推理侧的 TP/EP/CP/分离式分别画出，呼应篇 6。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量化方法对比表&lt;/strong&gt;把 GPTQ/AWQ/SmoothQuant/FP8/GGUF/QAT 按精度、硬件、校准、精度损失、适用场景五列对齐，呼应篇 8。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU 精度与算力对照表&lt;/strong&gt;把 FP32 到 FP4 的算力与用途对齐，呼应篇 7。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;核心趋势 10 条&lt;/strong&gt;浓缩全系列主线：KV Cache 是第一瓶颈、混合架构主流化、MoE 普及、RL 驱动推理、优化器更新、残差进化、FP8 取代 INT8、推理分离式架构、并行策略组合化、PEFT 成微调标配。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本篇的价值不在于新知识，而在于把分散在 10 篇里的术语重新编织成一张可查阅的关系网——单篇看细节，本篇看整体。&lt;/p&gt;
 &lt;h2 id="参考资源汇总"&gt;参考资源汇总
 &lt;/h2&gt;&lt;h3 id="核心参考文章"&gt;核心参考文章
 &lt;/h3&gt;&lt;ul&gt;

@@ -7,10 +7,8 @@
 &lt;hr&gt;
 &lt;h2 id="开篇推理优化的两个方向"&gt;开篇：推理优化的两个方向
 &lt;/h2&gt;&lt;p&gt;推理优化沿两个方向展开。第一是减少单位计算的代价：Flash Attention 通过 tiling 重排注意力计算的内存访问模式，把 HBM 与 SRAM 之间的读写复杂度从 O(n²) 降到 O(n²/M)，不改变注意力的数学结果；Quantization 把权重/激活从 BF16 降到 INT8/INT4/FP8，直接压低显存占用和每步访存量。第二是提高 GPU 利用率：PagedAttention 把 KV Cache 切成固定 block 按需分配，消除碎片让显存利用率从 ~20% 提升到 ~96%；Continuous Batching 在每个 iteration 动态进出请求，避免短序列空等长序列；Speculative Decoding 用小模型先起草、大模型并行验证，减少 decode 步数。本篇按这两个方向梳理 5 个推理优化术语。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="推理优化inference-optimization"&gt;推理优化（Inference Optimization）
-&lt;/h2&gt;&lt;hr&gt;
-&lt;h3 id="speculative-decoding"&gt;Speculative Decoding
+&lt;/h2&gt;&lt;h3 id="speculative-decoding"&gt;Speculative Decoding
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;缩写&lt;/strong&gt;：SpecDec / 推测解码&lt;/p&gt;
@@ -54,7 +52,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="pagedattention"&gt;PagedAttention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -96,7 +93,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="continuous-batching"&gt;Continuous Batching
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -126,7 +122,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="quantization"&gt;Quantization
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -178,7 +173,6 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 &lt;h3 id="flash-attention"&gt;Flash Attention
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
@@ -221,8 +215,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="小结"&gt;小结
+&lt;h2 id="本篇小结"&gt;本篇小结
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Speculative Decoding（推测解码）&lt;/strong&gt; 用 draft model 起草、target model 并行验证，输出分布通过拒绝采样与纯大模型生成数学等价（无损），典型加速 2-3x；与 Pipeline Parallelism 不兼容，vLLM V1 已部分解决。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;PagedAttention&lt;/strong&gt; 把 KV Cache 切成固定 block 按需分配，配 block table 类比操作系统的虚拟内存分页，显存利用率从 ~20% 提升到 ~96%，是 vLLM 高吞吐的核心。&lt;/li&gt;
@@ -230,8 +223,6 @@
 &lt;li&gt;&lt;strong&gt;Quantization&lt;/strong&gt; 按精度（FP8/INT8/INT4/GGUF）和按方法（PTQ vs QAT）两条轴分类；70B 模型 BF16 ~140GB / INT8 ~70GB / INT4 ~35GB；具体量化方法见篇 8。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Flash Attention&lt;/strong&gt; 用 tiling + online softmax 把 IO 复杂度从 O(n²) 降到 O(n²/M)（M 为 SRAM 大小），是计算优化而非改变注意力数学；与稀疏注意力（DSA/SWA）正交——前者优化&amp;quot;怎么算&amp;quot;，后者改变&amp;quot;算什么&amp;quot;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;口径提示：显存利用率 ~20% → ~96% 与 70B 模型各精度显存数值均引自 vLLM / 量化论文原文，引用时建议注明出处。Flash Attention 的 O(n²/M) 中 M 严格指 GPU SRAM（片上缓存）大小，非 HBM。&lt;/p&gt;
-&lt;hr&gt;
 &lt;p&gt;本系列共 11 篇，本文是第 5 篇。&lt;/p&gt;</description></item><item><title>推测解码技术全景对比与 DeepSpec 落地分析</title><link>https://bevisy.github.io/p/speculative-decoding-deepspec-analysis/</link><pubDate>Wed, 22 Jul 2026 18:00:00 +0800</pubDate><guid>https://bevisy.github.io/p/speculative-decoding-deepspec-analysis/</guid><description>&lt;img src="https://bevisy.github.io/p/speculative-decoding-deepspec-analysis/ae72ff10-6529-4be6-8ecb-333f95ccda2c.png" alt="Featured image of post 推测解码技术全景对比与 DeepSpec 落地分析" /&gt;
  &lt;blockquote&gt;
  &lt;p&gt;项目：DeepSpec | 撰写日期：2026-07-22
