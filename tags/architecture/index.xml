@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Architecture on Bevisy's Blogs</title><link>https://bevisy.github.io/tags/architecture/</link><description>Recent content in Architecture on Bevisy's Blogs</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Jul 2026 11:30:00 +0800</lastBuildDate><atom:link href="https://bevisy.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>LLM 术语全景图（十一）：术语关系总览与核心趋势</title><link>https://bevisy.github.io/p/llm-terminology-11-overview-trends/</link><pubDate>Mon, 27 Jul 2026 11:30:00 +0800</pubDate><guid>https://bevisy.github.io/p/llm-terminology-11-overview-trends/</guid><description>&lt;img src="https://bevisy.github.io/p/llm-terminology-11-overview-trends/11.png" alt="Featured image of post LLM 术语全景图（十一）：术语关系总览与核心趋势" /&gt;
+ &lt;blockquote&gt;
+ &lt;p&gt;这是「大模型训练与推理术语全景图」系列的第 11 篇（系列收尾），不引入新概念，而是把前 10 篇的 64 个术语放回它们的关系网络中：注意力机制的演进谱系、模型与术语的对照、并行策略的组合、量化方法的选型、GPU 精度与算力。最后给出 10 条核心趋势和参考资源索引。
+主要参考来源：前 10 篇引用的全部论文与技术报告&lt;/p&gt;
+
+ &lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="开篇把-64-个术语放回关系网络"&gt;开篇：把 64 个术语放回关系网络
+&lt;/h2&gt;&lt;p&gt;本篇是系列收尾，不引入新概念，而是把前 10 篇的 64 个术语放回它们的关系网络中：注意力机制的演进谱系、模型与术语的对照、并行策略的组合、量化方法的选型、GPU 精度与算力。最后给出 10 条核心趋势和参考资源索引。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="注意力机制演进关系图"&gt;注意力机制演进关系图
+&lt;/h2&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;MHA (原始 Transformer)
+├── MQA (极端共享 K/V，1 组)
+├── GQA (分组共享 K/V，当前主流)
+│ └── + QK-Norm (稳定性增强)
+├── MLA (低维压缩 K/V，DeepSeek 首创)
+│ ├── + DSA (稀疏选择，DeepSeek V3.2)
+│ │ └── + IndexShare (复用 indexer，GLM-5.2)
+│ └── + CSA/HCA (序列压缩，DeepSeek V4)
+├── CCA (压缩空间直接计算，ZAYA1)
+├── Lightning Attention (线性注意力，MiniMax)
+├── KDA (改进线性注意力，Kimi Linear)
+├── SWA (固定窗口)
+│ └── + Global (混合，Gemma 3/Laguna)
+├── NoPE (无位置编码层)
+└── Hybrid (以上混合，2025-2026 趋势)
+ ├── 3:1 线性+全局 (Kimi Linear, Qwen3-Next)
+ ├── 5:1 SWA+全局 (Gemma 3)
+ └── CSA+HCA 交替 (DeepSeek V4)
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="模型与术语对照表"&gt;模型与术语对照表
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;模型&lt;/th&gt;
+					&lt;th&gt;注意力&lt;/th&gt;
+					&lt;th&gt;架构&lt;/th&gt;
+					&lt;th&gt;位置编码&lt;/th&gt;
+					&lt;th&gt;后训练&lt;/th&gt;
+					&lt;th&gt;特殊技术&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek V3&lt;/td&gt;
+					&lt;td&gt;MLA&lt;/td&gt;
+					&lt;td&gt;MoE (256+1)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RL&lt;/td&gt;
+					&lt;td&gt;MTP, 无辅助损失路由&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek R1&lt;/td&gt;
+					&lt;td&gt;MLA&lt;/td&gt;
+					&lt;td&gt;MoE (256+1)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + GRPO&lt;/td&gt;
+					&lt;td&gt;RLVR, 蒸馏, &amp;ldquo;Aha Moment&amp;rdquo;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;DeepSeek V4&lt;/td&gt;
+					&lt;td&gt;CSA + HCA&lt;/td&gt;
+					&lt;td&gt;MoE + mHC&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;mHC, Muon, 序列压缩&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GLM-5&lt;/td&gt;
+					&lt;td&gt;MLA + DSA&lt;/td&gt;
+					&lt;td&gt;MoE (256+1)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RL&lt;/td&gt;
+					&lt;td&gt;DSA&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GLM-5.2&lt;/td&gt;
+					&lt;td&gt;MLA + DSA + IndexShare&lt;/td&gt;
+					&lt;td&gt;MoE (256+1)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RL&lt;/td&gt;
+					&lt;td&gt;IndexShare (indexer 复用 4 层)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Kimi K2&lt;/td&gt;
+					&lt;td&gt;MLA&lt;/td&gt;
+					&lt;td&gt;MoE (384+1)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RL&lt;/td&gt;
+					&lt;td&gt;MuonClip&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Kimi Linear&lt;/td&gt;
+					&lt;td&gt;KDA + MLA (3:1)&lt;/td&gt;
+					&lt;td&gt;MoE&lt;/td&gt;
+					&lt;td&gt;NoPE (线性层)&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;KDA, 线性注意力&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MiniMax-01/M1&lt;/td&gt;
+					&lt;td&gt;Lightning Attention + Full&lt;/td&gt;
+					&lt;td&gt;MoE (32)&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;RL (CISPO)&lt;/td&gt;
+					&lt;td&gt;闪电注意力, 1M 上下文&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;MiniMax M2&lt;/td&gt;
+					&lt;td&gt;Full Attention (回归)&lt;/td&gt;
+					&lt;td&gt;MoE&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;RL&lt;/td&gt;
+					&lt;td&gt;放弃线性注意力&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Qwen3&lt;/td&gt;
+					&lt;td&gt;GQA + QK-Norm&lt;/td&gt;
+					&lt;td&gt;Dense / MoE&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + DPO/GRPO&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Qwen3-Next&lt;/td&gt;
+					&lt;td&gt;Gated DeltaNet + Full (3:1)&lt;/td&gt;
+					&lt;td&gt;MoE&lt;/td&gt;
+					&lt;td&gt;NoPE (线性层)&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;线性注意力混合&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3/4&lt;/td&gt;
+					&lt;td&gt;GQA&lt;/td&gt;
+					&lt;td&gt;Dense / MoE&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RLHF&lt;/td&gt;
+					&lt;td&gt;Chunked attention (Llama 4)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Gemma 3&lt;/td&gt;
+					&lt;td&gt;GQA + SWA (5:1) + QK-Norm&lt;/td&gt;
+					&lt;td&gt;Dense&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;SFT + RLHF&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Gemma 4&lt;/td&gt;
+					&lt;td&gt;MQA + Cross-Layer KV&lt;/td&gt;
+					&lt;td&gt;Dense / MoE&lt;/td&gt;
+					&lt;td&gt;RoPE&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;KV 共享, Per-Layer Emb&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPT-4/o1&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;RLHF&lt;/td&gt;
+					&lt;td&gt;推理模型&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Claude 3.5/4&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;(闭源)&lt;/td&gt;
+					&lt;td&gt;Constitutional AI&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;注：DeepSeek V3/R1 技术报告未明确记载 QK-Norm，故注意力列只标 MLA。QK-Norm 的采用模型见篇 02。&lt;/p&gt;
+&lt;h2 id="并行策略关系图"&gt;并行策略关系图
+&lt;/h2&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;训练并行
+├── DP (数据并行) — 每卡完整模型，分数据
+│ ├── ZeRO-1 (分片优化器状态)
+│ ├── ZeRO-2 (+ 分片梯度)
+│ ├── ZeRO-3 / FSDP (+ 分片参数)
+│ │ └── ZeRO-Infinity (卸载到 CPU/NVMe)
+│ └── 嵌套 FSDP (按层分片)
+├── TP (张量并行) — 层内切分权重，NVLink 域
+│ ├── Attention: Q/K/V 列并行 → 输出行并行
+│ └── FFN: 第1层列并行 → 第2层行并行
+├── PP (流水线并行) — 层间切分，可跨节点
+│ ├── GPipe (微批次填充)
+│ └── 1F1B (交替调度，省激活内存)
+├── EP (专家并行) — MoE 专用，All-to-All 路由
+├── CP (上下文并行) — 序列切分，超长上下文
+│ ├── Ring Attention (环形 KV 传递)
+│ └── Ulysses (All-to-All head 重排)
+└── SP (序列并行) — TP 辅助，切分 LayerNorm/Dropout
+
+推理并行（通常更简单）
+├── TP (张量并行) — 多卡共服务一个请求
+├── EP (专家并行) — MoE 推理标配
+├── CP (上下文并行) — 1M token 超长上下文
+└── 分离式 — Prefill 池 + Decode 池
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="量化方法对比"&gt;量化方法对比
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方法&lt;/th&gt;
+					&lt;th&gt;精度&lt;/th&gt;
+					&lt;th&gt;硬件要求&lt;/th&gt;
+					&lt;th&gt;校准&lt;/th&gt;
+					&lt;th&gt;精度损失&lt;/th&gt;
+					&lt;th&gt;适用场景&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPTQ&lt;/td&gt;
+					&lt;td&gt;INT4/INT8&lt;/td&gt;
+					&lt;td&gt;A100+&lt;/td&gt;
+					&lt;td&gt;需要&lt;/td&gt;
+					&lt;td&gt;&amp;lt; 1%&lt;/td&gt;
+					&lt;td&gt;权重量化，通用&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AWQ&lt;/td&gt;
+					&lt;td&gt;INT4/INT8&lt;/td&gt;
+					&lt;td&gt;A100+&lt;/td&gt;
+					&lt;td&gt;需要&lt;/td&gt;
+					&lt;td&gt;&amp;lt; 1%&lt;/td&gt;
+					&lt;td&gt;权重量化，快于 GPTQ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;SmoothQuant&lt;/td&gt;
+					&lt;td&gt;INT8&lt;/td&gt;
+					&lt;td&gt;A100+&lt;/td&gt;
+					&lt;td&gt;需要&lt;/td&gt;
+					&lt;td&gt;&amp;lt; 1%&lt;/td&gt;
+					&lt;td&gt;W8A8，激活也量化&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;FP8&lt;/td&gt;
+					&lt;td&gt;FP8&lt;/td&gt;
+					&lt;td&gt;Hopper+&lt;/td&gt;
+					&lt;td&gt;可选&lt;/td&gt;
+					&lt;td&gt;&amp;lt; 0.5%&lt;/td&gt;
+					&lt;td&gt;推理首选，算力翻倍&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GGUF&lt;/td&gt;
+					&lt;td&gt;2-8 bit&lt;/td&gt;
+					&lt;td&gt;CPU/Metal&lt;/td&gt;
+					&lt;td&gt;无需&lt;/td&gt;
+					&lt;td&gt;可控&lt;/td&gt;
+					&lt;td&gt;消费级硬件本地部署&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;QAT&lt;/td&gt;
+					&lt;td&gt;任意&lt;/td&gt;
+					&lt;td&gt;同训练&lt;/td&gt;
+					&lt;td&gt;训练&lt;/td&gt;
+					&lt;td&gt;最小&lt;/td&gt;
+					&lt;td&gt;精度要求极高场景&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="gpu-精度与算力对照"&gt;GPU 精度与算力对照
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;精度&lt;/th&gt;
+					&lt;th&gt;H100 算力&lt;/th&gt;
+					&lt;th&gt;B200 算力&lt;/th&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;备注&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;FP32&lt;/td&gt;
+					&lt;td&gt;67 TFLOPS&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;优化器状态&lt;/td&gt;
+					&lt;td&gt;非 Tensor Core&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;TF32&lt;/td&gt;
+					&lt;td&gt;495 TFLOPS&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;兼容 FP32&lt;/td&gt;
+					&lt;td&gt;自动降精度&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;BF16&lt;/td&gt;
+					&lt;td&gt;989 TFLOPS&lt;/td&gt;
+					&lt;td&gt;2.2 PFLOPS&lt;/td&gt;
+					&lt;td&gt;训练默认&lt;/td&gt;
+					&lt;td&gt;Tensor Core&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;FP16&lt;/td&gt;
+					&lt;td&gt;989 TFLOPS&lt;/td&gt;
+					&lt;td&gt;2.2 PFLOPS&lt;/td&gt;
+					&lt;td&gt;推理/训练&lt;/td&gt;
+					&lt;td&gt;需 loss scaling&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;FP8&lt;/td&gt;
+					&lt;td&gt;1979 TFLOPS&lt;/td&gt;
+					&lt;td&gt;4.5 PFLOPS&lt;/td&gt;
+					&lt;td&gt;推理/训练&lt;/td&gt;
+					&lt;td&gt;Hopper 新增&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;INT8&lt;/td&gt;
+					&lt;td&gt;1979 TFLOPS&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;推理&lt;/td&gt;
+					&lt;td&gt;需校准&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;FP4&lt;/td&gt;
+					&lt;td&gt;—&lt;/td&gt;
+					&lt;td&gt;9 PFLOPS&lt;/td&gt;
+					&lt;td&gt;推理&lt;/td&gt;
+					&lt;td&gt;Blackwell 新增&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="核心趋势总结"&gt;核心趋势总结
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;KV Cache 是第一瓶颈&lt;/strong&gt;：MLA → DSA → CSA/HCA → 线性注意力，所有创新都围绕降低 KV Cache 成本&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;混合架构成为主流&lt;/strong&gt;：纯完整注意力 → 3:1 / 5:1 混合，完整注意力成为稀缺资源&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MoE 普及&lt;/strong&gt;：大模型几乎全部 MoE 化，激活比持续下降（DeepSeek V4 ~4%）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RL 驱动推理能力&lt;/strong&gt;：GRPO/RLVR 替代传统 RLHF，涌现推理行为&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;训练优化器更新&lt;/strong&gt;：AdamW → Muon，收敛效率提升&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;残差连接也在进化&lt;/strong&gt;：标准残差 → mHC 多残差流，信息通路更宽&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;FP8 取代 INT8&lt;/strong&gt;：Hopper GPU 原生 FP8 支持，浮点量化几乎无损且算力翻倍&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;推理分离式架构&lt;/strong&gt;：Prefill/Decode 分池部署，各阶段独立优化，吞吐提升 30-60%&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;并行策略组合化&lt;/strong&gt;：大模型训练标配 TP+EP+PP+DP/ZeRO 多维并行，推理标配 TP+EP&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PEFT 成为微调标配&lt;/strong&gt;：LoRA/QLoRA 使单卡微调 70B 模型成为可能，多 LoRA 热切换服务&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="参考资源汇总"&gt;参考资源汇总
+&lt;/h2&gt;&lt;h3 id="核心参考文章"&gt;核心参考文章
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;The Big LLM Architecture Comparison&amp;rdquo;: &lt;a class="link" href="https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;A Visual Guide to Attention Variants&amp;rdquo;: &lt;a class="link" href="https://magazine.sebastianraschka.com/p/visual-attention-variants" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/visual-attention-variants&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;Recent Developments in LLM Architectures&amp;rdquo; (CSA/HCA/mHC): &lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;From DeepSeek V3 to V3.2&amp;rdquo;: &lt;a class="link" href="https://magazine.sebastianraschka.com/p/technical-deepseek" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/technical-deepseek&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;GLM-5.2 IndexShare&amp;rdquo;: &lt;a class="link" href="https://sebastianraschka.com/blog/2026/glm-5-2-indexshare.html" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/blog/2026/glm-5-2-indexshare.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;A Dream of Spring for Open-Weight LLMs&amp;rdquo; (MiniMax/Qwen/Ling): &lt;a class="link" href="https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sebastian Raschka &amp;ldquo;From GPT-2 to gpt-oss&amp;rdquo;: &lt;a class="link" href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the" target="_blank" rel="noopener"
+ &gt;https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;LLM Architecture Gallery: &lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llm-architecture-gallery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="核心视频"&gt;核心视频
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;Hybrid Attention and Gated DeltaNet: How 2026 LLMs Actually Work&amp;rdquo;: &lt;a class="link" href="https://www.youtube.com/watch?v=SH6Cyhunl8s" target="_blank" rel="noopener"
+ &gt;https://www.youtube.com/watch?v=SH6Cyhunl8s&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;LLM Architecture in 2026&amp;rdquo; (Sebastian Raschka 播客): &lt;a class="link" href="https://www.youtube.com/watch?v=Y6APnyZT6XU" target="_blank" rel="noopener"
+ &gt;https://www.youtube.com/watch?v=Y6APnyZT6XU&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Yannic Kilcher &amp;ldquo;GRPO Explained&amp;rdquo;: &lt;a class="link" href="https://www.youtube.com/watch?v=bAWV_yrqx4w" target="_blank" rel="noopener"
+ &gt;https://www.youtube.com/watch?v=bAWV_yrqx4w&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="重要论文索引arxiv-链接"&gt;重要论文索引（arXiv 链接）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;Attention Is All You Need&amp;rdquo; (Transformer 原始论文): &lt;a class="link" href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/1706.03762&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;RoPE / RoFormer&amp;rdquo; (旋转位置编码): &lt;a class="link" href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2104.09864&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;YaRN&amp;rdquo; (上下文扩展): &lt;a class="link" href="https://arxiv.org/abs/2309.00071" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2309.00071&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;GQA&amp;rdquo; (分组查询注意力): &lt;a class="link" href="https://arxiv.org/abs/2305.13245" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2305.13245&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;FlashAttention&amp;rdquo; (闪存注意力): &lt;a class="link" href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2205.14135&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;PagedAttention / vLLM&amp;rdquo; (分页注意力): &lt;a class="link" href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2309.06180&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Speculative Decoding&amp;rdquo; (推测解码): &lt;a class="link" href="https://arxiv.org/abs/2211.17192" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2211.17192&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;DPO&amp;rdquo; (直接偏好优化): &lt;a class="link" href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2305.18290&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;DeepSeekMath / GRPO&amp;rdquo; (组相对策略优化): &lt;a class="link" href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2402.03300&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Hyper-Connections&amp;rdquo; (超连接，mHC 前身): &lt;a class="link" href="https://arxiv.org/abs/2409.19606" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2409.19606&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;CCA&amp;rdquo; (压缩卷积注意力): &lt;a class="link" href="https://arxiv.org/abs/2510.04476" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/2510.04476&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本系列共 11 篇，本文是第 11 篇。系列导读见：&lt;a class="link" href="https://bevisy.github.io/p/llm-terminology-series-guide/" &gt;LLM 术语全景图：系列导读&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>
