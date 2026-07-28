@@ -993,8 +993,8 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2210.17323&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/gptq.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/quantization/gptq.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/gptqmodel/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/gptqmodel/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -1068,8 +1068,8 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2306.00978&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/awq.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/quantization/awq.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/auto_awq/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/auto_awq/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -1199,8 +1199,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
  &gt;https://github.com/ggerganov/llama.cpp&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://github.com/ggerganov/llama.cpp/blob/master/docs/gguf.md" target="_blank" rel="noopener"
- &gt;https://github.com/ggerganov/llama.cpp/blob/master/docs/gguf.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/gguf/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/gguf/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/ggml-org/llama.cpp/tree/master/gguf-py" target="_blank" rel="noopener"
+ &gt;https://github.com/ggml-org/llama.cpp/tree/master/gguf-py&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
