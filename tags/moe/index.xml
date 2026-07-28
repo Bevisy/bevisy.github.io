@@ -44,8 +44,8 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/distributed.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/distributed.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -93,8 +93,8 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/distributed.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/serving/distributed.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1909.08053" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1909.08053&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -133,8 +133,8 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/distributed.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/serving/distributed.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1811.06965" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1811.06965&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -181,8 +181,8 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/expert_parallel.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/expert_parallel.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2101.03961" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2101.03961&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -225,8 +225,8 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/cp.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/cp.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2310.01889" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2310.01889&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -276,8 +276,8 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/megatron-core/develop/api-guide/distributed_data_parallel.html" target="_blank" rel="noopener"
- &gt;https://docs.nvidia.com/megatron-core/develop/api-guide/distributed_data_parallel.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/NVIDIA/Megatron-LM" target="_blank" rel="noopener"
+ &gt;https://github.com/NVIDIA/Megatron-LM&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -694,8 +694,8 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (各模型卡片的 Related Concepts)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/09_rmsnorm" target="_blank" rel="noopener"
- &gt;https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/09_rmsnorm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb" target="_blank" rel="noopener"
+ &gt;https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

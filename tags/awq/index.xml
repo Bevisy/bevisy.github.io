@@ -356,10 +356,10 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://nvidia.github.io/TensorRT-LLM/precision.html" target="_blank" rel="noopener"
- &gt;https://nvidia.github.io/TensorRT-LLM/precision.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://nvidia.github.io/TensorRT-LLM/reference/precision.html" target="_blank" rel="noopener"
+ &gt;https://nvidia.github.io/TensorRT-LLM/reference/precision.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

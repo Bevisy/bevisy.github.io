@@ -356,10 +356,10 @@
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://nvidia.github.io/TensorRT-LLM/precision.html" target="_blank" rel="noopener"
- &gt;https://nvidia.github.io/TensorRT-LLM/precision.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://nvidia.github.io/TensorRT-LLM/reference/precision.html" target="_blank" rel="noopener"
+ &gt;https://nvidia.github.io/TensorRT-LLM/reference/precision.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -495,8 +495,8 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cuda/cute/" target="_blank" rel="noopener"
- &gt;https://docs.nvidia.com/cuda/cute/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html" target="_blank" rel="noopener"
+ &gt;https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/" target="_blank" rel="noopener"
  &gt;https://developer.nvidia.com/blog/cutlass-linear-algebra-cuda/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -671,8 +671,8 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/datacenter/h100/" target="_blank" rel="noopener"
- &gt;https://www.nvidia.com/en-us/datacenter/h100/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/data-center/h100/" target="_blank" rel="noopener"
+ &gt;https://www.nvidia.com/en-us/data-center/h100/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2205.14135&lt;/a&gt; (Flash Attention IO 复杂度分析)&lt;/li&gt;
 &lt;/ul&gt;
@@ -841,10 +841,10 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deep-learning-performance/sandbox/fp8.html" target="_blank" rel="noopener"
- &gt;https://docs.nvidia.com/deep-learning-performance/sandbox/fp8.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/" target="_blank" rel="noopener"
+ &gt;https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

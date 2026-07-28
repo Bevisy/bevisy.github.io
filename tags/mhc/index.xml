@@ -302,8 +302,8 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (各模型卡片的 Related Concepts)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/09_rmsnorm" target="_blank" rel="noopener"
- &gt;https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/09_rmsnorm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb" target="_blank" rel="noopener"
+ &gt;https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
