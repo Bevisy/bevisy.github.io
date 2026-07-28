@@ -3552,8 +3552,8 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/gqa/" target="_blank" rel="noopener"
- &gt;https://sebastianraschka.com/llm-architecture-gallery/gqa/&lt;/a&gt; (GQA 页面包含 MQA 说明)&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1911.02150" target="_blank" rel="noopener"
+ &gt;https://arxiv.org/abs/1911.02150&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.pythonalchemist.com/llm-architectures/attention-variants" target="_blank" rel="noopener"
  &gt;https://www.pythonalchemist.com/llm-architectures/attention-variants&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
