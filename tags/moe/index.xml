@@ -40,7 +40,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：PyTorch DDP (DistributedDataParallel)；所有多卡训练的基础&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html&lt;/a&gt;&lt;/li&gt;
@@ -91,7 +91,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (Shoeybi et al., 2019, arXiv:1909.08053)；DeepSeek V3 (TP=8)；GLM-5 (TP=8)；vLLM 推理标配&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -131,7 +131,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPipe&amp;rdquo; (Huang et al., 2019, arXiv:1811.06965)；Megatron-LM (1F1B 调度)；DeepSpeed&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -179,7 +179,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GShard&amp;rdquo; (Lepikhin et al., 2020, arXiv:2006.16668)；&amp;ldquo;Switch Transformer&amp;rdquo; (Fedus et al., 2021, arXiv:2101.03961)；DeepSeek V3 (技术报告)；GLM-5 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -223,7 +223,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Ring Attention&amp;rdquo; (Liu et al., 2023, arXiv:2310.01889)；&amp;ldquo;DeepSpeed Ulysses&amp;rdquo; (Microsoft, 2023)；DeepSeek V3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -274,7 +274,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (arXiv:2104.04473, SP 部分)；DeepSpeed Ulysses&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/NVIDIA/Megatron-LM" target="_blank" rel="noopener"
  &gt;https://github.com/NVIDIA/Megatron-LM&lt;/a&gt;&lt;/li&gt;
@@ -316,7 +316,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;PyTorch FSDP&amp;rdquo; (Zhao et al., 2023, arXiv:2304.11277)；PyTorch 2.x 原生支持；Llama 3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/fsdp.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/fsdp.html&lt;/a&gt;&lt;/li&gt;
@@ -368,7 +368,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;ZeRO: Memory Optimizations Toward Training Trillion Parameter Models&amp;rdquo; (Rajbhandari et al., 2020, arXiv:1910.02054)；DeepSpeed；FSDP 基于此设计&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.deepspeed.ai/tutorials/zero/" target="_blank" rel="noopener"
  &gt;https://www.deepspeed.ai/tutorials/zero/&lt;/a&gt;&lt;/li&gt;
@@ -491,7 +491,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeekMoE (arXiv:2401.06066)；DeepSeek V3 (技术报告 arXiv:2412.19437)；Qwen3 (技术报告)；Kimi K2 技术报告；GLM-5 (技术报告 arXiv:2602.15763)；Mixtral&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/moe/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/moe/&lt;/a&gt;&lt;/li&gt;
@@ -533,7 +533,7 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V3 (arXiv:2412.19437, Section 4.4)；DeepSeek R1 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mtp/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mtp/&lt;/a&gt;&lt;/li&gt;
@@ -582,7 +582,7 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;mHC: Manifold-Constrained Hyper-Connections&amp;rdquo; (arXiv:2512.24880, DeepSeek, 2025-12-31)；Hyper-Connections 原始论文 (arXiv:2409.19606, Zhu et al., 2024)；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.1)&lt;/li&gt;
@@ -617,12 +617,12 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;RoFormer: Enhanced Transformer with Rotary Position Embedding&amp;rdquo; (Su et al., 2021, arXiv:2104.09864)；LLaMA、Qwen、DeepSeek、Mistral 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.turingpost.com/p/attention-types" target="_blank" rel="noopener"
- &gt;https://www.turingpost.com/p/attention-types&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llms-from-scratch/ch04/10_rope/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llms-from-scratch/ch04/10_rope/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -661,6 +661,13 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;YaRN: Efficient Context Window Extension&amp;rdquo; (Peng et al., 2023, arXiv:2309.00071)；Qwen、DeepSeek、LLaMA 系列&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://amaarora.github.io/posts/2025-09-21-rope-context-extension.html" target="_blank" rel="noopener"
+ &gt;https://amaarora.github.io/posts/2025-09-21-rope-context-extension.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="rmsnorm"&gt;RMSNorm
 &lt;/h3&gt;&lt;ul&gt;
@@ -690,12 +697,12 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Root Mean Square Layer Normalization&amp;rdquo; (Zhang &amp;amp; Sennrich, 2019, arXiv:1910.07467)；几乎所有现代 LLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
- &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (各模型卡片的 Related Concepts)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb" target="_blank" rel="noopener"
- &gt;https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://machinelearningmastery.com/layernorm-and-rms-norm-in-transformer-models/" target="_blank" rel="noopener"
+ &gt;https://machinelearningmastery.com/layernorm-and-rms-norm-in-transformer-models/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -727,10 +734,12 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GLU Variants Improve Transformer&amp;rdquo; (Shazeer, 2020, arXiv:2002.05202)；LLaMA、Qwen、DeepSeek 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.emergentmind.com/topics/swiglu-activation-function" target="_blank" rel="noopener"
+ &gt;https://www.emergentmind.com/topics/swiglu-activation-function&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -769,7 +778,7 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：所有 Transformer 模型；MLA (DeepSeek V2)、PagedAttention (vLLM)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms&lt;/a&gt;&lt;/li&gt;

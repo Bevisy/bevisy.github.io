@@ -47,7 +47,7 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;DeepSeekMath&amp;rdquo; (arXiv:2402.03300, 首次提出 GRPO)；DeepSeek R1 (arXiv:2501.12948)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://snorkel.ai/grpo" target="_blank" rel="noopener"
  &gt;https://snorkel.ai/grpo&lt;/a&gt;&lt;/li&gt;
@@ -94,12 +94,10 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;InstructGPT&amp;rdquo; (Ouyang et al., 2022, arXiv:2203.02155)；&amp;ldquo;Constitutional AI&amp;rdquo; (Claude, Anthropic)；ChatGPT、GPT-4、Claude&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12/3" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12/3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.turingpost.com/p/attention-types" target="_blank" rel="noopener"
- &gt;https://www.turingpost.com/p/attention-types&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/zh/rlhf" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/zh/rlhf&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -129,10 +127,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Direct Preference Optimization&amp;rdquo; (Rafailov et al., 2023, arXiv:2305.18290)；Llama 3、Qwen3&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/pref-tuning" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/pref-tuning&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -167,10 +165,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;InstructGPT&amp;rdquo; (Ouyang et al., 2022)；DeepSeek R1 (技术报告)；Qwen3 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://cameronrwolfe.substack.com/p/understanding-and-using-supervised" target="_blank" rel="noopener"
+ &gt;https://cameronrwolfe.substack.com/p/understanding-and-using-supervised&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -217,10 +215,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek R1 (arXiv:2501.12948, 蒸馏部分)；&amp;ldquo;Distilling Reasoning&amp;rdquo; 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12/3" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12/3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pureai.com/articles/2025/02/03/understanding-llm-distillation-enabling-revolutionary-deepseek-r1-model.aspx" target="_blank" rel="noopener"
+ &gt;https://pureai.com/articles/2025/02/03/understanding-llm-distillation-enabling-revolutionary-deepseek-r1-model.aspx&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -252,10 +250,10 @@ Muon：对 2D 权重矩阵的梯度做正交化（Newton-Schulz 迭代近似 SVD
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Muon&amp;rdquo; (J. Jordan, 2024-2025)；DeepSeek V4 (技术报告)；Kimi K2 技术报告 (MuonClip)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (DeepSeek V4 部分)&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pytorch.org/blog/using-muon-optimizer-with-deepspeed/" target="_blank" rel="noopener"
+ &gt;https://pytorch.org/blog/using-muon-optimizer-with-deepspeed/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

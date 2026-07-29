@@ -47,7 +47,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;LoRA: Low-Rank Adaptation of Large Language Models&amp;rdquo; (Hu et al., 2021, arXiv:2106.09685)；PEFT 库 (HuggingFace)；vLLM 多 LoRA&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2106.09685&lt;/a&gt;&lt;/li&gt;
@@ -112,7 +112,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;QLoRA: Efficient Finetuning of Quantized LLMs&amp;rdquo; (Dettmers et al., 2023, arXiv:2305.14314)；bitsandbytes；HuggingFace PEFT&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2305.14314&lt;/a&gt;&lt;/li&gt;
@@ -189,7 +189,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;PEFT: Parameter-Efficient Fine-Tuning&amp;rdquo; (HuggingFace)；LoRA、Adapter、Prefix Tuning 系列论文&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://huggingface.co/docs/peft/" target="_blank" rel="noopener"
  &gt;https://huggingface.co/docs/peft/&lt;/a&gt;&lt;/li&gt;

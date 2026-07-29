@@ -57,12 +57,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang、TGI 等推理框架的基础概念&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi" target="_blank" rel="noopener"
- &gt;https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -103,7 +103,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -150,7 +150,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -202,7 +202,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SGLang RadixAttention&amp;rdquo; (Zheng et al., 2023, arXiv:2312.07104)；vLLM Automatic Prefix Caching&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://lmsys.org/blog/2024-01-17-sglang/" target="_blank" rel="noopener"
  &gt;https://lmsys.org/blog/2024-01-17-sglang/&lt;/a&gt;&lt;/li&gt;
@@ -250,10 +250,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM V1；SGLang；Sarathi-Serve (arXiv:2308.16369)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2308.16369" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2308.16369&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -307,12 +307,12 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;DistServe: Disaggregating Prefill and Decoding&amp;rdquo; (Zhong et al., 2024, arXiv:2401.09670)；DeepSeek 推理服务；Splitwise (arXiv:2311.18677)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2401.09670" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2401.09670&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation" target="_blank" rel="noopener"
+ &gt;https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -372,12 +372,12 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Speculative Decoding&amp;rdquo; (Leviathan et al., 2023, arXiv:2211.17192)；DeepSeek V3 MTP (技术报告)；EAGLE、Medusa&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html" target="_blank" rel="noopener"
  &gt;https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/spec_decode.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/spec_decode.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/speculative_decoding/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/speculative_decoding/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -415,10 +415,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Efficient Memory Management for LLMs with PagedAttention&amp;rdquo; (Kwon et al., 2023, arXiv:2309.06180)；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching" target="_blank" rel="noopener"
+ &gt;https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -444,10 +444,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM (arXiv:2309.06180)；Orca (OSDI 2022)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/continuous-batching" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -495,7 +495,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：GPTQ (arXiv:2210.17323)；AWQ (arXiv:2306.00978)；SmoothQuant (arXiv:2211.10438)；llama.cpp GGUF&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/&lt;/a&gt;&lt;/li&gt;
@@ -537,7 +537,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FlashAttention: Fast and Memory-Efficient Exact Attention&amp;rdquo; (Dao et al., 2022, arXiv:2205.14135)；FlashAttention-2 (Dao, 2023)；FlashAttention-3 (2024)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener"
  &gt;https://github.com/Dao-AILab/flash-attention&lt;/a&gt;&lt;/li&gt;

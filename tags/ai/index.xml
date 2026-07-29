@@ -458,12 +458,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang、TGI 等推理框架的基础概念&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi" target="_blank" rel="noopener"
- &gt;https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -504,7 +504,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -551,7 +551,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -603,7 +603,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SGLang RadixAttention&amp;rdquo; (Zheng et al., 2023, arXiv:2312.07104)；vLLM Automatic Prefix Caching&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://lmsys.org/blog/2024-01-17-sglang/" target="_blank" rel="noopener"
  &gt;https://lmsys.org/blog/2024-01-17-sglang/&lt;/a&gt;&lt;/li&gt;
@@ -651,10 +651,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM V1；SGLang；Sarathi-Serve (arXiv:2308.16369)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2308.16369" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2308.16369&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -708,12 +708,12 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;DistServe: Disaggregating Prefill and Decoding&amp;rdquo; (Zhong et al., 2024, arXiv:2401.09670)；DeepSeek 推理服务；Splitwise (arXiv:2311.18677)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2401.09670" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2401.09670&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation" target="_blank" rel="noopener"
+ &gt;https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -777,7 +777,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;LoRA: Low-Rank Adaptation of Large Language Models&amp;rdquo; (Hu et al., 2021, arXiv:2106.09685)；PEFT 库 (HuggingFace)；vLLM 多 LoRA&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2106.09685&lt;/a&gt;&lt;/li&gt;
@@ -842,7 +842,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;QLoRA: Efficient Finetuning of Quantized LLMs&amp;rdquo; (Dettmers et al., 2023, arXiv:2305.14314)；bitsandbytes；HuggingFace PEFT&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2305.14314&lt;/a&gt;&lt;/li&gt;
@@ -919,7 +919,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;PEFT: Parameter-Efficient Fine-Tuning&amp;rdquo; (HuggingFace)；LoRA、Adapter、Prefix Tuning 系列论文&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://huggingface.co/docs/peft/" target="_blank" rel="noopener"
  &gt;https://huggingface.co/docs/peft/&lt;/a&gt;&lt;/li&gt;
@@ -989,7 +989,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPTQ: Accurate Post-Training Quantization for GPT&amp;rdquo; (Frantar et al., 2022, arXiv:2210.17323)；AutoGPTQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2210.17323&lt;/a&gt;&lt;/li&gt;
@@ -1064,7 +1064,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;AWQ: Activation-aware Weight Quantization for LLM Compression&amp;rdquo; (Lin et al., 2023, arXiv:2306.00978)；AutoAWQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2306.00978&lt;/a&gt;&lt;/li&gt;
@@ -1107,7 +1107,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs&amp;rdquo; (Xiao et al., 2022, arXiv:2211.10438)；MIT-Han-Lab&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2211.10438" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2211.10438&lt;/a&gt;&lt;/li&gt;
@@ -1195,7 +1195,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：llama.cpp (Georgi Gerganov)；GGUF 规范&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
  &gt;https://github.com/ggerganov/llama.cpp&lt;/a&gt;&lt;/li&gt;
@@ -1292,7 +1292,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FP8 Formats for Deep Learning&amp;rdquo; (2022)；vLLM FP8；TensorRT-LLM FP8；FlashAttention-3 FP8&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
@@ -1344,7 +1344,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference&amp;rdquo; (Jacob et al., 2018, arXiv:1712.05877)；LLM-QAT (arXiv:2207.04265)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1712.05877" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1712.05877&lt;/a&gt;&lt;/li&gt;
@@ -1431,7 +1431,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Volta 架构白皮书 (2017)；CUTLASS 库；Triton 编译器&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html&lt;/a&gt;&lt;/li&gt;
@@ -1480,7 +1480,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Hopper 架构白皮书 (2022)；CUTLASS 3.x；FlashAttention-3&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cuda/parallel-thread-execution/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cuda/parallel-thread-execution/&lt;/a&gt;&lt;/li&gt;
@@ -1524,7 +1524,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Hopper 架构白皮书 (2022)；FlashAttention-3 (arXiv:2407.08608)；CUTLASS 3.x&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cuda/parallel-thread-execution/#tensor-memory-accelerator" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cuda/parallel-thread-execution/#tensor-memory-accelerator&lt;/a&gt;&lt;/li&gt;
@@ -1607,7 +1607,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA 各架构白皮书；HBM 标准 (JEDEC)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/data-center/h100/" target="_blank" rel="noopener"
  &gt;https://www.nvidia.com/en-us/data-center/h100/&lt;/a&gt;&lt;/li&gt;
@@ -1686,7 +1686,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Google Brain (2018)；Ampere/Hopper/Blackwell Tensor Core 原生支持&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://en.wikipedia.org/wiki/Bfloat16_floating-point_format" target="_blank" rel="noopener"
  &gt;https://en.wikipedia.org/wiki/Bfloat16_floating-point_format&lt;/a&gt;&lt;/li&gt;
@@ -1777,7 +1777,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FP8 Formats for Deep Learning&amp;rdquo; (NVIDIA/ARM/Intel, 2022)；Hopper 架构；FlashAttention-3 (FP8 attention)；vLLM FP8 推理&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/&lt;/a&gt;&lt;/li&gt;
@@ -1834,7 +1834,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NCCL (NVIDIA)；Horovod；Megatron-LM 通信优化&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deeplearning/nccl/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/deeplearning/nccl/&lt;/a&gt;&lt;/li&gt;
@@ -1917,7 +1917,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA NVLink 白皮书；DGX H100/H200 架构&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/data-center/nvlink/" target="_blank" rel="noopener"
  &gt;https://www.nvidia.com/en-us/data-center/nvlink/&lt;/a&gt;&lt;/li&gt;
@@ -1979,7 +1979,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：PyTorch DDP (DistributedDataParallel)；所有多卡训练的基础&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html&lt;/a&gt;&lt;/li&gt;
@@ -2030,7 +2030,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (Shoeybi et al., 2019, arXiv:1909.08053)；DeepSeek V3 (TP=8)；GLM-5 (TP=8)；vLLM 推理标配&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -2070,7 +2070,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPipe&amp;rdquo; (Huang et al., 2019, arXiv:1811.06965)；Megatron-LM (1F1B 调度)；DeepSpeed&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -2118,7 +2118,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GShard&amp;rdquo; (Lepikhin et al., 2020, arXiv:2006.16668)；&amp;ldquo;Switch Transformer&amp;rdquo; (Fedus et al., 2021, arXiv:2101.03961)；DeepSeek V3 (技术报告)；GLM-5 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -2162,7 +2162,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Ring Attention&amp;rdquo; (Liu et al., 2023, arXiv:2310.01889)；&amp;ldquo;DeepSpeed Ulysses&amp;rdquo; (Microsoft, 2023)；DeepSeek V3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -2213,7 +2213,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (arXiv:2104.04473, SP 部分)；DeepSpeed Ulysses&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/NVIDIA/Megatron-LM" target="_blank" rel="noopener"
  &gt;https://github.com/NVIDIA/Megatron-LM&lt;/a&gt;&lt;/li&gt;
@@ -2255,7 +2255,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;PyTorch FSDP&amp;rdquo; (Zhao et al., 2023, arXiv:2304.11277)；PyTorch 2.x 原生支持；Llama 3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/fsdp.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/fsdp.html&lt;/a&gt;&lt;/li&gt;
@@ -2307,7 +2307,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;ZeRO: Memory Optimizations Toward Training Trillion Parameter Models&amp;rdquo; (Rajbhandari et al., 2020, arXiv:1910.02054)；DeepSpeed；FSDP 基于此设计&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.deepspeed.ai/tutorials/zero/" target="_blank" rel="noopener"
  &gt;https://www.deepspeed.ai/tutorials/zero/&lt;/a&gt;&lt;/li&gt;
@@ -2374,12 +2374,12 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Speculative Decoding&amp;rdquo; (Leviathan et al., 2023, arXiv:2211.17192)；DeepSeek V3 MTP (技术报告)；EAGLE、Medusa&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html" target="_blank" rel="noopener"
  &gt;https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/spec_decode.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/spec_decode.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/speculative_decoding/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/speculative_decoding/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2417,10 +2417,10 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Efficient Memory Management for LLMs with PagedAttention&amp;rdquo; (Kwon et al., 2023, arXiv:2309.06180)；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching" target="_blank" rel="noopener"
+ &gt;https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2446,10 +2446,10 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM (arXiv:2309.06180)；Orca (OSDI 2022)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/continuous-batching" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2497,7 +2497,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：GPTQ (arXiv:2210.17323)；AWQ (arXiv:2306.00978)；SmoothQuant (arXiv:2211.10438)；llama.cpp GGUF&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/&lt;/a&gt;&lt;/li&gt;
@@ -2539,7 +2539,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FlashAttention: Fast and Memory-Efficient Exact Attention&amp;rdquo; (Dao et al., 2022, arXiv:2205.14135)；FlashAttention-2 (Dao, 2023)；FlashAttention-3 (2024)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener"
  &gt;https://github.com/Dao-AILab/flash-attention&lt;/a&gt;&lt;/li&gt;
@@ -2603,7 +2603,7 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;DeepSeekMath&amp;rdquo; (arXiv:2402.03300, 首次提出 GRPO)；DeepSeek R1 (arXiv:2501.12948)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://snorkel.ai/grpo" target="_blank" rel="noopener"
  &gt;https://snorkel.ai/grpo&lt;/a&gt;&lt;/li&gt;
@@ -2650,12 +2650,10 @@ GRPO 只需 3 个：Actor、Reward Model、Reference Model（去掉 Critic）&lt
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;InstructGPT&amp;rdquo; (Ouyang et al., 2022, arXiv:2203.02155)；&amp;ldquo;Constitutional AI&amp;rdquo; (Claude, Anthropic)；ChatGPT、GPT-4、Claude&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12/3" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12/3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.turingpost.com/p/attention-types" target="_blank" rel="noopener"
- &gt;https://www.turingpost.com/p/attention-types&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/zh/rlhf" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/zh/rlhf&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2685,10 +2683,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Direct Preference Optimization&amp;rdquo; (Rafailov et al., 2023, arXiv:2305.18290)；Llama 3、Qwen3&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/pref-tuning" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/pref-tuning&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2723,10 +2721,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;InstructGPT&amp;rdquo; (Ouyang et al., 2022)；DeepSeek R1 (技术报告)；Qwen3 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://cameronrwolfe.substack.com/p/understanding-and-using-supervised" target="_blank" rel="noopener"
+ &gt;https://cameronrwolfe.substack.com/p/understanding-and-using-supervised&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2773,10 +2771,10 @@ DPO：偏好数据 → 直接优化 Actor（用特定损失函数）&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek R1 (arXiv:2501.12948, 蒸馏部分)；&amp;ldquo;Distilling Reasoning&amp;rdquo; 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/learn/llm-course/en/chapter12/3" target="_blank" rel="noopener"
- &gt;https://huggingface.co/learn/llm-course/en/chapter12/3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pureai.com/articles/2025/02/03/understanding-llm-distillation-enabling-revolutionary-deepseek-r1-model.aspx" target="_blank" rel="noopener"
+ &gt;https://pureai.com/articles/2025/02/03/understanding-llm-distillation-enabling-revolutionary-deepseek-r1-model.aspx&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2808,10 +2806,10 @@ Muon：对 2D 权重矩阵的梯度做正交化（Newton-Schulz 迭代近似 SVD
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Muon&amp;rdquo; (J. Jordan, 2024-2025)；DeepSeek V4 (技术报告)；Kimi K2 技术报告 (MuonClip)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (DeepSeek V4 部分)&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pytorch.org/blog/using-muon-optimizer-with-deepspeed/" target="_blank" rel="noopener"
+ &gt;https://pytorch.org/blog/using-muon-optimizer-with-deepspeed/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2925,7 +2923,7 @@ Muon：对 2D 权重矩阵的梯度做正交化（Newton-Schulz 迭代近似 SVD
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeekMoE (arXiv:2401.06066)；DeepSeek V3 (技术报告 arXiv:2412.19437)；Qwen3 (技术报告)；Kimi K2 技术报告；GLM-5 (技术报告 arXiv:2602.15763)；Mixtral&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/moe/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/moe/&lt;/a&gt;&lt;/li&gt;
@@ -2967,7 +2965,7 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V3 (arXiv:2412.19437, Section 4.4)；DeepSeek R1 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mtp/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mtp/&lt;/a&gt;&lt;/li&gt;
@@ -3016,7 +3014,7 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;mHC: Manifold-Constrained Hyper-Connections&amp;rdquo; (arXiv:2512.24880, DeepSeek, 2025-12-31)；Hyper-Connections 原始论文 (arXiv:2409.19606, Zhu et al., 2024)；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.1)&lt;/li&gt;
@@ -3051,12 +3049,12 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;RoFormer: Enhanced Transformer with Rotary Position Embedding&amp;rdquo; (Su et al., 2021, arXiv:2104.09864)；LLaMA、Qwen、DeepSeek、Mistral 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.turingpost.com/p/attention-types" target="_blank" rel="noopener"
- &gt;https://www.turingpost.com/p/attention-types&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llms-from-scratch/ch04/10_rope/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llms-from-scratch/ch04/10_rope/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -3095,6 +3093,13 @@ MTP-k：L = -Σ_{i=1}^{k+1} log P(x_{t+i} | x_{&amp;lt;=t}, x_{t+1}, &amp;hellip
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;YaRN: Efficient Context Window Extension&amp;rdquo; (Peng et al., 2023, arXiv:2309.00071)；Qwen、DeepSeek、LLaMA 系列&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://amaarora.github.io/posts/2025-09-21-rope-context-extension.html" target="_blank" rel="noopener"
+ &gt;https://amaarora.github.io/posts/2025-09-21-rope-context-extension.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="rmsnorm"&gt;RMSNorm
 &lt;/h3&gt;&lt;ul&gt;
@@ -3124,12 +3129,12 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Root Mean Square Layer Normalization&amp;rdquo; (Zhang &amp;amp; Sennrich, 2019, arXiv:1910.07467)；几乎所有现代 LLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
- &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (各模型卡片的 Related Concepts)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb" target="_blank" rel="noopener"
- &gt;https://github.com/rasbt/LLMs-from-scratch/blob/main/ch04/01_main-chapter-code/ch04.ipynb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://machinelearningmastery.com/layernorm-and-rms-norm-in-transformer-models/" target="_blank" rel="noopener"
+ &gt;https://machinelearningmastery.com/layernorm-and-rms-norm-in-transformer-models/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -3161,10 +3166,12 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GLU Variants Improve Transformer&amp;rdquo; (Shazeer, 2020, arXiv:2002.05202)；LLaMA、Qwen、DeepSeek 等&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the" target="_blank" rel="noopener"
- &gt;https://magazine.sebastianraschka.com/p/from-gpt-2-to-gpt-oss-analyzing-the&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.emergentmind.com/topics/swiglu-activation-function" target="_blank" rel="noopener"
+ &gt;https://www.emergentmind.com/topics/swiglu-activation-function&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/llama-components-rmsnorm-swiglu-rope&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -3203,7 +3210,7 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：所有 Transformer 模型；MLA (DeepSeek V2)、PagedAttention (vLLM)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms&lt;/a&gt;&lt;/li&gt;
@@ -3258,7 +3265,7 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：MiniMax-01 (arXiv:2501.08313)；MiniMax-M1 (arXiv:2506.13585)；MiniMax M2 (回归完整注意力)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight&lt;/a&gt; (MiniMax M2 分析)&lt;/li&gt;
@@ -3299,7 +3306,7 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Kimi Linear (arXiv:2510.26692)；Gated DeltaNet (arXiv:2504.12236)；DeltaNet (2024)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/MoonshotAI/Kimi-Linear" target="_blank" rel="noopener"
  &gt;https://github.com/MoonshotAI/Kimi-Linear&lt;/a&gt;&lt;/li&gt;
@@ -3341,7 +3348,7 @@ RMSNorm: y = x / RMS(x) · γ, 其中 RMS(x) = sqrt(mean(x^2) + ε)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：SmolLM3 (HuggingFaceTB, 2025-06)；Nemotron 3 (NVIDIA)；Kimi Linear (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/nope/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/nope/&lt;/a&gt;&lt;/li&gt;
@@ -3378,7 +3385,7 @@ Attention = softmax(Q&amp;rsquo; · K&amp;rsquo;^T / sqrt(d_k)) · V&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：OLMo 2 (arXiv:2501.00656)；Qwen3 (arXiv:2505.09388)；MiniMax M2 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/qk-norm/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/qk-norm/&lt;/a&gt;&lt;/li&gt;
@@ -3411,7 +3418,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Compressed Convolutional Attention&amp;rdquo; (arXiv:2510.04476, 2025-10)；ZAYA1-8B (arXiv:2605.05365)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 4)&lt;/li&gt;
@@ -3467,7 +3474,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Kimi Linear (技术报告)；Qwen3-Next；Gemma 3；Nemotron 3；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/&lt;/a&gt;&lt;/li&gt;
@@ -3520,7 +3527,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Attention Is All You Need&amp;rdquo; (Vaswani et al., 2017, arXiv:1706.03762)；GPT-2、GPT-3、原始 Transformer；OLMo 2 仍保留 MHA&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mha/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mha/&lt;/a&gt;&lt;/li&gt;
@@ -3550,7 +3557,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Fast Transformer Decoding&amp;rdquo; (Shazeer, 2019, arXiv:1911.02150)；PaLM、Falcon、Gemma 4 E2B&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1911.02150" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1911.02150&lt;/a&gt;&lt;/li&gt;
@@ -3591,7 +3598,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GQA: Training Generalized Multi-Query Transformer Models&amp;rdquo; (Ainslie et al., 2023, arXiv:2305.13245)；Llama 3、Qwen3、Mistral、Kimi K2&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/gqa/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/gqa/&lt;/a&gt;&lt;/li&gt;
@@ -3633,7 +3640,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek-V2 (arXiv:2405.04434)；DeepSeek-V3 (arXiv:2412.19437)；GLM-5 (技术报告)；Kimi Linear (arXiv:2510.26692)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mla/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mla/&lt;/a&gt;&lt;/li&gt;
@@ -3670,7 +3677,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Longformer&amp;rdquo; &amp;amp; &amp;ldquo;BigBird&amp;rdquo; (2020)；Mistral 7B；Gemma 3；Llama 4；Laguna XS.2&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/swa/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/swa/&lt;/a&gt;&lt;/li&gt;
@@ -3711,7 +3718,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V3.2-Exp 技术报告；GLM-5 (技术报告)；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/deepseek-sparse-attention/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/deepseek-sparse-attention/&lt;/a&gt;&lt;/li&gt;
@@ -3749,12 +3756,12 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V4 (技术报告)；mHC 论文 (arXiv:2512.24880)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.2)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
- &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (DeepSeek V4 卡片)&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/csa-hca/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llm-architecture-gallery/csa-hca/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -3793,12 +3800,12 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.2 CSA/HCA)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://sesamedisk.com/sebastian-raschka-llm-architecture-gallery-2026" target="_blank" rel="noopener"
- &gt;https://sesamedisk.com/sebastian-raschka-llm-architecture-gallery-2026&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/csa-hca/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llm-architecture-gallery/csa-hca/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

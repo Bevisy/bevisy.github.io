@@ -31,7 +31,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：MiniMax-01 (arXiv:2501.08313)；MiniMax-M1 (arXiv:2506.13585)；MiniMax M2 (回归完整注意力)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight&lt;/a&gt; (MiniMax M2 分析)&lt;/li&gt;
@@ -72,7 +72,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Kimi Linear (arXiv:2510.26692)；Gated DeltaNet (arXiv:2504.12236)；DeltaNet (2024)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/MoonshotAI/Kimi-Linear" target="_blank" rel="noopener"
  &gt;https://github.com/MoonshotAI/Kimi-Linear&lt;/a&gt;&lt;/li&gt;
@@ -114,7 +114,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：SmolLM3 (HuggingFaceTB, 2025-06)；Nemotron 3 (NVIDIA)；Kimi Linear (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/nope/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/nope/&lt;/a&gt;&lt;/li&gt;
@@ -151,7 +151,7 @@ Attention = softmax(Q&amp;rsquo; · K&amp;rsquo;^T / sqrt(d_k)) · V&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：OLMo 2 (arXiv:2501.00656)；Qwen3 (arXiv:2505.09388)；MiniMax M2 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/qk-norm/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/qk-norm/&lt;/a&gt;&lt;/li&gt;
@@ -184,7 +184,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Compressed Convolutional Attention&amp;rdquo; (arXiv:2510.04476, 2025-10)；ZAYA1-8B (arXiv:2605.05365)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 4)&lt;/li&gt;
@@ -240,7 +240,7 @@ CCA：压缩 Q/K/V → 直接在压缩空间计算注意力 → 解压输出&lt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Kimi Linear (技术报告)；Qwen3-Next；Gemma 3；Nemotron 3；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/&lt;/a&gt;&lt;/li&gt;

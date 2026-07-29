@@ -40,7 +40,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：PyTorch DDP (DistributedDataParallel)；所有多卡训练的基础&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html&lt;/a&gt;&lt;/li&gt;
@@ -91,7 +91,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (Shoeybi et al., 2019, arXiv:1909.08053)；DeepSeek V3 (TP=8)；GLM-5 (TP=8)；vLLM 推理标配&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -131,7 +131,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPipe&amp;rdquo; (Huang et al., 2019, arXiv:1811.06965)；Megatron-LM (1F1B 调度)；DeepSpeed&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -179,7 +179,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GShard&amp;rdquo; (Lepikhin et al., 2020, arXiv:2006.16668)；&amp;ldquo;Switch Transformer&amp;rdquo; (Fedus et al., 2021, arXiv:2101.03961)；DeepSeek V3 (技术报告)；GLM-5 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -223,7 +223,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Ring Attention&amp;rdquo; (Liu et al., 2023, arXiv:2310.01889)；&amp;ldquo;DeepSpeed Ulysses&amp;rdquo; (Microsoft, 2023)；DeepSeek V3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/serving/parallelism_scaling.html&lt;/a&gt;&lt;/li&gt;
@@ -274,7 +274,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Megatron-LM&amp;rdquo; (arXiv:2104.04473, SP 部分)；DeepSpeed Ulysses&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/NVIDIA/Megatron-LM" target="_blank" rel="noopener"
  &gt;https://github.com/NVIDIA/Megatron-LM&lt;/a&gt;&lt;/li&gt;
@@ -316,7 +316,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;PyTorch FSDP&amp;rdquo; (Zhao et al., 2023, arXiv:2304.11277)；PyTorch 2.x 原生支持；Llama 3 训练&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.pytorch.org/docs/stable/fsdp.html" target="_blank" rel="noopener"
  &gt;https://docs.pytorch.org/docs/stable/fsdp.html&lt;/a&gt;&lt;/li&gt;
@@ -368,7 +368,7 @@ GPU 0 (layer 0-15) → GPU 1 (layer 16-31) → &amp;hellip; → GPU N-1 (layer L
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;ZeRO: Memory Optimizations Toward Training Trillion Parameter Models&amp;rdquo; (Rajbhandari et al., 2020, arXiv:1910.02054)；DeepSpeed；FSDP 基于此设计&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.deepspeed.ai/tutorials/zero/" target="_blank" rel="noopener"
  &gt;https://www.deepspeed.ai/tutorials/zero/&lt;/a&gt;&lt;/li&gt;

@@ -57,12 +57,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang、TGI 等推理框架的基础概念&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi" target="_blank" rel="noopener"
- &gt;https://huggingface.co/blog/martinigoyanes/llm-inference-at-scale-with-tgi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests" target="_blank" rel="noopener"
+ &gt;https://huggingface.co/blog/tngtech/llm-performance-prefill-decode-concurrent-requests&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -103,7 +103,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -150,7 +150,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM、SGLang 推理框架；LLM 推理服务标准指标&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/metrics.html" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/design/metrics.html&lt;/a&gt;&lt;/li&gt;
@@ -202,7 +202,7 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SGLang RadixAttention&amp;rdquo; (Zheng et al., 2023, arXiv:2312.07104)；vLLM Automatic Prefix Caching&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://lmsys.org/blog/2024-01-17-sglang/" target="_blank" rel="noopener"
  &gt;https://lmsys.org/blog/2024-01-17-sglang/&lt;/a&gt;&lt;/li&gt;
@@ -250,10 +250,10 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM V1；SGLang；Sarathi-Serve (arXiv:2308.16369)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/v0.12.0/usage/v1_guide/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2308.16369" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2308.16369&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -307,12 +307,12 @@ Prefill 计算时间：处理 prompt 的时间&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;DistServe: Disaggregating Prefill and Decoding&amp;rdquo; (Zhong et al., 2024, arXiv:2401.09670)；DeepSeek 推理服务；Splitwise (arXiv:2311.18677)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2401.09670" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2401.09670&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/design/v1/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/design/v1/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation" target="_blank" rel="noopener"
+ &gt;https://bentoml.com/llm/inference-optimization/prefill-decode-disaggregation&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;

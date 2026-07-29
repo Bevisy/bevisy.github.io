@@ -51,7 +51,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPTQ: Accurate Post-Training Quantization for GPT&amp;rdquo; (Frantar et al., 2022, arXiv:2210.17323)；AutoGPTQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2210.17323&lt;/a&gt;&lt;/li&gt;
@@ -126,7 +126,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;AWQ: Activation-aware Weight Quantization for LLM Compression&amp;rdquo; (Lin et al., 2023, arXiv:2306.00978)；AutoAWQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2306.00978&lt;/a&gt;&lt;/li&gt;
@@ -169,7 +169,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs&amp;rdquo; (Xiao et al., 2022, arXiv:2211.10438)；MIT-Han-Lab&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2211.10438" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2211.10438&lt;/a&gt;&lt;/li&gt;
@@ -257,7 +257,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：llama.cpp (Georgi Gerganov)；GGUF 规范&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
  &gt;https://github.com/ggerganov/llama.cpp&lt;/a&gt;&lt;/li&gt;
@@ -354,7 +354,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FP8 Formats for Deep Learning&amp;rdquo; (2022)；vLLM FP8；TensorRT-LLM FP8；FlashAttention-3 FP8&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
@@ -406,7 +406,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference&amp;rdquo; (Jacob et al., 2018, arXiv:1712.05877)；LLM-QAT (arXiv:2207.04265)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1712.05877" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1712.05877&lt;/a&gt;&lt;/li&gt;

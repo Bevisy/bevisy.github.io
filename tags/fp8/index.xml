@@ -51,7 +51,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GPTQ: Accurate Post-Training Quantization for GPT&amp;rdquo; (Frantar et al., 2022, arXiv:2210.17323)；AutoGPTQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2210.17323" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2210.17323&lt;/a&gt;&lt;/li&gt;
@@ -126,7 +126,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;AWQ: Activation-aware Weight Quantization for LLM Compression&amp;rdquo; (Lin et al., 2023, arXiv:2306.00978)；AutoAWQ；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2306.00978&lt;/a&gt;&lt;/li&gt;
@@ -169,7 +169,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;SmoothQuant: Accurate and Efficient Post-Training Quantization for LLMs&amp;rdquo; (Xiao et al., 2022, arXiv:2211.10438)；MIT-Han-Lab&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2211.10438" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/2211.10438&lt;/a&gt;&lt;/li&gt;
@@ -257,7 +257,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：llama.cpp (Georgi Gerganov)；GGUF 规范&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener"
  &gt;https://github.com/ggerganov/llama.cpp&lt;/a&gt;&lt;/li&gt;
@@ -354,7 +354,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FP8 Formats for Deep Learning&amp;rdquo; (2022)；vLLM FP8；TensorRT-LLM FP8；FlashAttention-3 FP8&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/fp8/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/fp8/&lt;/a&gt;&lt;/li&gt;
@@ -406,7 +406,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference&amp;rdquo; (Jacob et al., 2018, arXiv:1712.05877)；LLM-QAT (arXiv:2207.04265)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1712.05877" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1712.05877&lt;/a&gt;&lt;/li&gt;
@@ -493,7 +493,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Volta 架构白皮书 (2017)；CUTLASS 库；Triton 编译器&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cutlass/latest/media/docs/cpp/cute/00_quickstart.html&lt;/a&gt;&lt;/li&gt;
@@ -542,7 +542,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Hopper 架构白皮书 (2022)；CUTLASS 3.x；FlashAttention-3&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cuda/parallel-thread-execution/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cuda/parallel-thread-execution/&lt;/a&gt;&lt;/li&gt;
@@ -586,7 +586,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA Hopper 架构白皮书 (2022)；FlashAttention-3 (arXiv:2407.08608)；CUTLASS 3.x&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/cuda/parallel-thread-execution/#tensor-memory-accelerator" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/cuda/parallel-thread-execution/#tensor-memory-accelerator&lt;/a&gt;&lt;/li&gt;
@@ -669,7 +669,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA 各架构白皮书；HBM 标准 (JEDEC)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/data-center/h100/" target="_blank" rel="noopener"
  &gt;https://www.nvidia.com/en-us/data-center/h100/&lt;/a&gt;&lt;/li&gt;
@@ -748,7 +748,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：Google Brain (2018)；Ampere/Hopper/Blackwell Tensor Core 原生支持&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://en.wikipedia.org/wiki/Bfloat16_floating-point_format" target="_blank" rel="noopener"
  &gt;https://en.wikipedia.org/wiki/Bfloat16_floating-point_format&lt;/a&gt;&lt;/li&gt;
@@ -839,7 +839,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FP8 Formats for Deep Learning&amp;rdquo; (NVIDIA/ARM/Intel, 2022)；Hopper 架构；FlashAttention-3 (FP8 attention)；vLLM FP8 推理&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/&lt;/a&gt;&lt;/li&gt;
@@ -896,7 +896,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NCCL (NVIDIA)；Horovod；Megatron-LM 通信优化&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.nvidia.com/deeplearning/nccl/" target="_blank" rel="noopener"
  &gt;https://docs.nvidia.com/deeplearning/nccl/&lt;/a&gt;&lt;/li&gt;
@@ -979,7 +979,7 @@ Tensor Core：每周期一个矩阵乘加，如 D = A × B + C（A/B/C/D 是小�
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：NVIDIA NVLink 白皮书；DGX H100/H200 架构&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://www.nvidia.com/en-us/data-center/nvlink/" target="_blank" rel="noopener"
  &gt;https://www.nvidia.com/en-us/data-center/nvlink/&lt;/a&gt;&lt;/li&gt;

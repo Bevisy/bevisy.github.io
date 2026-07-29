@@ -43,12 +43,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Speculative Decoding&amp;rdquo; (Leviathan et al., 2023, arXiv:2211.17192)；DeepSeek V3 MTP (技术报告)；EAGLE、Medusa&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html" target="_blank" rel="noopener"
  &gt;https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/inference/mtp.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/spec_decode.html" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/en/latest/features/spec_decode.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/speculative_decoding/" target="_blank" rel="noopener"
+ &gt;https://docs.vllm.ai/en/latest/features/speculative_decoding/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -86,10 +86,10 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Efficient Memory Management for LLMs with PagedAttention&amp;rdquo; (Kwon et al., 2023, arXiv:2309.06180)；vLLM&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching" target="_blank" rel="noopener"
+ &gt;https://www.runpod.io/articles/guides/vllm-pagedattention-continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -115,10 +115,10 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：vLLM (arXiv:2309.06180)；Orca (OSDI 2022)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/" target="_blank" rel="noopener"
- &gt;https://docs.vllm.ai/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mbrenndoerfer.com/writing/continuous-batching" target="_blank" rel="noopener"
+ &gt;https://mbrenndoerfer.com/writing/continuous-batching&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -166,7 +166,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：GPTQ (arXiv:2210.17323)；AWQ (arXiv:2306.00978)；SmoothQuant (arXiv:2211.10438)；llama.cpp GGUF&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://docs.vllm.ai/en/latest/features/quantization/" target="_blank" rel="noopener"
  &gt;https://docs.vllm.ai/en/latest/features/quantization/&lt;/a&gt;&lt;/li&gt;
@@ -208,7 +208,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;FlashAttention: Fast and Memory-Efficient Exact Attention&amp;rdquo; (Dao et al., 2022, arXiv:2205.14135)；FlashAttention-2 (Dao, 2023)；FlashAttention-3 (2024)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener"
  &gt;https://github.com/Dao-AILab/flash-attention&lt;/a&gt;&lt;/li&gt;

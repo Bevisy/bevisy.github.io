@@ -30,7 +30,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Attention Is All You Need&amp;rdquo; (Vaswani et al., 2017, arXiv:1706.03762)；GPT-2、GPT-3、原始 Transformer；OLMo 2 仍保留 MHA&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mha/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mha/&lt;/a&gt;&lt;/li&gt;
@@ -60,7 +60,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Fast Transformer Decoding&amp;rdquo; (Shazeer, 2019, arXiv:1911.02150)；PaLM、Falcon、Gemma 4 E2B&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/1911.02150" target="_blank" rel="noopener"
  &gt;https://arxiv.org/abs/1911.02150&lt;/a&gt;&lt;/li&gt;
@@ -101,7 +101,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;GQA: Training Generalized Multi-Query Transformer Models&amp;rdquo; (Ainslie et al., 2023, arXiv:2305.13245)；Llama 3、Qwen3、Mistral、Kimi K2&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/gqa/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/gqa/&lt;/a&gt;&lt;/li&gt;
@@ -143,7 +143,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek-V2 (arXiv:2405.04434)；DeepSeek-V3 (arXiv:2412.19437)；GLM-5 (技术报告)；Kimi Linear (arXiv:2510.26692)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/mla/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/mla/&lt;/a&gt;&lt;/li&gt;
@@ -180,7 +180,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：&amp;ldquo;Longformer&amp;rdquo; &amp;amp; &amp;ldquo;BigBird&amp;rdquo; (2020)；Mistral 7B；Gemma 3；Llama 4；Laguna XS.2&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/swa/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/swa/&lt;/a&gt;&lt;/li&gt;
@@ -221,7 +221,7 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V3.2-Exp 技术报告；GLM-5 (技术报告)；DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/deepseek-sparse-attention/" target="_blank" rel="noopener"
  &gt;https://sebastianraschka.com/llm-architecture-gallery/deepseek-sparse-attention/&lt;/a&gt;&lt;/li&gt;
@@ -259,12 +259,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V4 (技术报告)；mHC 论文 (arXiv:2512.24880)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.2)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener"
- &gt;https://sebastianraschka.com/llm-architecture-gallery/&lt;/a&gt; (DeepSeek V4 卡片)&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/csa-hca/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llm-architecture-gallery/csa-hca/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -303,12 +303,12 @@
 &lt;p&gt;&lt;strong&gt;关联论文/模型&lt;/strong&gt;：DeepSeek V4 (技术报告)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;权威分析链接&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考分析链接&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class="link" href="https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures" target="_blank" rel="noopener"
  &gt;https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures&lt;/a&gt; (Section 5.2 CSA/HCA)&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://sesamedisk.com/sebastian-raschka-llm-architecture-gallery-2026" target="_blank" rel="noopener"
- &gt;https://sesamedisk.com/sebastian-raschka-llm-architecture-gallery-2026&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sebastianraschka.com/llm-architecture-gallery/csa-hca/" target="_blank" rel="noopener"
+ &gt;https://sebastianraschka.com/llm-architecture-gallery/csa-hca/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
