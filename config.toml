@@ -3,8 +3,7 @@ enableRobotsTXT = true
 locale = "en-us"
 theme = "hugo-theme-stack"
 paginate = 5.0
-title = "Bevisy's Blogs"
-disqusShortname = "bevisy"
+title = "BBZ's Blog"
 DefaultContentLanguage = "en"
 
 [permalinks]
@@ -40,7 +39,22 @@ default = "Licensed under CC BY-NC-SA 4.0"
 
 [params.comments]
 enabled = true
-provider = "disqus"
+provider = "giscus"
+
+[params.comments.giscus]
+repo = "bevisy/bevisy.github.io"
+repoID = "MDEwOlJlcG9zaXRvcnkyMzUxMzg1ODY="
+category = "Announcements"
+categoryID = "DIC_kwDODgPuGs4DC6o2"
+mapping = "pathname"
+strict = false
+reactionsEnabled = true
+emitMetadata = false
+inputPosition = "bottom"
+lightTheme = "light"
+darkTheme = "dark"
+lang = "zh-CN"
+loading = "lazy"
 
 [params.widgets]
 homepage = [

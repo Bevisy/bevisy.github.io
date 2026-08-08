@@ -1,0 +1,19 @@
+/* 响应式优化:中屏下保证主内容可读区宽度(hugo-theme-stack 默认百分比侧栏在
+ * 768-1280px 区间会挤压 main 到 ~40%,右栏从 lg 就出现)。
+ * - 右侧栏(widgets/TOC)由 lg 推迟到 xl(1280px)才显示
+ * - 左栏宽度 clamp(200px,22%,300px),右栏固定 300px,其余宽度全部给 main
+ */
+.container.extended {
+    --left-sidebar-max-width: clamp(200px, 22%, 300px);
+    --right-sidebar-max-width: 300px;
+
+    .right-sidebar {
+        @include respond(lg) {
+            display: none;
+        }
+
+        @include respond(xl) {
+            display: flex;
+        }
+    }
+}

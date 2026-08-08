@@ -77,6 +77,25 @@ src = "img/og-default.jpg"
 
 替换兜底图：直接覆盖 static/img/og-default.jpg 即可，无需改配置。推荐尺寸 1200x630（1.91:1），文件大小 200KB 以内。
 
+## 响应式布局定制
+
+hugo-theme-stack 默认在 768–1280px 区间按百分比显示左中右三栏，会把主内容区挤压到 ~40%。通过站点级 `assets/scss/custom.scss` 覆盖（不修改主题 submodule）：
+
+- 右侧栏（首页 widgets / 文章 TOC）延迟到 xl（≥1280px）才显示
+- 左栏宽度 `clamp(200px, 22%, 300px)`、右栏固定 300px，其余宽度全部给主栏
+- 验证过 768–1920px 全区间：1024–1279px 主栏从 ~380px 提升到 716–775px
+
+改侧栏宽度直接编辑 `assets/scss/custom.scss` 后重新 `hugo --minify` 即可。
+
+## 评论（giscus）
+
+评论后端从 Disqus 换为 giscus（GitHub Discussions，国内可访问，Disqus 在国内被墙）。零模板改动，纯配置：
+
+- `config.toml` 的 `[params.comments]` 设 `provider = "giscus"`，子配置见 `[params.comments.giscus]`
+- 后端是仓库 bevisy/bevisy.github.io 的 Discussions（分类 Announcements），评论按文章 URL（mapping=pathname）挂到 Discussion
+- 评论数据存在 GitHub Discussions，可在仓库 Discussions 标签页管理
+- 切换别的提供商（utterances/gitalk/...），改 `provider` 并补对应配置块即可，主题原生支持全部提供商
+
 ## 部署
 
 推送到 main 分支后，GitHub Action 自动构建并部署到 GitHub Pages。
