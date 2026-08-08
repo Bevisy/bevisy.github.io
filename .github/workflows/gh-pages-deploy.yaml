@@ -1,0 +1,30 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+    - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - name: Install Hugo 🔧
+        run: |
+          wget -c https://github.com/gohugoio/hugo/releases/download/v0.164.0/hugo_extended_0.164.0_linux-amd64.deb
+          sudo dpkg -i hugo*.deb
+
+      - name: Build Blogs
+        run: |
+          hugo --minify
+
+      - name: Deploy Blog
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+

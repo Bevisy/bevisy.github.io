@@ -1,0 +1,11 @@
+# IDE
+.idea
+.vscode
+
+# Others
+public
+resources
+.DS_Store
+.hugo_build.lock
+node_modules/
+themes/next/
